@@ -46,7 +46,6 @@ namespace Project_1.ViewModels
             //set the command
             AllRecipeCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
             {
-                TabButton_Click();
             });
 
             SettingCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>

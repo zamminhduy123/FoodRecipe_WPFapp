@@ -11,7 +11,6 @@ namespace Project_1
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
         }
     }
 }
