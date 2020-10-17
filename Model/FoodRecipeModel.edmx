@@ -5,7 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="FoodRecipeDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="IMAGES">
+        <EntityType Name="Images">
           <Key>
             <PropertyRef Name="recipeId" />
             <PropertyRef Name="stepOrderNumber" />
@@ -15,7 +15,7 @@
           <Property Name="stepOrderNumber" Type="int" Nullable="false" />
           <Property Name="imageSource" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="INGREDIENT">
+        <EntityType Name="Ingredient">
           <Key>
             <PropertyRef Name="recipeId" />
             <PropertyRef Name="name" />
@@ -24,7 +24,7 @@
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="quantity" Type="nvarchar" MaxLength="40" />
         </EntityType>
-        <EntityType Name="RECIPE">
+        <EntityType Name="Recipe">
           <Key>
             <PropertyRef Name="id" />
           </Key>
@@ -35,7 +35,7 @@
           <Property Name="avatarSource" Type="nvarchar" MaxLength="40" />
           <Property Name="createdTime" Type="datetime" />
         </EntityType>
-        <EntityType Name="SETTINGS">
+        <EntityType Name="Setting">
           <Key>
             <PropertyRef Name="splashScreen" />
           </Key>
@@ -44,7 +44,7 @@
           <Property Name="sortingType" Type="int" />
           <Property Name="sortingWay" Type="int" />
         </EntityType>
-        <EntityType Name="STEP">
+        <EntityType Name="Step">
           <Key>
             <PropertyRef Name="recipeId" />
             <PropertyRef Name="orderNumber" />
@@ -53,61 +53,61 @@
           <Property Name="orderNumber" Type="int" Nullable="false" />
           <Property Name="content" Type="nvarchar" MaxLength="1000" />
         </EntityType>
-        <Association Name="FK_IMAGES_STEP">
-          <End Role="STEP" Type="Self.STEP" Multiplicity="1" />
-          <End Role="IMAGES" Type="Self.IMAGES" Multiplicity="*" />
+        <Association Name="fk_images_step">
+          <End Role="Step" Type="Self.Step" Multiplicity="1" />
+          <End Role="Images" Type="Self.Images" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="STEP">
+            <Principal Role="Step">
               <PropertyRef Name="recipeId" />
               <PropertyRef Name="orderNumber" />
             </Principal>
-            <Dependent Role="IMAGES">
+            <Dependent Role="Images">
               <PropertyRef Name="recipeId" />
               <PropertyRef Name="stepOrderNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_INGREDIENT_RECIPE">
-          <End Role="RECIPE" Type="Self.RECIPE" Multiplicity="1" />
-          <End Role="INGREDIENT" Type="Self.INGREDIENT" Multiplicity="*" />
+        <Association Name="fk_ingredient_recipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="RECIPE">
+            <Principal Role="Recipe">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="INGREDIENT">
+            <Dependent Role="Ingredient">
               <PropertyRef Name="recipeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_STEP_RECIPE">
-          <End Role="RECIPE" Type="Self.RECIPE" Multiplicity="1" />
-          <End Role="STEP" Type="Self.STEP" Multiplicity="*" />
+        <Association Name="fk_step_recipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="Step" Type="Self.Step" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="RECIPE">
+            <Principal Role="Recipe">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="STEP">
+            <Dependent Role="Step">
               <PropertyRef Name="recipeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="FoodRecipeDBModelStoreContainer">
-          <EntitySet Name="IMAGES" EntityType="Self.IMAGES" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="INGREDIENT" EntityType="Self.INGREDIENT" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="RECIPE" EntityType="Self.RECIPE" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SETTINGS" EntityType="Self.SETTINGS" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="STEP" EntityType="Self.STEP" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_IMAGES_STEP" Association="Self.FK_IMAGES_STEP">
-            <End Role="STEP" EntitySet="STEP" />
-            <End Role="IMAGES" EntitySet="IMAGES" />
+          <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ingredient" EntityType="Self.Ingredient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Recipe" EntityType="Self.Recipe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Setting" EntityType="Self.Setting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Step" EntityType="Self.Step" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_images_step" Association="Self.fk_images_step">
+            <End Role="Step" EntitySet="Step" />
+            <End Role="Images" EntitySet="Images" />
           </AssociationSet>
-          <AssociationSet Name="FK_INGREDIENT_RECIPE" Association="Self.FK_INGREDIENT_RECIPE">
-            <End Role="RECIPE" EntitySet="RECIPE" />
-            <End Role="INGREDIENT" EntitySet="INGREDIENT" />
+          <AssociationSet Name="fk_ingredient_recipe" Association="Self.fk_ingredient_recipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="Ingredient" EntitySet="Ingredient" />
           </AssociationSet>
-          <AssociationSet Name="FK_STEP_RECIPE" Association="Self.FK_STEP_RECIPE">
-            <End Role="RECIPE" EntitySet="RECIPE" />
-            <End Role="STEP" EntitySet="STEP" />
+          <AssociationSet Name="fk_step_recipe" Association="Self.fk_step_recipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="Step" EntitySet="Step" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -115,7 +115,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FoodRecipeDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="IMAGE">
+        <EntityType Name="Image">
           <Key>
             <PropertyRef Name="recipeId" />
             <PropertyRef Name="stepOrderNumber" />
@@ -124,9 +124,9 @@
           <Property Name="recipeId" Type="Int32" Nullable="false" />
           <Property Name="stepOrderNumber" Type="Int32" Nullable="false" />
           <Property Name="imageSource" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="STEP" Relationship="Self.FK_IMAGES_STEP" FromRole="IMAGES" ToRole="STEP" />
+          <NavigationProperty Name="Step" Relationship="Self.fk_images_step" FromRole="Images" ToRole="Step" />
         </EntityType>
-        <EntityType Name="INGREDIENT">
+        <EntityType Name="Ingredient">
           <Key>
             <PropertyRef Name="recipeId" />
             <PropertyRef Name="name" />
@@ -134,9 +134,9 @@
           <Property Name="recipeId" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="quantity" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="RECIPE" Relationship="Self.FK_INGREDIENT_RECIPE" FromRole="INGREDIENT" ToRole="RECIPE" />
+          <NavigationProperty Name="Recipe" Relationship="Self.fk_ingredient_recipe" FromRole="Ingredient" ToRole="Recipe" />
         </EntityType>
-        <EntityType Name="RECIPE">
+        <EntityType Name="Recipe">
           <Key>
             <PropertyRef Name="id" />
           </Key>
@@ -146,10 +146,10 @@
           <Property Name="isFavorite" Type="Int32" />
           <Property Name="avatarSource" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="createdTime" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="INGREDIENTs" Relationship="Self.FK_INGREDIENT_RECIPE" FromRole="RECIPE" ToRole="INGREDIENT" />
-          <NavigationProperty Name="STEPs" Relationship="Self.FK_STEP_RECIPE" FromRole="RECIPE" ToRole="STEP" />
+          <NavigationProperty Name="Ingredients" Relationship="Self.fk_ingredient_recipe" FromRole="Recipe" ToRole="Ingredient" />
+          <NavigationProperty Name="Steps" Relationship="Self.fk_step_recipe" FromRole="Recipe" ToRole="Step" />
         </EntityType>
-        <EntityType Name="SETTING">
+        <EntityType Name="Setting">
           <Key>
             <PropertyRef Name="splashScreen" />
           </Key>
@@ -158,7 +158,7 @@
           <Property Name="sortingType" Type="Int32" />
           <Property Name="sortingWay" Type="Int32" />
         </EntityType>
-        <EntityType Name="STEP">
+        <EntityType Name="Step">
           <Key>
             <PropertyRef Name="recipeId" />
             <PropertyRef Name="orderNumber" />
@@ -166,64 +166,64 @@
           <Property Name="recipeId" Type="Int32" Nullable="false" />
           <Property Name="orderNumber" Type="Int32" Nullable="false" />
           <Property Name="content" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="IMAGES" Relationship="Self.FK_IMAGES_STEP" FromRole="STEP" ToRole="IMAGES" />
-          <NavigationProperty Name="RECIPE" Relationship="Self.FK_STEP_RECIPE" FromRole="STEP" ToRole="RECIPE" />
+          <NavigationProperty Name="Images" Relationship="Self.fk_images_step" FromRole="Step" ToRole="Images" />
+          <NavigationProperty Name="Recipe" Relationship="Self.fk_step_recipe" FromRole="Step" ToRole="Recipe" />
         </EntityType>
-        <Association Name="FK_IMAGES_STEP">
-          <End Role="STEP" Type="Self.STEP" Multiplicity="1" />
-          <End Role="IMAGES" Type="Self.IMAGE" Multiplicity="*" />
+        <Association Name="fk_images_step">
+          <End Role="Step" Type="Self.Step" Multiplicity="1" />
+          <End Role="Images" Type="Self.Image" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="STEP">
+            <Principal Role="Step">
               <PropertyRef Name="recipeId" />
               <PropertyRef Name="orderNumber" />
             </Principal>
-            <Dependent Role="IMAGES">
+            <Dependent Role="Images">
               <PropertyRef Name="recipeId" />
               <PropertyRef Name="stepOrderNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_INGREDIENT_RECIPE">
-          <End Role="RECIPE" Type="Self.RECIPE" Multiplicity="1" />
-          <End Role="INGREDIENT" Type="Self.INGREDIENT" Multiplicity="*" />
+        <Association Name="fk_ingredient_recipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="RECIPE">
+            <Principal Role="Recipe">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="INGREDIENT">
+            <Dependent Role="Ingredient">
               <PropertyRef Name="recipeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_STEP_RECIPE">
-          <End Role="RECIPE" Type="Self.RECIPE" Multiplicity="1" />
-          <End Role="STEP" Type="Self.STEP" Multiplicity="*" />
+        <Association Name="fk_step_recipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="Step" Type="Self.Step" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="RECIPE">
+            <Principal Role="Recipe">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="STEP">
+            <Dependent Role="Step">
               <PropertyRef Name="recipeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="FoodRecipeDBEntities1" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="IMAGES" EntityType="Self.IMAGE" />
-          <EntitySet Name="INGREDIENTs" EntityType="Self.INGREDIENT" />
-          <EntitySet Name="RECIPEs" EntityType="Self.RECIPE" />
-          <EntitySet Name="SETTINGS" EntityType="Self.SETTING" />
-          <EntitySet Name="STEPs" EntityType="Self.STEP" />
-          <AssociationSet Name="FK_IMAGES_STEP" Association="Self.FK_IMAGES_STEP">
-            <End Role="STEP" EntitySet="STEPs" />
-            <End Role="IMAGES" EntitySet="IMAGES" />
+        <EntityContainer Name="FoodRecipeDBEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Images" EntityType="Self.Image" />
+          <EntitySet Name="Ingredients" EntityType="Self.Ingredient" />
+          <EntitySet Name="Recipes" EntityType="Self.Recipe" />
+          <EntitySet Name="Settings" EntityType="Self.Setting" />
+          <EntitySet Name="Steps" EntityType="Self.Step" />
+          <AssociationSet Name="fk_images_step" Association="Self.fk_images_step">
+            <End Role="Step" EntitySet="Steps" />
+            <End Role="Images" EntitySet="Images" />
           </AssociationSet>
-          <AssociationSet Name="FK_INGREDIENT_RECIPE" Association="Self.FK_INGREDIENT_RECIPE">
-            <End Role="RECIPE" EntitySet="RECIPEs" />
-            <End Role="INGREDIENT" EntitySet="INGREDIENTs" />
+          <AssociationSet Name="fk_ingredient_recipe" Association="Self.fk_ingredient_recipe">
+            <End Role="Recipe" EntitySet="Recipes" />
+            <End Role="Ingredient" EntitySet="Ingredients" />
           </AssociationSet>
-          <AssociationSet Name="FK_STEP_RECIPE" Association="Self.FK_STEP_RECIPE">
-            <End Role="RECIPE" EntitySet="RECIPEs" />
-            <End Role="STEP" EntitySet="STEPs" />
+          <AssociationSet Name="fk_step_recipe" Association="Self.fk_step_recipe">
+            <End Role="Recipe" EntitySet="Recipes" />
+            <End Role="Step" EntitySet="Steps" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -231,28 +231,28 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="FoodRecipeDBModelStoreContainer" CdmEntityContainer="FoodRecipeDBEntities1">
-          <EntitySetMapping Name="IMAGES">
-            <EntityTypeMapping TypeName="FoodRecipeDBModel.IMAGE">
-              <MappingFragment StoreEntitySet="IMAGES">
+        <EntityContainerMapping StorageEntityContainer="FoodRecipeDBModelStoreContainer" CdmEntityContainer="FoodRecipeDBEntities3">
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="FoodRecipeDBModel.Image">
+              <MappingFragment StoreEntitySet="Images">
                 <ScalarProperty Name="recipeId" ColumnName="recipeId" />
                 <ScalarProperty Name="stepOrderNumber" ColumnName="stepOrderNumber" />
                 <ScalarProperty Name="imageSource" ColumnName="imageSource" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="INGREDIENTs">
-            <EntityTypeMapping TypeName="FoodRecipeDBModel.INGREDIENT">
-              <MappingFragment StoreEntitySet="INGREDIENT">
+          <EntitySetMapping Name="Ingredients">
+            <EntityTypeMapping TypeName="FoodRecipeDBModel.Ingredient">
+              <MappingFragment StoreEntitySet="Ingredient">
                 <ScalarProperty Name="recipeId" ColumnName="recipeId" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RECIPEs">
-            <EntityTypeMapping TypeName="FoodRecipeDBModel.RECIPE">
-              <MappingFragment StoreEntitySet="RECIPE">
+          <EntitySetMapping Name="Recipes">
+            <EntityTypeMapping TypeName="FoodRecipeDBModel.Recipe">
+              <MappingFragment StoreEntitySet="Recipe">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="youtubeSource" ColumnName="youtubeSource" />
@@ -262,9 +262,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SETTINGS">
-            <EntityTypeMapping TypeName="FoodRecipeDBModel.SETTING">
-              <MappingFragment StoreEntitySet="SETTINGS">
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="FoodRecipeDBModel.Setting">
+              <MappingFragment StoreEntitySet="Setting">
                 <ScalarProperty Name="splashScreen" ColumnName="splashScreen" />
                 <ScalarProperty Name="itemSize" ColumnName="itemSize" />
                 <ScalarProperty Name="sortingType" ColumnName="sortingType" />
@@ -272,9 +272,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="STEPs">
-            <EntityTypeMapping TypeName="FoodRecipeDBModel.STEP">
-              <MappingFragment StoreEntitySet="STEP">
+          <EntitySetMapping Name="Steps">
+            <EntityTypeMapping TypeName="FoodRecipeDBModel.Step">
+              <MappingFragment StoreEntitySet="Step">
                 <ScalarProperty Name="recipeId" ColumnName="recipeId" />
                 <ScalarProperty Name="orderNumber" ColumnName="orderNumber" />
                 <ScalarProperty Name="content" ColumnName="content" />

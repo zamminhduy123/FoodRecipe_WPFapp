@@ -13,10 +13,10 @@ namespace Project_1.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class FoodRecipeDBEntities1 : DbContext
+    public partial class FoodRecipeDBEntities3 : DbContext
     {
-        public FoodRecipeDBEntities1()
-            : base("name=FoodRecipeDBEntities1")
+        public FoodRecipeDBEntities3()
+            : base("name=FoodRecipeDBEntities3")
         {
         }
     
@@ -25,10 +25,10 @@ namespace Project_1.Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<IMAGE> IMAGES { get; set; }
-        public virtual DbSet<INGREDIENT> INGREDIENTs { get; set; }
-        public virtual DbSet<RECIPE> RECIPEs { get; set; }
-        public virtual DbSet<SETTING> SETTINGS { get; set; }
-        public virtual DbSet<STEP> STEPs { get; set; }
+        public virtual DbSet<Image> Images { get; set; }
+        public virtual DbSet<Ingredient> Ingredients { get; set; }
+        public virtual DbSet<Recipe> Recipes { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
+        public virtual DbSet<Step> Steps { get; set; }
     }
 }

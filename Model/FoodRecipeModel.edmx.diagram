@@ -4,15 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c52de95ddb4a461f8fbee708b0ef9599" Name="Diagram1">
-        <EntityTypeShape EntityType="FoodRecipeDBModel.IMAGE" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoodRecipeDBModel.INGREDIENT" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoodRecipeDBModel.RECIPE" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoodRecipeDBModel.SETTING" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoodRecipeDBModel.STEP" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
-        <AssociationConnector Association="FoodRecipeDBModel.FK_IMAGES_STEP" ManuallyRouted="false" />
-        <AssociationConnector Association="FoodRecipeDBModel.FK_INGREDIENT_RECIPE" ManuallyRouted="false" />
-        <AssociationConnector Association="FoodRecipeDBModel.FK_STEP_RECIPE" ManuallyRouted="false" />
+      <Diagram DiagramId="136bccadaa2b4ef59da7a52481e5babf" Name="Diagram1">
+        <EntityTypeShape EntityType="FoodRecipeDBModel.Image" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodRecipeDBModel.Ingredient" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodRecipeDBModel.Recipe" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodRecipeDBModel.Setting" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodRecipeDBModel.Step" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="FoodRecipeDBModel.fk_images_step" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodRecipeDBModel.fk_ingredient_recipe" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodRecipeDBModel.fk_step_recipe" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
