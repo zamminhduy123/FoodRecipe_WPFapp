@@ -43,3 +43,7 @@ void function(variable){
 <tên người làm> - Làm gì (add,build,fix,..) 1 chữ thôi - tên của cái mình làm (ngắn gọn xúc tích) 
 ### Link drive folder ảnh
 https://drive.google.com/drive/folders/1UatnaPg4YnMli3EJTOKUZh2e2HR2Oez5?usp=sharing
+
+
+###Member's tasks
+https://docs.google.com/spreadsheets/d/1ttwNnG-IZ9PeJn4CAX7npR9P4IFlmc5WnnzY5yaBj_Q/edit#gid=0
