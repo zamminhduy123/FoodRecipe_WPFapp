@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:yt="clr-namespace:Project_1.Utility"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -17,6 +18,7 @@
         mc:Ignorable="d"
         DataContext="{StaticResource MainVM}"
         Title="Food Recipe" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+
     <Window.Resources>
         <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
             <Setter Property="Template">
@@ -28,7 +30,7 @@
                             <Border x:Name="Rectangle1" CornerRadius="5" HorizontalAlignment="Stretch" 
                                         VerticalAlignment="Stretch" Width="Auto" Height="Auto" 
                                         Background="#e64a19"/>
-                        </Grid>   
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="Tag" Value="Horizontal">
                                 <Setter TargetName="Rectangle1" Property="Width" Value="Auto"/>
@@ -155,7 +157,7 @@
             <BeginStoryboard Storyboard="{StaticResource OpenMenu}"/>
         </EventTrigger>
     </Window.Triggers>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="700">
@@ -163,6 +165,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        
         <TextBlock
                    FontStretch="UltraExpanded"
                    FontStyle="Italic"
@@ -181,17 +184,23 @@
             Height="334"
             VerticalAlignment="Top">
             <DockPanel>
-                <Border Name="Mask"
+                <Grid>
+                    <Border Name="Mask"
                         Width="400" Margin="10" CornerRadius="30">
-                    <Border.Effect>
-                        <DropShadowEffect ShadowDepth="5"/>
-                    </Border.Effect>
-                    <Border.Background>
-                        <ImageBrush 
-                               Stretch="UniformToFill"
-                               ImageSource="Images/hamburger.jpeg"/>
-                    </Border.Background>
-                </Border>
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="5"/>
+                        </Border.Effect>
+
+                        <Border.Background>
+                            <ImageBrush 
+                                   Stretch="UniformToFill"
+                                   ImageSource="Images/hamburger.jpeg"/>
+                        </Border.Background>
+                    </Border>
+                    <Border Width="400" Margin="10" BorderThickness="2" BorderBrush="#e64a19" Visibility="{Binding VideoVisibility}">
+                        <WebBrowser yt:BrowserBehavior.Html="{Binding HtmlDisplay}"  Width="400" Height="350"></WebBrowser>
+                    </Border>
+                </Grid>
                 <StackPanel DockPanel.Dock="Right"
                             Margin="0 10 5 10">
                     <TextBlock x:Name="recipeNameTextBlock"
@@ -201,34 +210,37 @@
                                FontSize="25"
                                FontWeight="ExtraBold"
                                ></TextBlock>
-                    <ListView  x:Name="ingredientsListView">
-                        <ListView.ItemTemplate>
-                            <ItemContainerTemplate>
-                                <Grid Width="235">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Width="5"
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="200">
+                        <ListView  ItemsSource="{Binding Ingredients}" Height="200">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="235">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="5"
                                                  Height="5"
                                                  StrokeThickness="1"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Center"
                                                  Fill="Black"
                                                  Margin="5 0"></Ellipse>
-                                        <TextBlock HorizontalAlignment="Left"
-                                                   Text="{Binding Name1}"
+                                            <TextBlock HorizontalAlignment="Left"
+                                                   Text="{Binding Name}"
                                                    FontSize="20"
                                                    FontWeight="Bold"></TextBlock>
-                                    </StackPanel>
-                                    <TextBlock 
+                                        </StackPanel>
+                                        <TextBlock 
                                                HorizontalAlignment="Right"
-                                               Text="{Binding Name2}"
+                                               Text="{Binding Quantity}"
                                                FontSize="20"
                                                VerticalAlignment="Center"
                                                FontWeight="Light"></TextBlock>
-                                </Grid>
-                            </ItemContainerTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
 
+                    <Button Margin="10 20" Content="Watch Video" Width="150" Command="{Binding WatchVideoCommand}" CommandParameter="{Binding ElementName=youtubeWeb}"></Button>
                 </StackPanel>
 
             </DockPanel>
@@ -237,7 +249,7 @@
         <Border CornerRadius="20" Width="auto" VerticalAlignment="Bottom" Height="275" Margin="10,0,10,10" BorderThickness="2" BorderBrush="Black">
             <UniformGrid Columns="2">
                 <StackPanel Orientation="Horizontal">
-                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" >
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" Command="{Binding PrevImgStepCommand}" >
                         <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
                     </Button>
                     <Border Grid.Column="0"
@@ -251,7 +263,7 @@
                                    ImageSource="Images/hamburger.jpeg"/>
                         </Border.Background>
                     </Border>
-                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" >
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImgStepCommand}">
                         <Image Source="/Images/baseline_arrow_forward_ios_black_48dp.png" />
                     </Button>
                 </StackPanel>
@@ -263,9 +275,9 @@
                     <TextBlock Margin="0 10 0 0" x:Name="stepContent" TextWrapping="Wrap" Height="180 " Width="260"
                                    FontSize="18"
                                    FontWeight="DemiBold"
-                                   Text="Sskdjfasdjfhasdjfhasjdfhsjfhasf dsjfhgsdhjfg sfshad gshda fhsadgf sahdgfhsdg fshdfg hsdafg shjdfg jsagfhjs jhsd gfjsdgf jsdfj hsdahfj gsdajhf ghsdafgsdj gfsdjhaf g"></TextBlock>
+                                   Text="{Binding StepContent}"></TextBlock>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0">
+                        <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevStepCommand}">
                             <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
                         </Button>
                         <Border CornerRadius="10"  Background="#e64a19" Width="100">
@@ -274,7 +286,7 @@
                                    Text="2/10"
                                    ></TextBlock>
                         </Border>
-                        <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" >
+                        <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextStepCommand}">
                             <Image Source="/Images/baseline_arrow_forward_ios_black_48dp.png" />
                         </Button>
                     </StackPanel>
@@ -292,21 +304,23 @@
             <StackPanel Margin="20 20 0 0"
                         Orientation="Horizontal">
                 <RadioButton
+                    Command="{Binding AllRecipeCommand}"
                     Style="{StaticResource MaterialDesignTabRadioButton}"
                     Margin="4"
                     IsChecked="True"
-                    Content="ALL RECIPE" />      
+                    Content="ALL RECIPE" />
                 <RadioButton
+                    Command="{Binding FavoriteCommand}"
                     Style="{StaticResource MaterialDesignTabRadioButton}"
                     Margin="4"
                     IsChecked="False"
                     Content="FAVORITE" />
 
             </StackPanel>
-            <Button x:Name="btnOpenSetting" Background="{x:Null}" Width="30" Height="30" Margin="0,0,23,0" HorizontalAlignment="Right"
+            <Button x:Name="btnOpenSetting" Background="{x:Null}" Width="40" Height="40" Margin="0,0,23,0" HorizontalAlignment="Right"
                         BorderBrush="{x:Null}" Foreground="Black" FontSize="15" 
                         FontWeight="Bold" VerticalAlignment="Bottom" Padding="0" Command="{Binding SettingCommand}">
-                <materialDesign:PackIcon Kind="Menu" ></materialDesign:PackIcon>
+                <materialDesign:PackIcon Kind="Menu" Height="30" Width="30"></materialDesign:PackIcon>
             </Button>
         </Grid>
 
@@ -318,6 +332,7 @@
             <Grid>
                 <StackPanel Margin="5 0 0 0">
                     <TextBox      x:Name="searchTextBox" Width="340"
+                                  Text="{Binding Search}"
                                   materialDesign:HintAssist.Hint="Search for recipe"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   VerticalAlignment="Top" Height="auto" />
@@ -334,7 +349,7 @@
         </StackPanel>
 
         <Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}">
-   
+
         </Rectangle>
         <Grid x:Name="settingGrid" Width="250" Grid.Column="1" Margin="750 0 0 0" HorizontalAlignment="Right"  Background="white" RenderTransformOrigin="0.5,0.5" Grid.ZIndex ="9999">
             <Grid.RenderTransform>
@@ -416,7 +431,7 @@
         </ItemsControl>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" VerticalAlignment="Bottom" Margin="0 0 0 10">
-            <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0">
+            <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextListCommand}">
                 <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
             </Button>
             <Border CornerRadius="10"  Background="#e64a19" Width="200">
@@ -425,7 +440,7 @@
                                    Text="2/10"
                                    ></TextBlock>
             </Border>
-            <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" >
+            <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevListCommand}" >
                 <Image Source="/Images/baseline_arrow_forward_ios_black_48dp.png" />
             </Button>
         </StackPanel>

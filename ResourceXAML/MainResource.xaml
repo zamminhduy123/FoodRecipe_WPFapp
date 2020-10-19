@@ -1,7 +1,11 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewmodel="clr-namespace:Project_1.ViewModels"
                     xmlns:local="clr-namespace:Project_1.ResourceXAML">
     <viewmodel:MainViewModel x:Key="MainVM"></viewmodel:MainViewModel>
     <viewmodel:SplashScreenViewModel x:Key="SSVM"></viewmodel:SplashScreenViewModel>
+    <viewmodel:UserPreferenceViewModel x:Key="UPVM"></viewmodel:UserPreferenceViewModel>
+    <viewmodel:SettingViewModel x:Key="SVM"></viewmodel:SettingViewModel>
+    <viewmodel:AboutViewModel x:Key="AVM"></viewmodel:AboutViewModel>
+    <viewmodel:ThemeViewModel x:Key="TVM"></viewmodel:ThemeViewModel>
 </ResourceDictionary>

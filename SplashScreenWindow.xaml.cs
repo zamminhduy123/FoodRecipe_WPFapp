@@ -42,7 +42,7 @@ namespace Project_1
             dT.Interval = new TimeSpan(0, 0, _time_SplashScreen);
             dT.Start();
         }
-
+        
         private void dt_Tick(object sender, EventArgs e)
         {
             MainWindow mW = new MainWindow();

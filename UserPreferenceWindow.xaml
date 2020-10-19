@@ -3,8 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lc="clr-namespace:Project_1.AppUserControl"
+        xmlns:viewmodels ="clr-namespace:Project_1.ViewModels"
+        
         xmlns:local="clr-namespace:Project_1"
         mc:Ignorable="d"
+        x:Name="UserPrefsWindow"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -15,61 +19,59 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         
-        Title="UserPreferenceWindow" Height="450" Width="300" WindowStartupLocation="CenterScreen">
+        DataContext="{StaticResource UPVM}"
+        
+        Title="UserPreferenceWindow" Height="450" Width="300" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:SettingViewModel}">
+            <lc:SettingViewUC DataContext="{Binding}"/>
+            <!-- This is a UserControl -->
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ThemeViewModel}">
+            <lc:ThemeViewUC DataContext="{Binding}"/>
+             <!--This is a UserControl--> 
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:AboutViewModel}">
+            <lc:AboutViewUC DataContext="{Binding}"/>
+             <!--This is a UserControl--> 
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <StackPanel>
-            <materialDesign:Card Padding="10">
-                <TextBlock Margin="10" Text="SETTINGS" FontSize="25" FontWeight="Bold" VerticalAlignment="Top" ></TextBlock>
-            </materialDesign:Card>
-            <materialDesign:Card Padding="10">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
-                        <Ellipse Margin="20 0 10 0" Width="10" Height="10" VerticalAlignment="Center"  Fill="#e64a19"></Ellipse>
-                        <TextBlock Text="Splash Screen" FontSize="25" FontWeight="Medium" VerticalAlignment="Top" Width="auto"></TextBlock>
-                        <ToggleButton
-                              Margin="30 5"
-                              Style="{StaticResource MaterialDesignSwitchToggleButton}"
-                              ToolTip="MaterialDesignSwitchToggleButton"
-                              IsChecked="False" />
-                    </StackPanel>
+            <materialDesign:Card Padding="5">
+                <StackPanel Margin="0 10 0 0"
+                        Orientation="Horizontal">
+                    <RadioButton
+                        FontSize="12"
+                        Command="{Binding SettingsCommand}"
+                        CommandParameter="{Binding ElementName=ContentArea}"
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="0 0 0 0"
+                        IsChecked="True"
+                        Content="SETTINGS" />
+                    <RadioButton
+                        Command="{Binding ThemeColorCommand}"
+                        CommandParameter="{Binding ElementName=ContentArea}"
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="0"
+                        FontSize="12"
+                        IsChecked="False"
+                        Content="THEME COLOR" />
+                    <RadioButton
+                        Command="{Binding AboutCommand}"
+                        CommandParameter="{Binding ElementName=ContentArea}"
+                        Style="{StaticResource MaterialDesignTabRadioButton}"
+                        Margin="0"
+                        FontSize="12"
+                        IsChecked="False"
+                        Content="ABOUT" />
                 </StackPanel>
             </materialDesign:Card>
-            <materialDesign:Card Padding="10">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
-                        <Ellipse Margin="20 0 10 0" Width="10" Height="10" VerticalAlignment="Center"  Fill="#e64a19"></Ellipse>
-                        <TextBlock Text="Items Size" FontSize="25" FontWeight="Medium" VerticalAlignment="Top" ></TextBlock>
-                    </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="20 5 0 0">
-                        <RadioButton Margin="0 0 52 0"
-                                        Content="Small" IsChecked="True"></RadioButton>
-                        <RadioButton Content="Large" ></RadioButton>
-                    </StackPanel>
-                </StackPanel>
-            </materialDesign:Card>
-            <materialDesign:Card Padding="10">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse Margin="20 0 10 0" Width="10" Height="10" VerticalAlignment="Center"  Fill="#e64a19"></Ellipse>
-                        <TextBlock Text="Sorting" FontSize="25" FontWeight="Medium" VerticalAlignment="Top" ></TextBlock>
-                    </StackPanel>
-
-                    <Label Margin="20 5 0 0" Content="Type" FontSize="20" FontWeight="Medium" ></Label>
-                    <StackPanel Orientation="Horizontal" Margin="20 5 0 0">
-                        <RadioButton Margin="0 0 20 0"
-                                Content="To Alphabet"></RadioButton>
-                        <RadioButton Content="To Create Time" IsChecked="True"></RadioButton>
-                    </StackPanel>
-                    <Label Margin="20 5 0 0" Content="Way" FontSize="20" FontWeight="Medium" ></Label>
-                    <StackPanel Orientation="Horizontal" Margin="20 5 0 0">
-                        <RadioButton Margin="0 0 27 0"
-                                Content="Ascending" IsChecked="True"></RadioButton>
-                        <RadioButton Content="Descending" ></RadioButton>
-                    </StackPanel>
-                </StackPanel>
-            </materialDesign:Card>
-        </StackPanel>
+            <ContentControl x:Name="ContentArea" Content="{Binding CurrentPageViewModel}" ></ContentControl>
             
+        </StackPanel>
+        <Button Content="Finish" Width="100" Margin="0 15" VerticalAlignment="Bottom" Command="{Binding FinishCommand,Mode=OneWay}" CommandParameter="{Binding ElementName=UserPrefsWindow}"></Button>
+
     </Grid>
 </Window>

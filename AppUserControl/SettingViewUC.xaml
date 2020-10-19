@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="Project_1.AppUserControl.SettingViewUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Project_1.AppUserControl"
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300" DataContext="{StaticResource SVM}"> 
+    <StackPanel>
+        <materialDesign:Card Padding="10">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                    <Ellipse Margin="20 0 10 0" Width="10" Height="10" VerticalAlignment="Center"  Fill="#e64a19"></Ellipse>
+                    <TextBlock Text="Splash Screen" FontSize="25" FontWeight="Medium" VerticalAlignment="Top" Width="auto"></TextBlock>
+                    <ToggleButton
+                              Margin="30 5"
+                              Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                              ToolTip="MaterialDesignSwitchToggleButton"
+                              IsChecked="False" />
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:Card>
+        <materialDesign:Card Padding="10">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                    <Ellipse Margin="20 0 10 0" Width="10" Height="10" VerticalAlignment="Center"  Fill="#e64a19"></Ellipse>
+                    <TextBlock Text="Items Size" FontSize="25" FontWeight="Medium" VerticalAlignment="Top" ></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="20 5 0 0">
+                    <RadioButton Margin="0 0 52 0"
+                                        Content="Small" IsChecked="True"></RadioButton>
+                    <RadioButton Content="Large" ></RadioButton>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:Card>
+        <materialDesign:Card Padding="10">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse Margin="20 0 10 0" Width="10" Height="10" VerticalAlignment="Center"  Fill="#e64a19"></Ellipse>
+                    <TextBlock Text="Sorting" FontSize="25" FontWeight="Medium" VerticalAlignment="Top" ></TextBlock>
+                </StackPanel>
+
+                <Label Margin="20 5 0 0" Content="Type" FontSize="20" FontWeight="Medium" ></Label>
+                <StackPanel Orientation="Horizontal" Margin="20 5 0 0">
+                    <RadioButton Margin="0 0 20 0"
+                                Content="To Alphabet"></RadioButton>
+                    <RadioButton Content="To Create Time" IsChecked="True"></RadioButton>
+                </StackPanel>
+                <Label Margin="20 5 0 0" Content="Way" FontSize="20" FontWeight="Medium" ></Label>
+                <StackPanel Orientation="Horizontal" Margin="20 5 0 0">
+                    <RadioButton Margin="0 0 27 0"
+                                Content="Ascending" IsChecked="True"></RadioButton>
+                    <RadioButton Content="Descending" ></RadioButton>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:Card>
+    </StackPanel>
+</UserControl>
