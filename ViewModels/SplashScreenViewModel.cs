@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Project_1.ViewModels
             set { _tip = value; }
         }
 
-        public ICommand ClosePermanent { get; private set; }
+        public ICommand ClosePermanent { get; set; }
 
         public SplashScreenViewModel()
         {
@@ -32,6 +33,10 @@ namespace Project_1.ViewModels
 
             ClosePermanent = new RelayCommand<object>((prop) => { return true; }, (prop) =>
             {
+                var config = ConfigurationManager.OpenExeConfiguration(
+                ConfigurationUserLevel.None);
+                config.AppSettings.Settings["ShowSplashScreen"].Value = "false";
+                config.Save(ConfigurationSaveMode.Minimal);
             });
         }
 
