@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Windows.Threading;
+
 
 namespace Project_1
 {
@@ -20,36 +21,25 @@ namespace Project_1
     /// </summary>
     public partial class SplashScreen : Window
     {
-        private const int _time_SplashScreen = 3;
-        private readonly DispatcherTimer dT;
-
-        private bool _isShow = true;
-
+        private const int Interval = 3600;
+        private readonly Timer dT = new Timer(Interval);
         public SplashScreen()
         {
             InitializeComponent();
-
-            if (_isShow == false)
+            dT.Elapsed += dt_Tick;
+            dT.Start();
+        }
+        void dt_Tick(object sender, EventArgs e)
+        {
+            dT.Dispose();
+            Dispatcher.Invoke(() =>
             {
                 MainWindow mW = new MainWindow();
                 mW.Show();
-
                 this.Close();
-            }
+            });
+            
 
-            dT = new DispatcherTimer();
-            dT.Tick += new EventHandler(dt_Tick);
-            dT.Interval = new TimeSpan(0, 0, _time_SplashScreen);
-            dT.Start();
-        }
-
-        private void dt_Tick(object sender, EventArgs e)
-        {
-            MainWindow mW = new MainWindow();
-            mW.Show();
-
-            dT.Stop();
-            this.Close();
         }
     }
 }
