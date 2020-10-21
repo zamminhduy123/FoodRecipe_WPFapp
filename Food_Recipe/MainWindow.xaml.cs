@@ -15,5 +15,10 @@ namespace Food_Recipe
             InitializeComponent();
             this.DataContext = new MainViewModel();
         }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

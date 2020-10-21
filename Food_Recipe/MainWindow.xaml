@@ -18,11 +18,15 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         
         xmlns:local="clr-namespace:Food_Recipe"
+        xmlns:model="clr-namespace:Food_Recipe.Model"
         mc:Ignorable="d"
         DataContext="{StaticResource MainVM}"
         Title="Food Recipe" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
+
+        <model:AbsoluteConverter x:Key="converter"  />
+
         <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -197,11 +201,11 @@
                         <Border.Background>
                             <ImageBrush 
                                    Stretch="UniformToFill"
-                                   ImageSource="Images/hamburger.jpeg"/>
+                                   ImageSource="{Binding SelectedRecipe.AvatarSource, Converter={StaticResource converter}}"/>
                         </Border.Background>
                     </Border>
                     <Border Width="400" Margin="10" BorderThickness="2" BorderBrush="#e64a19" Visibility="{Binding VideoVisibility}">
-                        <Cef:CefYoutubeController x:Name="Player" VideoId="{Binding VideoId}" AutoPlay="False" />
+                        <Cef:CefYoutubeController x:Name="Player" VideoId="{Binding SelectedRecipe.YoutubeSource}" AutoPlay="False" />
                         <Border.Effect>
                             <DropShadowEffect ShadowDepth="5"/>
                         </Border.Effect>
@@ -210,14 +214,14 @@
                 <StackPanel DockPanel.Dock="Right"
                             Margin="0 10 5 10">
                     <TextBlock x:Name="recipeNameTextBlock"
-                               Text="Sample Name"
+                               Text="{Binding SelectedRecipe.Name}"
                                TextAlignment="Center"
                                FontStyle="Italic"
                                FontSize="25"
                                FontWeight="ExtraBold"
                                ></TextBlock>
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="200">
-                        <ListView  ItemsSource="{Binding Ingredients}" Height="200">
+                        <ListView  ItemsSource="{Binding SelectedRecipe.Ingredients}" Height="200" SelectionChanged="ListView_SelectionChanged">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="235">
@@ -390,7 +394,7 @@
         </Grid>
 
 
-        <ItemsControl x:Name="recipesListView" ItemsSource="{Binding Recipes}" Grid.ZIndex ="1" VerticalAlignment="Bottom" Grid.Column="1" Height="490" Margin="20 0 20 50">
+        <ItemsControl x:Name="recipesListView" ItemsSource="{Binding RecipesPerPage}" Grid.ZIndex ="1" VerticalAlignment="Bottom" Grid.Column="1" Height="490" Margin="20 0 20 50">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Background="{x:Null}" BorderBrush="{x:Null}"       Padding="0" Margin="15 3 15 0" Width="180" Height="160">
@@ -405,7 +409,7 @@
                                             <DropShadowEffect ShadowDepth="1"/>
                                         </Border.Effect>
                                         <Border.Background>
-                                            <ImageBrush ImageSource="{Binding Image}"/>
+                                            <ImageBrush ImageSource="{Binding AvatarSource, Converter={StaticResource converter}}"/>
                                         </Border.Background>
                                     </Border>
                                     <TextBlock Margin="5 0" Text="{Binding Name}" FontSize="20" FontWeight="Heavy" Foreground="Black"/>

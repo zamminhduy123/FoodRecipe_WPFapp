@@ -29,6 +29,19 @@ namespace Food_Recipe.ViewModels
 
         public static bool IsShowed = false;
 
+        private ObservableCollection<Recipe> _recipes;
+        public ObservableCollection<Recipe> Recipes { get => _recipes; set { _recipes = value; OnPropertyChanged(); } }
+
+        private int _recipesPage;
+        public int RecipesPage { get => _recipesPage; set { _recipesPage = value; OnPropertyChanged(); } }
+
+        private ObservableCollection<Recipe> _recipesPerPage;
+        public ObservableCollection<Recipe> RecipesPerPage { get => _recipesPerPage; set { _recipesPerPage = value; OnPropertyChanged(); } }
+
+        private Recipe _selectedRecipe;
+        public Recipe SelectedRecipe { get => _selectedRecipe; set { _selectedRecipe = value; OnPropertyChanged(); } }
+
+
         public ICommand AllRecipeCommand { get; set; }
         public ICommand FavoriteCommand { get; set; }
         public ICommand NewRecipeCommand { get; set; }
@@ -57,14 +70,15 @@ namespace Food_Recipe.ViewModels
 
         public String VideoId { get => _videoID; set { _videoID = value; OnPropertyChanged(); } }
 
-
-
-        public List<Ingredient> Ingredients { get => _ingredients; set { _ingredients = value; OnPropertyChanged(); } }
         public MainViewModel()
         {
             if (_isLoaded)
             {
                 _isLoaded = true;
+                SelectedRecipe = DataProvider.Ins.DB.Recipes.ToList()[1];
+                Recipes = new ObservableCollection<Recipe>(DataProvider.Ins.DB.Recipes.ToList());
+                RecipesPage = 2;
+                LoadRecipesPerPage(6);
             }
 
             //set the command
@@ -140,7 +154,14 @@ namespace Food_Recipe.ViewModels
             }
         }
 
-
+        private void LoadRecipesPerPage(int MaxRecipesPerPage)
+        {
+            RecipesPerPage = new ObservableCollection<Recipe>();
+            for (int i = 0; i < MaxRecipesPerPage && ((RecipesPage - 1) * MaxRecipesPerPage + i) < Recipes.Count; i++)
+            {
+                RecipesPerPage.Add(Recipes[(RecipesPage - 1) * MaxRecipesPerPage + i]);
+            }
+        }
         /**
          * handle setting click. Change background visibility
          * @param none
@@ -163,7 +184,7 @@ namespace Food_Recipe.ViewModels
         //    public string Name { get; set; }
         //    public string Quantity { get; set; }
 
-        //    public Ingredient(string a,string b) 
+        //    public Ingredient(string a, string b)
         //    {
         //        Name = a;
         //        Quantity = b;
@@ -209,37 +230,37 @@ namespace Food_Recipe.ViewModels
         //    }
         //}
 
-        
-            //private  string GetYouTubeVideoPlayerHTML(string videoCode)
-            //{
-            //    var sb = new StringBuilder();
 
-            //    const string YOUTUBE_URL = @"http://www.youtube.com/v/";
+        //private  string GetYouTubeVideoPlayerHTML(string videoCode)
+        //{
+        //    var sb = new StringBuilder();
 
-            //    sb.Append("<html>");
-            //    sb.Append("    <head>");
-            //    sb.Append("        <meta name=\"viewport\" content=\"width=device-width; height=device-height;\">");
-            //    sb.Append("    </head>");
-            //    sb.Append("    <body marginheight=\"0\" marginwidth=\"0\" leftmargin=\"0\" topmargin=\"0\" style=\"overflow-y: hidden\">");
-            //    sb.Append("        <object width=\"100%\" height=\"100%\">");
-            //    sb.Append("            <param name=\"movie\" value=\"" + YOUTUBE_URL + videoCode + "?version=3&amp;rel=0\" />");
-            //    sb.Append("            <param name=\"allowFullScreen\" value=\"true\" />");
-            //    sb.Append("            <param name=\"allowscriptaccess\" value=\"always\" />");
-            //    sb.Append("            <embed src=\"" + YOUTUBE_URL + videoCode + "?version=3&amp;rel=0\" type=\"application/x-shockwave-flash\"");
-            //    sb.Append("                   width=\"100%\" height=\"100%\" allowscriptaccess=\"always\" allowfullscreen=\"true\" />");
-            //    sb.Append("        </object>");
-            //    sb.Append("    </body>");
-            //    sb.Append("</html>");
+        //    const string YOUTUBE_URL = @"http://www.youtube.com/v/";
 
-            //    return sb.ToString();
-            //}
+        //    sb.Append("<html>");
+        //    sb.Append("    <head>");
+        //    sb.Append("        <meta name=\"viewport\" content=\"width=device-width; height=device-height;\">");
+        //    sb.Append("    </head>");
+        //    sb.Append("    <body marginheight=\"0\" marginwidth=\"0\" leftmargin=\"0\" topmargin=\"0\" style=\"overflow-y: hidden\">");
+        //    sb.Append("        <object width=\"100%\" height=\"100%\">");
+        //    sb.Append("            <param name=\"movie\" value=\"" + YOUTUBE_URL + videoCode + "?version=3&amp;rel=0\" />");
+        //    sb.Append("            <param name=\"allowFullScreen\" value=\"true\" />");
+        //    sb.Append("            <param name=\"allowscriptaccess\" value=\"always\" />");
+        //    sb.Append("            <embed src=\"" + YOUTUBE_URL + videoCode + "?version=3&amp;rel=0\" type=\"application/x-shockwave-flash\"");
+        //    sb.Append("                   width=\"100%\" height=\"100%\" allowscriptaccess=\"always\" allowfullscreen=\"true\" />");
+        //    sb.Append("        </object>");
+        //    sb.Append("    </body>");
+        //    sb.Append("</html>");
 
-            //public  void ShowYouTubeVideo(this WebBrowser webBrowser, string videoCode)
-            //{
-            //    if (webBrowser == null) throw new ArgumentNullException("webBrowser");
+        //    return sb.ToString();
+        //}
 
-            //    webBrowser.NavigateToString(GetYouTubeVideoPlayerHTML(videoCode));
-            //}
-        
+        //public  void ShowYouTubeVideo(this WebBrowser webBrowser, string videoCode)
+        //{
+        //    if (webBrowser == null) throw new ArgumentNullException("webBrowser");
+
+        //    webBrowser.NavigateToString(GetYouTubeVideoPlayerHTML(videoCode));
+        //}
+
     }
 }
