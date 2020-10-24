@@ -201,11 +201,11 @@
                         <Border.Background>
                             <ImageBrush 
                                    Stretch="UniformToFill"
-                                   ImageSource="{Binding SelectedRecipe.AvatarSource, Converter={StaticResource converter}}"/>
+                                   ImageSource="{Binding ShowRecipe.AvatarSource, Converter={StaticResource converter}}"/>
                         </Border.Background>
                     </Border>
                     <Border Width="400" Margin="10" BorderThickness="2" BorderBrush="#e64a19" Visibility="{Binding VideoVisibility}">
-                        <Cef:CefYoutubeController x:Name="Player" VideoId="{Binding SelectedRecipe.YoutubeSource}" AutoPlay="False" />
+                        <Cef:CefYoutubeController x:Name="Player" VideoId="{Binding ShowRecipe.YoutubeSource}" AutoPlay="False" />
                         <Border.Effect>
                             <DropShadowEffect ShadowDepth="5"/>
                         </Border.Effect>
@@ -214,14 +214,14 @@
                 <StackPanel DockPanel.Dock="Right"
                             Margin="0 10 5 10">
                     <TextBlock x:Name="recipeNameTextBlock"
-                               Text="{Binding SelectedRecipe.Name}"
+                               Text="{Binding ShowRecipe.Name}"
                                TextAlignment="Center"
                                FontStyle="Italic"
                                FontSize="25"
                                FontWeight="ExtraBold"
                                ></TextBlock>
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="200">
-                        <ListView  ItemsSource="{Binding SelectedRecipe.Ingredients}" Height="200" SelectionChanged="ListView_SelectionChanged">
+                        <ListView  ItemsSource="{Binding ShowRecipe.Ingredients}" Height="200" SelectionChanged="ListView_SelectionChanged">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="235">
@@ -272,7 +272,7 @@
                         <Border.Background>
                             <ImageBrush x:Name="stepImage"
                                    Stretch="UniformToFill"
-                                   ImageSource="Images/hamburger.jpeg"/>
+                                   ImageSource="{Binding NowImageStep.ImageSource , Converter={StaticResource converter}}"/>
                         </Border.Background>
                     </Border>
                     <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImgStepCommand}">
@@ -280,14 +280,18 @@
                     </Button>
                 </StackPanel>
                 <StackPanel Margin="10">
-                    <TextBlock  FontSize="25" Text="Steps"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock  FontSize="25" Text="Step "
                                FontWeight="Bold"
                                HorizontalAlignment="Center"></TextBlock>
-
+                        <TextBlock  FontSize="25" Text="{Binding NowStep.OrderNumber}"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
                     <TextBlock Margin="0 10 0 0" x:Name="stepContent" TextWrapping="Wrap" Height="180 " Width="260"
                                    FontSize="18"
                                    FontWeight="DemiBold"
-                                   Text="{Binding StepContent}"></TextBlock>
+                                   Text="{Binding NowStep.Content}"></TextBlock>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevStepCommand}">
                             <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
@@ -295,7 +299,7 @@
                         <Border CornerRadius="10"  Background="#e64a19" Width="100">
                             <TextBlock x:Name="stepOrder" FontWeight="Bold" FontSize="20"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Text="2/10"
+                                   Text="{Binding IndexStep}"
                                    ></TextBlock>
                         </Border>
                         <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextStepCommand}">
@@ -360,9 +364,9 @@
             </Button>
         </StackPanel>
 
-        <Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}">
+        <!--<Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}">
 
-        </Rectangle>
+        </Rectangle>-->
         <Grid x:Name="settingGrid" Width="250" Grid.Column="1" Margin="750 0 0 0" HorizontalAlignment="Right"  Background="white" RenderTransformOrigin="0.5,0.5" Grid.ZIndex ="9999">
             <Grid.RenderTransform>
                 <TransformGroup>
@@ -397,7 +401,7 @@
         <ItemsControl x:Name="recipesListView" ItemsSource="{Binding RecipesPerPage}" Grid.ZIndex ="1" VerticalAlignment="Bottom" Grid.Column="1" Height="490" Margin="20 0 20 50">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Background="{x:Null}" BorderBrush="{x:Null}"       Padding="0" Margin="15 3 15 0" Width="180" Height="160">
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}"       Padding="0" Margin="15 3 15 0" Width="180" Height="160" Command="{Binding ElementName=recipesListView,Path=DataContext.ClickItemCommand}" CommandParameter="{Binding}">
                         <Border  Width="170" Height="150" Background="WhiteSmoke" CornerRadius="5">
                             <Border.Effect>
                                 <DropShadowEffect ShadowDepth="2"></DropShadowEffect>
@@ -419,11 +423,11 @@
                                                 VerticalAlignment="Bottom"
                                                 Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}"
                                                 ToolTip="MaterialDesignFlatPrimaryToggleButton"
-                                                IsChecked="False"
+                                                IsChecked="{Binding IsFavorite}"
                                                 Width="30"
                                                 Height="30"
                                                 Margin="2"
-                                            Background="#79b700">
+                                            Background="#79b700" Command="{Binding ElementName=recipesListView,Path=DataContext.FavoriteChanged}">
                                     <materialDesign:PackIcon
                                                     Kind="Heart"
                                                     Height="21"
@@ -443,16 +447,16 @@
         </ItemsControl>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" VerticalAlignment="Bottom" Margin="0 0 0 10">
-            <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextListCommand}">
+            <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevListCommand}">
                 <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
             </Button>
             <Border CornerRadius="10"  Background="#e64a19" Width="200">
                 <TextBlock x:Name="itemPage" FontWeight="Bold" FontSize="20"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Text="2/10"
+                                   Text="{Binding IndexRecipes}"
                                    ></TextBlock>
             </Border>
-            <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevListCommand}" >
+            <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextListCommand}" >
                 <Image Source="/Images/baseline_arrow_forward_ios_black_48dp.png" />
             </Button>
         </StackPanel>
