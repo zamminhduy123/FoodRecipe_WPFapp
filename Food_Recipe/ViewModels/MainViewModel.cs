@@ -141,6 +141,7 @@ namespace Food_Recipe.ViewModels
                 IsFavoriteRecipes = false;
                 LoadRecipes(IsFavoriteRecipes);
                 RecipesPage = 1;
+                ShowRecipe = Recipes[MyRandom.Ins.Next(Recipes.Count)];
             }
 
             //set the command
@@ -421,6 +422,35 @@ namespace Food_Recipe.ViewModels
                 }
             }
             return result;
+        }
+
+        class MyRandom
+        {
+            private static MyRandom _ins = null;
+            private Random _rng;
+
+            public static MyRandom Ins
+            {
+                get
+                {
+                    if (_ins == null)
+                    {
+                        _ins = new MyRandom();
+                    }
+                    return _ins;
+                }
+            }
+
+            public int Next(int ceiling)
+            {
+                int value = _rng.Next(ceiling);
+                return value;
+            }
+
+            private MyRandom()
+            {
+                _rng = new Random();
+            }
         }
 
 
