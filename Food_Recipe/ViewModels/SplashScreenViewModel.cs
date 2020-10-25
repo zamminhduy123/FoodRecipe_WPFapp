@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Food_Recipe.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -43,7 +44,7 @@ namespace Food_Recipe.ViewModels
         #endregion
         public SplashScreenViewModel()
         {
-            Tip = "Bạn có thể đổ rượu vang uống không hết vào khay và làm đông, đợi đến khi nấu các món soup hoặc hấp sẽ mang ra dùng.";
+            Tip = DataProvider.Ins.DB.Tips.ToList()[MyRandom.Ins.Next(DataProvider.Ins.DB.Tips.Count())].Content;
 
             ClosePermanent = new RelayCommand<object>((prop) => { return true; }, (prop) =>
             {
@@ -51,6 +52,8 @@ namespace Food_Recipe.ViewModels
                 ConfigurationUserLevel.None);
                 config.AppSettings.Settings["ShowSplashScreen"].Value = "false";
                 config.Save(ConfigurationSaveMode.Minimal);
+
+                ConfigurationManager.RefreshSection("appSettings");
             });
 
             LoadedWindowCommand = new RelayCommand<Window>((prop) => { return true; }, (splash) =>

@@ -26,7 +26,7 @@
                               Margin="30 5"
                               Style="{StaticResource MaterialDesignSwitchToggleButton}"
                               ToolTip="MaterialDesignSwitchToggleButton"
-                              IsChecked="False" />
+                              IsChecked="{Binding IsShowSplash}" Command="{Binding IsShowSplashCommand}" />
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>
@@ -39,8 +39,8 @@
 
                 <StackPanel Orientation="Horizontal" Margin="20 5 0 0">
                     <RadioButton Margin="0 0 52 0"
-                                        Content="Small" IsChecked="True"></RadioButton>
-                    <RadioButton Content="Large" ></RadioButton>
+                                        Content="Small" IsChecked="{Binding IsSmall}" Command="{Binding SizeCommand}" CommandParameter="true"></RadioButton>
+                    <RadioButton Content="Large" IsChecked="{Binding IsLarge}" Command="{Binding SizeCommand}" CommandParameter="false"></RadioButton>
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>
@@ -54,14 +54,14 @@
                 <Label Margin="20 5 0 0" Content="Type" FontSize="20" FontWeight="Medium" ></Label>
                 <StackPanel Orientation="Horizontal" Margin="20 5 0 0">
                     <RadioButton Margin="0 0 20 0"
-                                Content="To Alphabet"></RadioButton>
-                    <RadioButton Content="To Create Time" IsChecked="True"></RadioButton>
+                                Content="To Alphabet" IsChecked="{Binding IsAlphabetSort}" Command="{Binding TypeSortCommand}" CommandParameter="alphabet"></RadioButton>
+                    <RadioButton Content="To Create Time" IsChecked="{Binding IsTimeSort}" Command="{Binding TypeSortCommand}" CommandParameter="time"></RadioButton>
                 </StackPanel>
                 <Label Margin="20 5 0 0" Content="Way" FontSize="20" FontWeight="Medium" ></Label>
                 <StackPanel Orientation="Horizontal" Margin="20 5 0 0">
                     <RadioButton Margin="0 0 27 0"
-                                Content="Ascending" IsChecked="True"></RadioButton>
-                    <RadioButton Content="Descending" ></RadioButton>
+                                Content="Ascending" IsChecked="{Binding IsIncreaseSort}" Command="{Binding WaySortCommand}" CommandParameter="true"></RadioButton>
+                    <RadioButton Content="Descending" IsChecked="{Binding IsDecreaseSort}" Command="{Binding WaySortCommand}" CommandParameter="false"></RadioButton>
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>

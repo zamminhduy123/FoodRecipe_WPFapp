@@ -29,7 +29,6 @@ namespace Food_Recipe.ViewModels
         private bool _isLoaded = true;
         private Uri _videoSource = new Uri("https://www.google.com");
         private String _videoID = "9i4SKHbhbqk";
-        private bool _isFavorite = false;
         #endregion
 
         public static bool IsShowed = false;
@@ -424,34 +423,7 @@ namespace Food_Recipe.ViewModels
             return result;
         }
 
-        class MyRandom
-        {
-            private static MyRandom _ins = null;
-            private Random _rng;
-
-            public static MyRandom Ins
-            {
-                get
-                {
-                    if (_ins == null)
-                    {
-                        _ins = new MyRandom();
-                    }
-                    return _ins;
-                }
-            }
-
-            public int Next(int ceiling)
-            {
-                int value = _rng.Next(ceiling);
-                return value;
-            }
-
-            private MyRandom()
-            {
-                _rng = new Random();
-            }
-        }
+        
 
 
         ////class for testing

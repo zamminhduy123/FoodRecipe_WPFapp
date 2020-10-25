@@ -19,6 +19,10 @@ namespace Food_Recipe.ViewModels
         #endregion
 
         #region Properties, Command
+
+        private bool _isShowSplash;
+        public bool IsShowSplash { get => _isShowSplash; set { _isShowSplash = value; OnPropertyChanged(); } }
+
         public ICommand FinishCommand { get; private set; }
         public ICommand SettingsCommand { get;  set; }
         public ICommand ThemeColorCommand { get; set; }
