@@ -21,6 +21,11 @@
         Title="SplashScreen" Height="600" Width="900" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" WindowStyle="None" 
         Name="SplashScreenWindow">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="themeColor"
+                      ObjectType="{x:Type local:Global}"
+                      MethodName="GetInstance" />
+    </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedWindowCommand}" CommandParameter="{Binding ElementName=SplashScreenWindow}"></i:InvokeCommandAction>
@@ -42,6 +47,8 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock FontSize="15" FontWeight="Medium" Foreground="White" Text="Không hiện cửa sổ này lần sau" Margin="12,18,5,16"/>
                 <ToggleButton
+                    Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
+                    BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                     Name="IsCloseSplashScreen"
                     IsChecked="False"
                     Command="{Binding ClosePermanent}"
@@ -57,7 +64,7 @@
 
             </StackPanel>
         </Border>
-        <ProgressBar x:Name ="timeProgessBar" Height="10" VerticalAlignment="Bottom" Width="300" Margin="0,0,0,130" Value="{Binding ProgressBarValue}" Maximum="3000" Minimum="0" Background="White" BorderBrush="Black" >
+        <ProgressBar x:Name ="timeProgessBar" Height="10" VerticalAlignment="Bottom" Width="300" Margin="0,0,0,130" Value="{Binding ProgressBarValue}" Maximum="3000" Minimum="0" Background="White" BorderBrush="Black" Foreground="{Binding Source={StaticResource themeColor},Path=ThemeColor}" >
             <ProgressBar.Effect>
                 <DropShadowEffect BlurRadius="10" ShadowDepth="5"></DropShadowEffect>
             </ProgressBar.Effect>

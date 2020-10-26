@@ -160,6 +160,7 @@
     <Compile Include="AppUserControl\ThemeViewUC.xaml.cs">
       <DependentUpon>ThemeViewUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Global.cs" />
     <Compile Include="Model\Converter.cs" />
     <Compile Include="Model\DataProvider.cs" />
     <Compile Include="Model\Image.cs">

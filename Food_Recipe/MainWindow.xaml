@@ -24,7 +24,9 @@
         Title="Food Recipe" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-
+        <ObjectDataProvider x:Key="themeColor"
+                      ObjectType="{x:Type local:Global}"
+                      MethodName="GetInstance" />
         <model:AbsoluteConverter x:Key="converter"  />
 
         <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
@@ -36,7 +38,7 @@
                                            Height="Auto" Fill="Transparent"/>
                             <Border x:Name="Rectangle1" CornerRadius="5" HorizontalAlignment="Stretch" 
                                         VerticalAlignment="Stretch" Width="Auto" Height="Auto" 
-                                        Background="#e64a19"/>
+                                        Background ="{Binding Source={StaticResource themeColor},Path=ThemeColor}"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="Tag" Value="Horizontal">
@@ -204,7 +206,7 @@
                                    ImageSource="{Binding ShowRecipe.AvatarSource, Converter={StaticResource converter}}"/>
                         </Border.Background>
                     </Border>
-                    <Border Width="400" Margin="10" BorderThickness="2" BorderBrush="#e64a19" Visibility="{Binding VideoVisibility}">
+                    <Border Width="400" Margin="10" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Visibility="{Binding VideoVisibility}">
                         <Cef:CefYoutubeController x:Name="Player" VideoId="{Binding ShowRecipe.YoutubeSource}" AutoPlay="False" />
                         <Border.Effect>
                             <DropShadowEffect ShadowDepth="5"/>
@@ -217,31 +219,30 @@
                                Text="{Binding ShowRecipe.Name}"
                                TextAlignment="Center"
                                FontStyle="Italic"
-                               FontSize="25"
-                               FontWeight="ExtraBold"
+                               FontSize="19"
+                               FontWeight="Bold"
                                ></TextBlock>
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="200">
-                        <ListView  ItemsSource="{Binding ShowRecipe.Ingredients}" Height="200" SelectionChanged="ListView_SelectionChanged">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="240" Width="280">
+                        <ListView  ItemsSource="{Binding ShowRecipe.Ingredients}" Height="235" Width="260" HorizontalAlignment="Left" SelectionChanged="ListView_SelectionChanged">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Width="235">
-                                        <StackPanel Orientation="Horizontal">
+                                    <Grid Width="225">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                             <Ellipse Width="5"
                                                  Height="5"
                                                  StrokeThickness="1"
-                                                 HorizontalAlignment="Left"
                                                  VerticalAlignment="Center"
                                                  Fill="Black"
                                                  Margin="5 0"></Ellipse>
                                             <TextBlock HorizontalAlignment="Left"
                                                    Text="{Binding Name}"
-                                                   FontSize="20"
-                                                   FontWeight="Bold"></TextBlock>
+                                                   FontSize="15"
+                                                   FontWeight="Medium"></TextBlock>
                                         </StackPanel>
                                         <TextBlock 
                                                HorizontalAlignment="Right"
                                                Text="{Binding Quantity}"
-                                               FontSize="20"
+                                               FontSize="10"
                                                VerticalAlignment="Center"
                                                FontWeight="Light"></TextBlock>
                                     </Grid>
@@ -250,8 +251,7 @@
                         </ListView>
                     </ScrollViewer>
 
-                    <Button Margin="10 20" Content="Watch Video" Width="150" Command="{Binding WatchVideoCommand}" CommandParameter="{Binding ElementName=Start}"></Button>
-                    <Button Margin="10 20" x:Name="Start" Command="{Binding StartCommand,ElementName=Player}" Width="150" Visibility="Hidden"></Button>
+                    <Button Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" BorderBrush="{x:Null}" Margin="0 0" Content="Watch Video" Width="150" Command="{Binding WatchVideoCommand}"></Button>
                     
                 </StackPanel>
 
@@ -296,7 +296,7 @@
                         <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevStepCommand}">
                             <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
                         </Button>
-                        <Border CornerRadius="10"  Background="#e64a19" Width="100">
+                        <Border CornerRadius="10" Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Width="100">
                             <TextBlock x:Name="stepOrder" FontWeight="Bold" FontSize="20"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Text="{Binding IndexStep}"
@@ -320,12 +320,14 @@
             <StackPanel Margin="20 20 0 0"
                         Orientation="Horizontal">
                 <RadioButton
+                    BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                     Command="{Binding AllRecipeCommand}"
                     Style="{StaticResource MaterialDesignTabRadioButton}"
                     Margin="4"
                     IsChecked="True"
                     Content="ALL RECIPE" />
                 <RadioButton
+                    BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                     Command="{Binding FavoriteCommand}"
                     Style="{StaticResource MaterialDesignTabRadioButton}"
                     Margin="4"
@@ -416,9 +418,10 @@
                                             <ImageBrush ImageSource="{Binding AvatarSource, Converter={StaticResource converter}}"/>
                                         </Border.Background>
                                     </Border>
-                                    <TextBlock Margin="5 0" Text="{Binding Name}" FontSize="20" FontWeight="Heavy" Foreground="Black"/>
+                                    <TextBlock Margin="5 0" Text="{Binding Name}" FontSize="15" FontWeight="Medium" Foreground="Black"/>
                                 </StackPanel>
                                 <ToggleButton
+                                          
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Bottom"
                                                 Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}"
@@ -432,7 +435,7 @@
                                                     Kind="Heart"
                                                     Height="21"
                                                     Width="21" 
-                                                    Foreground  ="#E64A19"/>
+                                                    Foreground ="{Binding Source={StaticResource themeColor},Path=ThemeColor}"/>
                                 </ToggleButton>
                             </Grid>
                         </Border>
@@ -450,7 +453,7 @@
             <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevListCommand}">
                 <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
             </Button>
-            <Border CornerRadius="10"  Background="#e64a19" Width="200">
+            <Border CornerRadius="10"  Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Width="200">
                 <TextBlock x:Name="itemPage" FontWeight="Bold" FontSize="20"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Text="{Binding IndexRecipes}"

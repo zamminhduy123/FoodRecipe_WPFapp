@@ -17,6 +17,11 @@
         mc:Ignorable="d"
        
         Title="NewRecipeWindow" Height="450" Width="800">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="themeColor"
+                      ObjectType="{x:Type local:Global}"
+                      MethodName="GetInstance" />
+    </Window.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -56,11 +61,12 @@
 
             <StackPanel VerticalAlignment="Center" Margin="0,201,0,18" Height="200">
                 <TextBlock TextAlignment="Center" Text="Avatar Image" FontWeight="Medium"></TextBlock>
-                <Border Width="auto" Height="148" Margin="10 0 " BorderThickness="2" BorderBrush="#E64A19" CornerRadius="10" >
+                <Border Width="auto" Height="148" Margin="10 0 " BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" CornerRadius="10" >
                     <StackPanel>
                         <Image Width="auto" Height="100"
                                Margin="5"></Image>
                         <Button Command="{Binding AddAvatarImage}"
+                                BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                             VerticalAlignment="Bottom" Margin="5" Background="#CACACA" Width="150">
                             <TextBlock Text="Add an image" Foreground="Black"></TextBlock>
                         </Button>
@@ -93,6 +99,8 @@
             </Button>
 
             <Button
+                Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
+                BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                   Command="{Binding DeleteIngredient}"
                   Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                   ToolTip="MaterialDesignFloatingActionMiniDarkButton" Margin="72,160,20,219">
@@ -102,7 +110,7 @@
                         Width="24" />
             </Button>
 
-            <Border Width="auto" Height="148" Margin="10,216,10,55" BorderThickness="2" BorderBrush="#E64A19" CornerRadius="10" >
+            <Border Width="auto" Height="148" Margin="10,216,10,55" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" CornerRadius="10" >
                 <ListView>
                     <ListViewItem>
 
@@ -140,7 +148,7 @@
 
             </TextBox>
 
-            <Border Height="148" Margin="10,211,218,60" BorderThickness="2" BorderBrush="#E64A19" CornerRadius="10" >
+            <Border Height="148" Margin="10,211,218,60" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" CornerRadius="10" >
                 <StackPanel>
                     <ListView Height="100" materialDesign:ScrollBarAssist.ButtonsVisibility="Visible">
                         <ListView.ItemTemplate>
@@ -161,7 +169,8 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Button Command="{Binding AddStepImage}" 
+                    <Button Command="{Binding AddStepImage}"
+                            BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                         VerticalAlignment="Bottom" Margin="5" Background="#CACACA" Width="125">
                         <TextBlock Text="Add an image" Foreground="Black"></TextBlock>
                     </Button>
@@ -170,7 +179,7 @@
 
             <TextBlock Text="Steps visualization" FontSize="20" Margin="196,55,0,314" FontWeight="Medium" Width="200" Height="50"/>
 
-            <Border Margin="183,78,10,60" BorderThickness="2" BorderBrush="#E64A19" CornerRadius="10" >
+            <Border Margin="183,78,10,60" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" CornerRadius="10" >
                 <ListView>
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -196,6 +205,8 @@
         <Grid
             Width="124" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Margin="0 10">
             <Button
+                BorderBrush="{x:Null}"
+                Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                     Command="{Binding Finish}"
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     Height="35"

@@ -54,6 +54,8 @@ namespace Food_Recipe.ViewModels
         public ICommand TypeSortCommand { get; set; }
         public ICommand WaySortCommand { get; set; }
 
+        public Global themeColor = Global.GetInstance();
+
         public SettingViewModel()
         {
             var value = ConfigurationManager.AppSettings["ShowSplashScreen"];

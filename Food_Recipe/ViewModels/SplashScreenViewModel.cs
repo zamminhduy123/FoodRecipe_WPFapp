@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Food_Recipe.ViewModels
             set { _tip = value; }
         }
 
-
+        public Global globalTheme = Global.GetInstance();
 
         public ICommand ClosePermanent { get; set; }
         public ICommand LoadedWindowCommand { get; set; }
@@ -44,6 +45,7 @@ namespace Food_Recipe.ViewModels
         #endregion
         public SplashScreenViewModel()
         {
+            globalTheme.ThemeColor = "#FFa500";
             Tip = DataProvider.Ins.DB.Tips.ToList()[MyRandom.Ins.Next(DataProvider.Ins.DB.Tips.Count())].Content;
 
             ClosePermanent = new RelayCommand<object>((prop) => { return true; }, (prop) =>
@@ -58,6 +60,7 @@ namespace Food_Recipe.ViewModels
 
             LoadedWindowCommand = new RelayCommand<Window>((prop) => { return true; }, (splash) =>
             {
+                
                 splash.Hide();
                 var value = ConfigurationManager.AppSettings["ShowSplashScreen"];
                 bool showSplash = bool.Parse(value);

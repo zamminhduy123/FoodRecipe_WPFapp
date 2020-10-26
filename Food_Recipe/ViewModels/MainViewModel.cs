@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -131,6 +132,8 @@ namespace Food_Recipe.ViewModels
 
         public String VideoId { get => _videoID; set { _videoID = value; OnPropertyChanged(); } }
 
+        public Global themeColor = Global.GetInstance();
+
         public MainViewModel()
         {
             if (_isLoaded)
@@ -142,7 +145,7 @@ namespace Food_Recipe.ViewModels
                 RecipesPage = 1;
                 ShowRecipe = Recipes[MyRandom.Ins.Next(Recipes.Count)];
             }
-
+            
             //set the command
             AllRecipeCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
             {

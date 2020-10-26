@@ -19,23 +19,25 @@
              d:DesignHeight="450" d:DesignWidth="300">
     <Grid Background="white"  Width="300" Height="350" VerticalAlignment="Top">
         <materialDesign:Card Padding="0 5">
-            <ItemsControl ItemsSource="{Binding Colors}" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <ItemsControl x:Name="colorList" ItemsSource="{Binding Colors}" VerticalAlignment="Top" HorizontalAlignment="Center">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="{Binding}" BorderBrush="{Binding}" BorderThickness="1" Margin="10 5" Width="50" Height="50">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="10" ShadowDepth="2"></DropShadowEffect>
-                            </Border.Effect>
-                            <Border.Style>
-                                <Style TargetType="Border"> 
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property ="CornerRadius" Value="10"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                        </Border>
+                        <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0"  Margin="10 5" Width="50" Height="50" Command="{Binding ElementName=colorList,Path=DataContext.ThemeButtonCommand}" CommandParameter="{Binding}">
+                            <Button.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="5"></DropShadowEffect>
+                            </Button.Effect>
+                            <Border x:Name="colorBorder" Background="{Binding}" BorderBrush="{Binding}" BorderThickness="1"  Width="50" Height="50" CornerRadius="5">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property ="CornerRadius" Value="10"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
