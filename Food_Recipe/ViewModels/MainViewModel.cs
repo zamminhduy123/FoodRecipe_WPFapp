@@ -20,7 +20,7 @@ namespace Food_Recipe.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private const int _smallItem = 6;
-        private const int _largeItem = 12;
+        private const int _largeItem = 9;
 
         #region private 
         private Visibility _isSettingBackgroundVisible = Visibility.Hidden;
@@ -301,11 +301,11 @@ namespace Food_Recipe.ViewModels
 
         private void LoadRecipesPerPage(int MaxRecipesPerPage)
         {
-            RecipesPerPage = new ObservableCollection<Recipe>();
-            for (int i = 0; i < MaxRecipesPerPage && ((_recipesPage - 1) * MaxRecipesPerPage + i) < Recipes.Count; i++)
-            {
-                RecipesPerPage.Add(Recipes[(_recipesPage - 1) * MaxRecipesPerPage + i]);
-            }
+            RecipesPerPage = new ObservableCollection<Recipe>(Recipes.Skip(MaxRecipesPerPage*(RecipesPage - 1)).Take(MaxRecipesPerPage));
+            //for (int i = 0; i < MaxRecipesPerPage && ((_recipesPage - 1) * MaxRecipesPerPage + i) < Recipes.Count; i++)
+            //{
+            //    RecipesPerPage.Add(Recipes[(_recipesPage - 1) * MaxRecipesPerPage + i]);
+            //}
         }
         /**
          * handle setting click. Change background visibility
@@ -350,81 +350,31 @@ namespace Food_Recipe.ViewModels
                 Recipes = new ObservableCollection<Recipe>(DataProvider.Ins.DB.Recipes.ToList());
             }
 
-            if (SortingType == "time")
+            if (IsIncrease == true)
             {
-                for (int i = 0; i < Recipes.Count - 1; i++)
+                if (SortingType == "time")
                 {
-                    for (int j = i + 1; j < Recipes.Count; j++)
-                    {
-                        if (Recipes[i].CreatedTime > Recipes[j].CreatedTime)
-                        {
-                            Recipe tmp = Recipes[i];
-                            Recipes[i] = Recipes[j];
-                            Recipes[j] = tmp;
-                        }
-                    }
+                    Recipes = new ObservableCollection<Recipe>(Recipes.OrderBy(x => x.CreatedTime));
                 }
-            }
-            else if (SortingType == "alphabet")
-            {
-                for (int i = 0; i < Recipes.Count - 1; i++)
+                else if (SortingType == "alphabet")
                 {
-                    for (int j = i + 1; j < Recipes.Count; j++)
-                    {
-                        if (StringCompare(Recipes[i].Name, Recipes[j].Name) == 1)
-                        {
-                            Recipe tmp = Recipes[i];
-                            Recipes[i] = Recipes[j];
-                            Recipes[j] = tmp;
-                        }
-                    }
+                    Recipes = new ObservableCollection<Recipe>(Recipes.OrderBy(x => x.Name));
                 }
-            }
-
-            if (IsIncrease == false)
-            {
-                for (int i = 0; i < Recipes.Count / 2; i++)
-                {
-                    Recipe tmp = Recipes[i];
-                    Recipes[i] = Recipes[Recipes.Count - 1 - i];
-                    Recipes[Recipes.Count - 1 - i] = tmp;
-                }
-            }
-
-        }
-
-        public int StringCompare(string a, string b)
-        {
-            int result = 0;
-            if (a == b)
-            {
-                result = 0;
             }
             else
             {
-                int t = 0;
-                int t_max = (a.Length > b.Length) ? a.Length : b.Length;
-                while (t < t_max && result == 0)
+                if (SortingType == "time")
                 {
-                    if (a[t] > b[t])
-                    {
-                        result = 1;
-                    }
-                    else if (a[t] < b[t])
-                    {
-                        result = -1;
-                    }
-                    else
-                    {
-                        t++;
-                    }
+                    Recipes = new ObservableCollection<Recipe>(Recipes.OrderByDescending(x => x.CreatedTime));
+
+                }
+                else if (SortingType == "alphabet")
+                {
+                    Recipes = new ObservableCollection<Recipe>(Recipes.OrderByDescending(x => x.Name));
+
                 }
             }
-            return result;
         }
-
-        
-
 
         ////class for testing
         //public class Ingredient
