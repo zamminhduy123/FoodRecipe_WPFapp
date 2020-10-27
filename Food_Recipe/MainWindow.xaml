@@ -174,7 +174,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        
+
         <TextBlock
                    FontStretch="UltraExpanded"
                    FontStyle="Italic"
@@ -250,11 +250,11 @@
                             </ListView.ItemTemplate>
                         </ListView>
                     </ScrollViewer>
-
-                    <Button Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" BorderBrush="{x:Null}" Margin="0 0" Content="Watch Video" Width="150" Command="{Binding WatchVideoCommand}"></Button>
-                    
+                    <StackPanel Orientation="Horizontal">
+                        <Button Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" BorderBrush="{x:Null}" Margin="5 0" Content="Watch Video" Width="120"  Command="{Binding WatchVideoCommand}"></Button>
+                        <Button Background="DarkRed" BorderBrush="{x:Null}" Margin="0 0" Content="Edit Recipe" Width="120" Command="{Binding EditRecipeCommand}"></Button>
+                    </StackPanel>
                 </StackPanel>
-
             </DockPanel>
         </Border>
 

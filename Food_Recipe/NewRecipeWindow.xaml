@@ -15,7 +15,8 @@
         
         xmlns:local="clr-namespace:Food_Recipe"
         mc:Ignorable="d"
-       
+        DataContext="{StaticResource NRVM}"
+       Name="Window"
         Title="NewRecipeWindow" Height="450" Width="800">
     <Window.Resources>
         <ObjectDataProvider x:Key="themeColor"
@@ -89,9 +90,12 @@
                   VerticalAlignment="Top" />
 
             <Button
+                 Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
+                  BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                   Command="{Binding AddIngredient}"     
                   Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
-                  ToolTip="MaterialDesignFloatingActionMiniAccentButton" Margin="22,160,70,219">
+                   Padding="0"
+                  ToolTip="MaterialDesignFloatingActionMiniAccentButton" Margin="0 0 50 50">
                 <materialDesign:PackIcon
                        Kind="Check"
                        Height="24"
@@ -99,11 +103,10 @@
             </Button>
 
             <Button
-                Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
-                BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
+                   Padding="0"
                   Command="{Binding DeleteIngredient}"
                   Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                  ToolTip="MaterialDesignFloatingActionMiniDarkButton" Margin="72,160,20,219">
+                  ToolTip="MaterialDesignFloatingActionMiniDarkButton" Margin="50 0 0 50">
                 <materialDesign:PackIcon
                         Kind="WindowClose"
                         Height="24"
@@ -131,12 +134,32 @@
         </Grid>
 
         <Grid Grid.Column="3" Grid.ColumnSpan="3">
-            <TextBox
-                  Width="80"
+            <StackPanel Orientation="Horizontal" Width="150" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="10 20">
+                <TextBox
+                  Width="80" Height="50"
                   materialDesign:HintAssist.Hint="Step's Order"
-                  Margin="10,30,306,0"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                   VerticalAlignment="Top" />
+                <Button  Background="{Binding ThemeColor, Source={StaticResource themeColor}}"
+                BorderBrush="{Binding ThemeColor, Source={StaticResource themeColor}}"
+                     Width="30" Height="30" Margin="5 15 0 0" Padding="0"
+                         Command="{Binding AddStepCommand}">
+                    <materialDesign:PackIcon
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Kind="Check"
+                       Height="24"
+                       Width="24" />
+                </Button>
+                <Button  Background="DarkRed" BorderBrush="DarkRed"
+                     Width="30" Height="30" Margin="5 15 0 0" Padding="0"
+                         Command="{Binding DeleteStepCommand}">
+                    <materialDesign:PackIcon
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Kind="WindowClose"
+                       Height="24"
+                       Width="24" />
+                </Button>
+            </StackPanel>
             <TextBox
                 TextWrapping="Wrap"
                 VerticalAlignment="Stretch"
@@ -207,7 +230,8 @@
             <Button
                 BorderBrush="{x:Null}"
                 Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
-                    Command="{Binding Finish}"
+                    Command="{Binding FinishCommand}"
+                CommandParameter="{Binding ElementName=Window}"
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     Height="35"
                     materialDesign:ButtonAssist.CornerRadius="20"

@@ -125,6 +125,8 @@ namespace Food_Recipe.ViewModels
         public ICommand ClickItemCommand { get; set; }
         public ICommand FavoriteChanged { get; set; }
 
+        public ICommand EditRecipeCommand { get; set; }
+
         //Visibility binding
         public Visibility SettingBackground { get => _isSettingBackgroundVisible; set { _isSettingBackgroundVisible = value; OnPropertyChanged(); } }
         public Visibility VideoVisibility { get => _isVideoShown; set { _isVideoShown = value; OnPropertyChanged(); } }

@@ -8,4 +8,5 @@
     <viewmodel:SettingViewModel x:Key="SVM"></viewmodel:SettingViewModel>
     <viewmodel:AboutViewModel x:Key="AVM"></viewmodel:AboutViewModel>
     <viewmodel:ThemeViewModel x:Key="TVM"></viewmodel:ThemeViewModel>
+    <viewmodel:NewRecipeViewModel x:Key="NRVM"></viewmodel:NewRecipeViewModel>
 </ResourceDictionary>
