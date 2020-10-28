@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\ASUS\Desktop\FoodRecipe_WPFapp\Food_Recipe\Model\Model1.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\ASUS\Desktop\WINDOW\FoodRecipe_WPFapp - Copy\Food_Recipe\Model\Model1.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

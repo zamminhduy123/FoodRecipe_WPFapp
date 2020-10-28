@@ -4,15 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="78cd23d0d7eb456996ea38bda1740241" Name="Diagram1">
-        <EntityTypeShape EntityType="FoodRecipeDBModel.Image" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoodRecipeDBModel.Ingredient" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoodRecipeDBModel.Recipe" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoodRecipeDBModel.Step" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoodRecipeDBModel.Tip" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="FoodRecipeDBModel.fk_images_step" ManuallyRouted="false" />
-        <AssociationConnector Association="FoodRecipeDBModel.fk_ingredient_recipe" ManuallyRouted="false" />
-        <AssociationConnector Association="FoodRecipeDBModel.fk_step_recipe" ManuallyRouted="false" />
+      <Diagram DiagramId="3ad5ce56757d480fa5c4c124af777954" Name="Diagram1">
+        <EntityTypeShape EntityType="Model1.Image" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.Ingredient" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.Recipe" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.Step" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.Tip" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="Model1.fk_images_step" ManuallyRouted="false" />
+        <AssociationConnector Association="Model1.fk_ingredient_recipe" ManuallyRouted="false" />
+        <AssociationConnector Association="Model1.fk_step_recipe" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

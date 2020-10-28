@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         
-         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -23,7 +24,14 @@
                       ObjectType="{x:Type local:Global}"
                       MethodName="GetInstance" />
     </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding ClosingCommand}" CommandParameter="{Binding ElementName=NewRecipeWindow}"></i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Grid Background="White">
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
@@ -39,7 +47,7 @@
                   materialDesign:HintAssist.Hint="Recipe's Name - Dish's Name"
                   Margin="10,30,10,0"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                  VerticalAlignment="Top" />
+                  VerticalAlignment="Top" Text="{Binding NewRecipe.Name}" />
             <StackPanel Orientation="Horizontal" Margin="10,95,10,0" Height="50" VerticalAlignment="Top">
                 <TextBlock Text="Making time" FontSize="20" Margin="0 13 5 0" FontWeight="Medium"/>
 
@@ -56,7 +64,7 @@
                 <TextBox Width="202"
                           VerticalAlignment="Center"
                           materialDesign:HintAssist.Hint="Youtube Video Link" Margin="0,12"
-                           />
+                          Text="{Binding NewRecipe.YoutubeSource}" />
 
             </StackPanel>
 
@@ -65,7 +73,7 @@
                 <Border Width="auto" Height="148" Margin="10 0 " BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" CornerRadius="10" >
                     <StackPanel>
                         <Image Width="auto" Height="100"
-                               Margin="5"></Image>
+                               Margin="5" Source="{Binding NewRecipe.AvatarSource}"></Image>
                         <Button Command="{Binding AddAvatarImage}"
                                 BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                             VerticalAlignment="Bottom" Margin="5" Background="#CACACA" Width="150">
@@ -82,12 +90,12 @@
                   materialDesign:HintAssist.Hint="Ingredient's name"
                   Margin="10,30,10,0"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                  VerticalAlignment="Top" />
+                  VerticalAlignment="Top" Text="{Binding NewIngredient.Name}"/>
             <TextBox
                   materialDesign:HintAssist.Hint="Quantity |ex: 100gr"
                   Margin="10,90,10,0"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                  VerticalAlignment="Top" />
+                  VerticalAlignment="Top" Text="{Binding NewIngredient.Quantity}"/>
 
             <Button
                  Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
@@ -104,7 +112,7 @@
 
             <Button
                    Padding="0"
-                  Command="{Binding DeleteIngredient}"
+                  Command="{Binding DeleteIngredientCommand}"
                   Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                   ToolTip="MaterialDesignFloatingActionMiniDarkButton" Margin="50 0 0 50">
                 <materialDesign:PackIcon
@@ -114,18 +122,15 @@
             </Button>
 
             <Border Width="auto" Height="148" Margin="10,216,10,55" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" CornerRadius="10" >
-                <ListView>
-                    <ListViewItem>
-
-                    </ListViewItem>
+                <ListView ItemsSource="{Binding ShowNewIngredients}" SelectedItem="{Binding SelectedIngredient}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0" Width="100">
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="CheckboxMultipleMarkedCircleOutline" VerticalAlignment="Center" HorizontalAlignment="Left" Width="15" Height="15"/>
-                                    <TextBlock Text="{Binding IngredientName}" FontSize="15" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="15" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBlock>
                                 </StackPanel>
-                                <TextBlock Text="{Binding IngredientQuantity}" FontSize="10" Foreground="#CACACA" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"></TextBlock>
+                                <TextBlock Text="{Binding Quantity}" FontSize="10" Foreground="#CACACA" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"></TextBlock>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -139,7 +144,7 @@
                   Width="80" Height="50"
                   materialDesign:HintAssist.Hint="Step's Order"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                  VerticalAlignment="Top" />
+                  VerticalAlignment="Top" Text="{Binding NewStep.OrderNumber}"/>
                 <Button  Background="{Binding ThemeColor, Source={StaticResource themeColor}}"
                 BorderBrush="{Binding ThemeColor, Source={StaticResource themeColor}}"
                      Width="30" Height="30" Margin="5 15 0 0" Padding="0"
@@ -167,26 +172,27 @@
                 AcceptsReturn="True"
                 VerticalScrollBarVisibility="Auto"
                 SpellCheck.IsEnabled="True"
-                materialDesign:HintAssist.Hint="Step's Content" Margin="10,78,218,213">
+                materialDesign:HintAssist.Hint="Step's Content" Margin="10,78,218,213" Text="{Binding NewStep.Content}">
 
             </TextBox>
 
             <Border Height="148" Margin="10,211,218,60" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" CornerRadius="10" >
                 <StackPanel>
-                    <ListView Height="100" materialDesign:ScrollBarAssist.ButtonsVisibility="Visible">
+                    <ListView Name="StepImageListView" Height="100" materialDesign:ScrollBarAssist.ButtonsVisibility="Visible" ItemsSource="{Binding ShowNewStepImages}" SelectedItem="{Binding SeletedImage}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <materialDesign:Card Width="145">
                                     <Grid>
                                         <Button
-                                        Command="{Binding DeleteImage}"
+                                            Command="{Binding ElementName=StepImageListView,Path=DataContext.DeleteImageCommand}" CommandParameter="{Binding}"
                                         Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                                         ToolTip="MaterialDesignFloatingActionMiniDarkButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2" Height="20" Width="20">
                                             <materialDesign:PackIcon
                                                 Kind="Close"/>
+
                                         </Button>
                                         <Image Width="75" Height="75"
-                                               Source="{Binding StepImage}"></Image>
+                                               Source="{Binding ImageSource}"></Image>
                                     </Grid>
                                 </materialDesign:Card>
                             </DataTemplate>
@@ -203,23 +209,25 @@
             <TextBlock Text="Steps visualization" FontSize="20" Margin="196,55,0,314" FontWeight="Medium" Width="200" Height="50"/>
 
             <Border Margin="183,78,10,60" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" CornerRadius="10" >
-                <ListView>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical" Margin="2">
-                                <TextBlock Text="{Binding StepTextBlock}"></TextBlock>
-                                <TextBlock Text="{Binding StepContentTextBlock}"></TextBlock>
-                                <ListView>
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <Image Source="{Binding StepImageSource}" Margin="5"></Image>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <ScrollViewer>
+                    <ListView ItemsSource="{Binding ShowNewSteps}" SelectedItem="{Binding SelectedStep}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" Margin="2">
+                                    <TextBlock Text="{Binding OrderNumber}"></TextBlock>
+                                    <TextBlock Text="{Binding Content}"></TextBlock>
+                                    <ListView ItemsSource="{Binding Images}" Name="stepListImage">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Image Height="30" Width="30" Source="{Binding ImageSource}" Margin="5"></Image>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
             </Border>
 
 

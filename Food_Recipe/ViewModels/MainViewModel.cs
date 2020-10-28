@@ -20,13 +20,17 @@ namespace Food_Recipe.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private const int _smallItem = 6;
-        private const int _largeItem = 9;
+        private const int _smallItem = 9;
+        private const int _largeItem = 6;
 
         #region private 
         private Visibility _isSettingBackgroundVisible = Visibility.Hidden;
         private Visibility _isVideoShown = Visibility.Hidden;
         private Visibility _isAvaShown = Visibility.Visible;
+        private Visibility _isVideoButtonShown = Visibility.Visible;
+        private string _widthItem;
+        private int _height;
+
         private bool _isLoaded = true;
         private Uri _videoSource = new Uri("https://www.google.com");
         private String _videoID = "9i4SKHbhbqk";
@@ -65,6 +69,16 @@ namespace Food_Recipe.ViewModels
                 _showRecipe = value; 
                 OnPropertyChanged();
                 StepPage = 1;
+                AvatarVisibility = Visibility.Visible;
+                VideoVisibility = Visibility.Hidden;
+                if (ShowRecipe.YoutubeSource == null)
+                {
+                    VideoButtonVisibility = Visibility.Hidden;
+                }
+                else
+                {
+                    VideoButtonVisibility = Visibility.Visible;
+                }
             } 
         }
 
@@ -131,6 +145,11 @@ namespace Food_Recipe.ViewModels
         public Visibility SettingBackground { get => _isSettingBackgroundVisible; set { _isSettingBackgroundVisible = value; OnPropertyChanged(); } }
         public Visibility VideoVisibility { get => _isVideoShown; set { _isVideoShown = value; OnPropertyChanged(); } }
         public Visibility AvatarVisibility {  get => _isAvaShown; set { _isAvaShown = value; OnPropertyChanged(); }  }
+        public Visibility VideoButtonVisibility { get => _isVideoButtonShown; set { _isVideoButtonShown = value; OnPropertyChanged(); } }
+
+        public string WidthItem {  get => _widthItem; set { _widthItem = value; OnPropertyChanged(); }  }
+        public int Height { get => _height; set { _height = value; OnPropertyChanged(); } }
+
 
         public String VideoId { get => _videoID; set { _videoID = value; OnPropertyChanged(); } }
 
@@ -187,6 +206,8 @@ namespace Food_Recipe.ViewModels
             {
                 NewRecipeWindow newRecipeWindow = new NewRecipeWindow();
                 newRecipeWindow.ShowDialog();
+                LoadRecipes(IsFavoriteRecipes);
+                RecipesPage = RecipesPage;
             });
 
             NextImgStepCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
@@ -337,13 +358,17 @@ namespace Food_Recipe.ViewModels
             var value3 = ConfigurationManager.AppSettings["SortingWay"];
             bool IsIncrease = bool.Parse(value3);
 
-            if (IsSmallItem == false)
+            if (IsSmallItem == true)
             {
                 _maxRecipesPerPage = _smallItem;
+                WidthItem = "140";
+                Height = 150;
             }
             else
             {
                 _maxRecipesPerPage = _largeItem;
+                WidthItem = "180";
+                Height = 160;
             }
 
             if (isFavorite == true)
