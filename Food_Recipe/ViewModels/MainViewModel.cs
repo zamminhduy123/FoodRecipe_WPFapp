@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace Food_Recipe.ViewModels
         private Visibility _isVideoButtonShown = Visibility.Visible;
         private string _widthItem;
         private int _height;
-
+        private int _editOrDeleteIDRecipe = 0;
         private bool _isLoaded = true;
         private Uri _videoSource = new Uri("https://www.google.com");
         private String _videoID = "9i4SKHbhbqk";
@@ -71,7 +72,7 @@ namespace Food_Recipe.ViewModels
                 StepPage = 1;
                 AvatarVisibility = Visibility.Visible;
                 VideoVisibility = Visibility.Hidden;
-                if (ShowRecipe.YoutubeSource == null)
+                if (ShowRecipe.YoutubeSource == null || ShowRecipe.YoutubeSource.Length == 0)
                 {
                     VideoButtonVisibility = Visibility.Hidden;
                 }
@@ -135,11 +136,10 @@ namespace Food_Recipe.ViewModels
         public ICommand PrevListCommand { get; set; }
 
         public ICommand WatchVideoCommand { get; set; }
+        public ICommand EditRecipeCommand { get; set; }
 
         public ICommand ClickItemCommand { get; set; }
         public ICommand FavoriteChanged { get; set; }
-
-        public ICommand EditRecipeCommand { get; set; }
 
         //Visibility binding
         public Visibility SettingBackground { get => _isSettingBackgroundVisible; set { _isSettingBackgroundVisible = value; OnPropertyChanged(); } }
@@ -160,7 +160,21 @@ namespace Food_Recipe.ViewModels
             if (_isLoaded)
             {
                 _isLoaded = true;
-
+                foreach (var dir in Directory.GetDirectories(Convert("Data\\recipes")))
+                {
+                    bool IsExist = false;
+                    foreach (var recipe in DataProvider.Ins.DB.Recipes)
+                    {
+                        if (dir == Convert($"Data\\recipes\\{recipe.Id}"))
+                        {
+                            IsExist = true;
+                        }
+                    }
+                    if (IsExist == false)
+                    {
+                        DeleteDirectory(dir);
+                    }
+                }
                 IsFavoriteRecipes = false;
                 LoadRecipes(IsFavoriteRecipes);
                 RecipesPage = 1;
@@ -302,6 +316,17 @@ namespace Food_Recipe.ViewModels
                 //handle watch video button
                 OpenVideo();
             });
+            EditRecipeCommand = new RelayCommand<object>((prop) => { return true; }, (StartVideoBtn) =>
+            {
+                _editOrDeleteIDRecipe = ShowRecipe.Id;
+                NewRecipeWindow newRecipeWindow = new NewRecipeWindow(ShowRecipe);
+                newRecipeWindow.ShowDialog();
+                LoadRecipes(IsFavoriteRecipes);
+                RecipesPage = RecipesPage;
+                ShowRecipe = Recipes[MyRandom.Ins.Next(Recipes.Count)];
+
+            });
+
 
             ClickItemCommand = new RelayCommand<Recipe>((prop) => { return true; }, (prop) =>
             {
@@ -314,6 +339,7 @@ namespace Food_Recipe.ViewModels
                 LoadRecipes(IsFavoriteRecipes);
                 RecipesPage = RecipesPage;
             });
+
             //testing binding
         }
         private void OpenVideo()
@@ -406,6 +432,43 @@ namespace Food_Recipe.ViewModels
             }
         }
 
+        private void DeleteDirectory(string target_dir)
+        {
+            string[] files = Directory.GetFiles(target_dir);
+            string[] dirs = Directory.GetDirectories(target_dir);
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+                File.Delete(file);
+            }
+
+            
+
+            Directory.Delete(target_dir, false);
+        }
+
+        private string Convert(string relativeFile)
+        {
+            string folder = AppDomain.CurrentDomain.BaseDirectory;
+            string absolutePath = $"{folder}{relativeFile}";
+            return absolutePath;
+        }
+
+        private bool DeleteMessage()
+        {
+            MessageBoxResult result = MessageBox.Show("Are yeo sure to delete this ? the data will be delete permanently !", "WARNING", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                return true;
+            }
+            else return false;
+        }
         ////class for testing
         //public class Ingredient
         //{

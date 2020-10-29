@@ -16,7 +16,6 @@
         
         xmlns:local="clr-namespace:Food_Recipe"
         mc:Ignorable="d"
-        DataContext="{StaticResource NRVM}"
        Name="Window"
         Title="NewRecipeWindow" Height="450" Width="800">
     <Window.Resources>

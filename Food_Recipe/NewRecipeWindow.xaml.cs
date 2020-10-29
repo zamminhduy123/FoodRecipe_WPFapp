@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Food_Recipe.Model;
+using Food_Recipe.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,22 @@ namespace Food_Recipe
     /// </summary>
     public partial class NewRecipeWindow : Window
     {
-        public NewRecipeWindow()
+        public NewRecipeWindow(Recipe recipe = null)
         {
+            NewRecipeViewModel nrvm;
+            EditRecipeViewModel ervm;
             InitializeComponent();
+
+            if (recipe == null)
+            {
+                nrvm = new NewRecipeViewModel();
+                this.DataContext = nrvm;
+            }
+            else
+            {
+                ervm = new EditRecipeViewModel(recipe);
+                this.DataContext = ervm;
+            }
         }
     }
 }

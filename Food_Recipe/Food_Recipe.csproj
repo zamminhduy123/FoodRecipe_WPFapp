@@ -206,6 +206,7 @@
     <Compile Include="Utility\WebBrowserBehaviors.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\EditRecipeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewRecipeViewModel.cs" />
     <Compile Include="ViewModels\SettingViewModel.cs" />

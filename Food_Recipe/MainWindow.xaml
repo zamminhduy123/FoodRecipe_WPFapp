@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:yt="clr-namespace:Food_Recipe.Utility"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         
         xmlns:YTPL="clr-namespace:YoutubePlayerLib;assembly=YoutubePlayerLib" 
         xmlns:Cef="clr-namespace:YoutubePlayerLib.Cef;assembly=YoutubePlayerLib"
@@ -166,7 +167,6 @@
             <BeginStoryboard Storyboard="{StaticResource OpenMenu}"/>
         </EventTrigger>
     </Window.Triggers>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="700">

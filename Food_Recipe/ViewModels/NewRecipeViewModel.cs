@@ -121,10 +121,13 @@ namespace Food_Recipe.ViewModels
             {
                 if (SelectedIngredient != null)
                 {
-                    NewRecipe.Ingredients.Remove(SelectedIngredient);
-                    ShowNewIngredients.Remove(SelectedIngredient);
-                    SelectedIngredient = null;
-                    NewIngredient = new Ingredient();
+                    if (DeleteMessage())
+                    {
+                        NewRecipe.Ingredients.Remove(SelectedIngredient);
+                        ShowNewIngredients.Remove(SelectedIngredient);
+                        SelectedIngredient = null;
+                        NewIngredient = new Ingredient();
+                    }
                 }
             });
 
@@ -169,13 +172,16 @@ namespace Food_Recipe.ViewModels
             {
                 if (SelectedStep != null)
                 {
-                    int order = SelectedStep.OrderNumber;
-                    ShowNewSteps.RemoveAt(order - 1);
-                    if (ShowNewSteps.Count != 0)
+                    if (DeleteMessage() == true)
                     {
-                        for (int i = order - 1; i < ShowNewSteps.Count; i++)
+                        int order = SelectedStep.OrderNumber;
+                        ShowNewSteps.RemoveAt(order - 1);
+                        if (ShowNewSteps.Count != 0)
                         {
-                            ShowNewSteps[i].OrderNumber = i + 1;
+                            for (int i = order - 1; i < ShowNewSteps.Count; i++)
+                            {
+                                ShowNewSteps[i].OrderNumber = i + 1;
+                            }
                         }
                     }
                 }
@@ -196,13 +202,20 @@ namespace Food_Recipe.ViewModels
 
             DeleteImageCommand = new RelayCommand<Image>((prop) => { return true; }, (prop) =>
             {
-                ShowNewStepImages.Remove(prop);
-                NewStep.Images.Remove(prop);
+                if (DeleteMessage() == true)
+                {
+                    ShowNewStepImages.Remove(prop);
+                    NewStep.Images.Remove(prop);
+                }
             });
 
             FinishCommand = new RelayCommand<Window>((prop) => { return true; }, (prop) =>
             {
-                if (ShowNewSteps.Count == 0)
+                if (NewRecipe.Name == null || NewRecipe.Name.Length == 0)
+                {
+                    MessageBox.Show("You must add recipe's name");
+                }
+                else if (ShowNewSteps.Count == 0)
                 {
                     MessageBox.Show("You must add at least 1 step");
 
@@ -358,6 +371,15 @@ namespace Food_Recipe.ViewModels
             NewStep = new Step { OrderNumber = ShowNewSteps.Count + 1 };
         }
 
+        private bool DeleteMessage()
+        {
+            MessageBoxResult result = MessageBox.Show("Are yeo sure to delete this ? the data will be delete permanently !", "WARNING", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                return true;
+            }
+            else return false;
+        }
         #endregion
 
         public class AsyncObservableCollection<T> : ObservableCollection<T>
