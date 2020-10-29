@@ -31,7 +31,6 @@ namespace Food_Recipe.ViewModels
         private Visibility _isVideoButtonShown = Visibility.Visible;
         private string _widthItem;
         private int _height;
-        private int _editOrDeleteIDRecipe = 0;
         private bool _isLoaded = true;
         private Uri _videoSource = new Uri("https://www.google.com");
         private String _videoID = "9i4SKHbhbqk";
@@ -223,6 +222,24 @@ namespace Food_Recipe.ViewModels
                 LoadRecipes(IsFavoriteRecipes);
                 RecipesPage = RecipesPage;
             });
+            DeleteRecipeCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
+            {
+                if (DeleteMessage() == true)
+                {
+                    foreach (var item in DataProvider.Ins.DB.Images)
+                    {
+                        if (item.RecipeId == ShowRecipe.Id)
+                        {
+                            DataProvider.Ins.DB.Images.Remove(item);
+                        }
+                    }
+                    DataProvider.Ins.DB.Recipes.Remove(ShowRecipe);
+                    DataProvider.Ins.DB.SaveChanges();
+                    LoadRecipes(IsFavoriteRecipes);
+                    RecipesPage = RecipesPage;
+                    ShowRecipe = Recipes[MyRandom.Ins.Next(Recipes.Count)];
+                }
+            });
 
             NextImgStepCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
             {
@@ -318,7 +335,6 @@ namespace Food_Recipe.ViewModels
             });
             EditRecipeCommand = new RelayCommand<object>((prop) => { return true; }, (StartVideoBtn) =>
             {
-                _editOrDeleteIDRecipe = ShowRecipe.Id;
                 NewRecipeWindow newRecipeWindow = new NewRecipeWindow(ShowRecipe);
                 newRecipeWindow.ShowDialog();
                 LoadRecipes(IsFavoriteRecipes);
