@@ -339,6 +339,8 @@
     <Content Include="FoodRecipeDB_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\7cb18679659f791b1191bea97b74dfc0.jpg" />
+    <Content Include="Images\Animated Background Video.mp4" />
     <Content Include="Model\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>

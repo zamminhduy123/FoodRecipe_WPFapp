@@ -21,19 +21,23 @@ namespace Food_Recipe.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        #region const variables
         private const int _smallItem = 9;
         private const int _largeItem = 6;
+        private const int largeWidth = 220;
+        private const int smallWidth = 140;
+        #endregion
 
         #region private 
         private Visibility _isSettingBackgroundVisible = Visibility.Hidden;
         private Visibility _isVideoShown = Visibility.Hidden;
         private Visibility _isAvaShown = Visibility.Visible;
         private Visibility _isVideoButtonShown = Visibility.Visible;
-        private string _widthItem;
+        private int _widthItem;
         private int _height;
         private bool _isLoaded = true;
         private Uri _videoSource = new Uri("https://www.google.com");
-        private String _videoID = "9i4SKHbhbqk";
+        private String _videoID;
         #endregion
 
         public static bool IsShowed = false;
@@ -146,7 +150,7 @@ namespace Food_Recipe.ViewModels
         public Visibility AvatarVisibility {  get => _isAvaShown; set { _isAvaShown = value; OnPropertyChanged(); }  }
         public Visibility VideoButtonVisibility { get => _isVideoButtonShown; set { _isVideoButtonShown = value; OnPropertyChanged(); } }
 
-        public string WidthItem {  get => _widthItem; set { _widthItem = value; OnPropertyChanged(); }  }
+        public int WidthItem {  get => _widthItem; set { _widthItem = value; OnPropertyChanged(); }  }
         public int Height { get => _height; set { _height = value; OnPropertyChanged(); } }
 
 
@@ -403,13 +407,13 @@ namespace Food_Recipe.ViewModels
             if (IsSmallItem == true)
             {
                 _maxRecipesPerPage = _smallItem;
-                WidthItem = "140";
+                WidthItem = smallWidth;
                 Height = 150;
             }
             else
             {
                 _maxRecipesPerPage = _largeItem;
-                WidthItem = "180";
+                WidthItem = largeWidth;
                 Height = 160;
             }
 
@@ -485,89 +489,5 @@ namespace Food_Recipe.ViewModels
             }
             else return false;
         }
-        ////class for testing
-        //public class Ingredient
-        //{
-        //    public string Name { get; set; }
-        //    public string Quantity { get; set; }
-
-        //    public Ingredient(string a, string b)
-        //    {
-        //        Name = a;
-        //        Quantity = b;
-        //    }
-        //}
-
-        //private List<Ingredient> GetIngredients()
-        //{
-        //    return new List<Ingredient>(){
-        //        new Ingredient("Beef","100gr"),
-        //        new Ingredient("Beef","100gr"),
-        //        new Ingredient("Beef", "100gr")
-        //    };
-        //}
-
-
-        //private List<Recipe> GetRecipes()
-        //{
-        //    return new List<Recipe>()
-        //    {
-        //        new Recipe("Recipe 1", 205.46, "/Images/hamburger.jpeg"),
-        //        new Recipe("Recipe 2", 102.50, "/Images/hamburger.jpeg"),
-        //        new Recipe("Recipe 3", 400.99, "/Images/hamburger.jpeg"),
-        //        new Recipe("Recipe 4", 350.26, "/Images/hamburger.jpeg"),
-        //        new Recipe("Recipe 5", 150.10, "/Images/hamburger.jpeg"),
-        //        new Recipe("Recipe 6", 100.02, "/Images/hamburger.jpeg"),
-        //        new Recipe("Recipe 7", 295.25, "/Images/hamburger.jpeg"),
-        //        new Recipe("Recipe 8", 700.00, "/Images/hamburger.jpeg")
-        //     };
-        //}
-
-        //public class Recipe
-        //{
-        //    public string Name { get; set; }
-        //    public double Value { get; set; }
-        //    public string Image { get; set; }
-
-        //    public Recipe(string name, double value, string image)
-        //    {
-        //        Name = name;
-        //        Value = value;
-        //        Image = image;
-        //    }
-        //}
-
-
-        //private  string GetYouTubeVideoPlayerHTML(string videoCode)
-        //{
-        //    var sb = new StringBuilder();
-
-        //    const string YOUTUBE_URL = @"http://www.youtube.com/v/";
-
-        //    sb.Append("<html>");
-        //    sb.Append("    <head>");
-        //    sb.Append("        <meta name=\"viewport\" content=\"width=device-width; height=device-height;\">");
-        //    sb.Append("    </head>");
-        //    sb.Append("    <body marginheight=\"0\" marginwidth=\"0\" leftmargin=\"0\" topmargin=\"0\" style=\"overflow-y: hidden\">");
-        //    sb.Append("        <object width=\"100%\" height=\"100%\">");
-        //    sb.Append("            <param name=\"movie\" value=\"" + YOUTUBE_URL + videoCode + "?version=3&amp;rel=0\" />");
-        //    sb.Append("            <param name=\"allowFullScreen\" value=\"true\" />");
-        //    sb.Append("            <param name=\"allowscriptaccess\" value=\"always\" />");
-        //    sb.Append("            <embed src=\"" + YOUTUBE_URL + videoCode + "?version=3&amp;rel=0\" type=\"application/x-shockwave-flash\"");
-        //    sb.Append("                   width=\"100%\" height=\"100%\" allowscriptaccess=\"always\" allowfullscreen=\"true\" />");
-        //    sb.Append("        </object>");
-        //    sb.Append("    </body>");
-        //    sb.Append("</html>");
-
-        //    return sb.ToString();
-        //}
-
-        //public  void ShowYouTubeVideo(this WebBrowser webBrowser, string videoCode)
-        //{
-        //    if (webBrowser == null) throw new ArgumentNullException("webBrowser");
-
-        //    webBrowser.NavigateToString(GetYouTubeVideoPlayerHTML(videoCode));
-        //}
-
     }
 }

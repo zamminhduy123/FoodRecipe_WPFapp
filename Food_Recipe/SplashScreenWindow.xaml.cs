@@ -23,7 +23,7 @@ namespace Food_Recipe
     /// </summary>
     public partial class SplashScreen : Window
     {
-        private const int Interval = 3600;
+        private const int Interval = 4000;
         private readonly Timer dT = new Timer(Interval);
         public SplashScreen()
         {

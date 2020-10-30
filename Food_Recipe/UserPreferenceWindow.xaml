@@ -74,7 +74,7 @@
                 </StackPanel>
             </materialDesign:Card>
 
-            <ContentControl x:Name="ContentArea" Content="{Binding CurrentPageViewModel}" ></ContentControl>
+            <ContentControl x:Name="ContentArea" Content="{Binding CurrentPageViewModel}"></ContentControl>
 
         </StackPanel>
         <Button  Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Content="Finish" Width="100" Margin="0 15" VerticalAlignment="Bottom" Command="{Binding FinishCommand,Mode=OneWay}" CommandParameter="{Binding ElementName=UserPrefsWindow}" BorderBrush="{x:Null}"></Button>

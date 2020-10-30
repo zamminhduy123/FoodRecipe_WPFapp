@@ -158,6 +158,7 @@
                 <SplineThicknessKeyFrame KeyTime="00:00:00.25" Value="0,0,0,0" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
+
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnCloseSetting">
@@ -223,7 +224,7 @@
                                FontWeight="Bold"
                                ></TextBlock>
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="240" Width="280">
-                        <ListView  ItemsSource="{Binding ShowRecipe.Ingredients}" Height="235" Width="260" HorizontalAlignment="Left" SelectionChanged="ListView_SelectionChanged">
+                        <ListView  ItemsSource="{Binding ShowRecipe.Ingredients}" Height="235" Width="260" HorizontalAlignment="Left">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="225">
@@ -288,8 +289,8 @@
                                FontWeight="Bold"
                                HorizontalAlignment="Center"></TextBlock>
                     </StackPanel>
-                    <TextBlock Margin="0 10 0 0" x:Name="stepContent" TextWrapping="Wrap" Height="180 " Width="260"
-                                   FontSize="18"
+                    <TextBlock Margin="0 2 0 0" x:Name="stepContent" TextWrapping="Wrap" Height="188 " Width="260"
+                                   FontSize="17"
                                    FontWeight="DemiBold"
                                    Text="{Binding NowStep.Content}"></TextBlock>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -366,9 +367,9 @@
             </Button>
         </StackPanel>
 
-        <!--<Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}">
+        <Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}"/>
 
-        </Rectangle>-->
+
         <Grid x:Name="settingGrid" Width="250" Grid.Column="1" Margin="750 0 0 0" HorizontalAlignment="Right"  Background="white" RenderTransformOrigin="0.5,0.5" Grid.ZIndex ="9999">
             <Grid.RenderTransform>
                 <TransformGroup>
@@ -399,12 +400,24 @@
             </Button>
         </Grid>
 
-
-        <ItemsControl x:Name="recipesListView" ItemsSource="{Binding RecipesPerPage}" Grid.ZIndex ="1" VerticalAlignment="Bottom" Grid.Column="1" Height="490" Margin="20 0 20 50">
+        <ItemsControl x:Name="recipesListView" ItemsSource="{Binding RecipesPerPage}" Grid.ZIndex ="1" VerticalAlignment="Bottom" Grid.Column="1" Height="490" Margin="10 0 10 50">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Name="holderButton"      Padding="5" Margin="15 3 15 0" Width="180" Height="160" Command="{Binding ElementName=recipesListView,Path=DataContext.ClickItemCommand}" CommandParameter="{Binding}">
-                        <Border  Width="auto" Height="auto" Background="WhiteSmoke" CornerRadius="5">
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Name="holderButton" Padding="5" Margin="5 3 5 0" Width="{Binding Path=DataContext.WidthItem, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                               AncestorType={x:Type ItemsControl}}}"
+                            Height="160" Command="{Binding ElementName=recipesListView,Path=DataContext.ClickItemCommand}" CommandParameter="{Binding}">
+                        
+                        <Border  Width="auto" Height="auto" CornerRadius="5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="WhiteSmoke"></Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{Binding Source={StaticResource themeColor},Path=ThemeColor}"></Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <Border.Effect>
                                 <DropShadowEffect ShadowDepth="2"></DropShadowEffect>
                             </Border.Effect>

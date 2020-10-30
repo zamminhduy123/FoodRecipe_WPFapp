@@ -17,7 +17,7 @@
              mc:Ignorable="d" 
              DataContext="{StaticResource TVM}"
              d:DesignHeight="450" d:DesignWidth="300">
-    <Grid Background="white"  Width="300" Height="350" VerticalAlignment="Top">
+    <Grid Background="white"  Width="300" Height="350" VerticalAlignment="Top" HorizontalAlignment="Center">
         <materialDesign:Card Padding="0 5">
             <ItemsControl x:Name="colorList" ItemsSource="{Binding Colors}" VerticalAlignment="Top" HorizontalAlignment="Center">
                 <ItemsControl.ItemTemplate>
