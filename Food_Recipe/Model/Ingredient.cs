@@ -9,20 +9,14 @@
 
 namespace Food_Recipe.Model
 {
-    using Food_Recipe.ViewModels;
     using System;
     using System.Collections.Generic;
     
-    public partial class Ingredient : BaseViewModel
+    public partial class Ingredient
     {
-        private int _recipeId;
-        public int RecipeId { get => _recipeId; set { _recipeId = value; OnPropertyChanged(); } }
-
-        private string _name;
-        public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
-
-        private string _quantity;
-        public string Quantity { get => _quantity; set { _quantity = value; OnPropertyChanged(); } }
+        public int RecipeId { get; set; }
+        public string Name { get; set; }
+        public string Quantity { get; set; }
     
         public virtual Recipe Recipe { get; set; }
     }

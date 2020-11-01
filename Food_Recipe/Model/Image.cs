@@ -9,20 +9,14 @@
 
 namespace Food_Recipe.Model
 {
-    using Food_Recipe.ViewModels;
     using System;
     using System.Collections.Generic;
     
-    public partial class Image : BaseViewModel
+    public partial class Image
     {
-        private int _recipeId;
-        public int RecipeId { get => _recipeId; set { _recipeId = value; OnPropertyChanged(); } }
-
-        private int _stepOrderNumber;
-        public int StepOrderNumber { get => _stepOrderNumber; set { _stepOrderNumber = value; OnPropertyChanged(); } }
-
-        private string _imageSource;
-        public string ImageSource { get => _imageSource; set { _imageSource = value; OnPropertyChanged(); } }
+        public int RecipeId { get; set; }
+        public int StepOrderNumber { get; set; }
+        public string ImageSource { get; set; }
     
         public virtual Step Step { get; set; }
     }

@@ -3,7 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -44,7 +47,12 @@ namespace Food_Recipe.ViewModels
         #endregion
 
         public static bool IsShowed = false;
+        private string _search;
 
+        public string Search
+        {
+            get => _search; set { _search = value; OnPropertyChanged(); }
+        }
         private bool _isFavoriteRecipes;
         public bool IsFavoriteRecipes { get => _isFavoriteRecipes; set { _isFavoriteRecipes = value; OnPropertyChanged(); LoadRecipes(IsFavoriteRecipes); } }
 
@@ -121,6 +129,9 @@ namespace Food_Recipe.ViewModels
         private Image _nowImageStep;
         public Image NowImageStep { get => _nowImageStep; set { _nowImageStep = value; OnPropertyChanged(); } }
 
+        
+
+
 
         public ICommand AllRecipeCommand { get; set; }
         public ICommand FavoriteCommand { get; set; }
@@ -146,6 +157,9 @@ namespace Food_Recipe.ViewModels
 
         public ICommand ClickItemCommand { get; set; }
         public ICommand FavoriteChanged { get; set; }
+
+        public ICommand FilterRecipesCommand { get; set; }
+
 
         //Visibility binding
         public Visibility SettingBackground { get => _isSettingBackgroundVisible; set { _isSettingBackgroundVisible = value; OnPropertyChanged(); } }
@@ -416,6 +430,20 @@ namespace Food_Recipe.ViewModels
                 RecipesPage = RecipesPage;
             });
 
+            FilterRecipesCommand = new RelayCommand<Window>((prop) => { return true; }, (prop) =>
+            {
+                if (IsFavoriteRecipes == true)
+                {
+                    Recipes = new ObservableCollection<Recipe>(DataProvider.Ins.DB.Recipes.Where(x => x.IsFavorite == 1).ToList());
+                }
+                else
+                {
+                    Recipes = new ObservableCollection<Recipe>(DataProvider.Ins.DB.Recipes.ToList());
+                }
+                Recipes = SearchRecipe(Search, Recipes);
+                RecipesPage = 1;
+                
+            });
             //testing binding
         }
         private void OpenVideo()
@@ -542,6 +570,300 @@ namespace Food_Recipe.ViewModels
                 return true;
             }
             else return false;
+        }
+
+        public ObservableCollection<Recipe> SearchRecipe(string inputKeyWord, ObservableCollection<Recipe> inputList)
+        {
+            ObservableCollection<Recipe> outputList = new ObservableCollection<Recipe>(inputList);
+            if (inputKeyWord != "" && inputKeyWord != null)
+            {
+                List<string> listWordsAND = new List<string>();
+                List<string> listWordsOR = new List<string>();
+                List<string> listWordsNOT = new List<string>();
+
+                List<string> listWords = new List<string>();
+                List<string> listOperators = new List<string>();
+                string[] words = inputKeyWord.Trim().ToLower().Split(' ');
+                string wordElement = "";
+                foreach (string word in words)
+                {
+                    if (word == "and" || word == "or" || word == "not")
+                    {
+                        listWords.Add(wordElement);
+                        wordElement = "";
+                        if (listOperators.Count > 0)
+                        {
+                            foreach (string item in listWords)
+                            {
+                                if (listOperators[0] == "and")
+                                {
+                                    listWordsAND.Add(item);
+                                }
+                                else if (listOperators[0] == "or")
+                                {
+                                    listWordsOR.Add(item);
+                                }
+                                else if (listOperators[0] == "not")
+                                {
+                                    listWordsNOT.Add(item);
+                                }
+                            }
+                            listWords.RemoveRange(0, listWords.Count);
+                            string temp = listOperators[0];
+                            listOperators.RemoveAt(0);
+                            listOperators.Add(word);
+                            listOperators.Add(temp);
+                        }
+                        else if (word == "not" && listWords.Count > 0)
+                        {
+                            listWordsOR.Add(listWords[0]);
+                            listOperators.Add(word);
+                            listWords.RemoveRange(0, listWords.Count);
+                        }
+                        else
+                        {
+                            listOperators.Add(word);
+                        }
+                    }
+                    else
+                    {
+                        if (wordElement == "")
+                        {
+                            wordElement += word;
+                        }
+                        else
+                        {
+                            wordElement += " " + word;
+                        }
+                    }
+                }
+                if (wordElement != "")
+                {
+                    listWords.Add(wordElement);
+                    wordElement = "";
+                }
+                if (listOperators.Count > 0)
+                {
+                    foreach (string item in listWords)
+                    {
+                        if (listOperators[0] == "and")
+                        {
+                            listWordsAND.Add(item);
+                        }
+                        else if (listOperators[0] == "or")
+                        {
+                            listWordsOR.Add(item);
+                        }
+                        else if (listOperators[0] == "not")
+                        {
+                            listWordsNOT.Add(item);
+                        }
+                    }
+                    listWords.RemoveRange(0, listWords.Count);
+                    listOperators.RemoveAt(0);
+                }
+                else if (listWords.Count > 0)
+                {
+                    foreach (string item in listWords)
+                    {
+                        listWordsOR.Add(item);
+                    }
+                }
+
+
+                DataTable rawTable = new DataTable();
+                rawTable.Columns.Add("Name", typeof(string));
+                rawTable.Columns.Add("Order", typeof(int));
+                rawTable.Columns.Add("Distance", typeof(int));
+                rawTable.Columns.Add("Length", typeof(int));
+
+                DataTable resultTable = new DataTable();
+                resultTable = rawTable.Copy();
+
+                foreach (Recipe recipe in inputList)
+                {
+                    rawTable.Rows.Add(recipe.Name, 0, 0, 0);
+                }
+
+                DataTable notTable = new DataTable();
+                if (listWordsNOT.Count > 0)
+                {
+                    notTable = rawTable.Copy();
+                    foreach (string word in listWordsNOT)
+                    {
+                        notTable = SearchOneWord(word, notTable);
+                    }
+                }
+
+
+                DataTable andTable = new DataTable();
+                if (listWordsAND.Count > 0)
+                {
+                    andTable = rawTable.Copy();
+                    foreach (string word in listWordsAND)
+                    {
+                        andTable = SearchOneWord(word, andTable);
+                    }
+                    foreach (DataRow rowData in andTable.Rows)
+                    {
+                        resultTable.Rows.Add(rowData.ItemArray);
+                    }
+                }
+
+
+                foreach (string word in listWordsOR)
+                {
+                    DataTable orTable = SearchOneWord(word, rawTable);
+                    foreach (DataRow rowDataOrTable in orTable.Rows)
+                    {
+                        bool flag = true;
+                        foreach (DataRow rowDataResultTable in resultTable.Rows)
+                        {
+                            if (rowDataOrTable["Name"] == rowDataResultTable["Name"])
+                            {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if (flag == true)
+                        {
+                            resultTable.Rows.Add(rowDataOrTable.ItemArray);
+                        }
+                    }
+                }
+                for (int x = 0; x < notTable.Rows.Count; x++)
+                {
+                    for (int y = 0; y < resultTable.Rows.Count; y++)
+                    {
+                        if (notTable.Rows[x].Field<string>(0) == resultTable.Rows[y].Field<string>(0))
+                        {
+                            resultTable.Rows.RemoveAt(y);
+                        }
+                    }
+                }
+
+                int tableRange = resultTable.Rows.Count;
+                int listRange = inputList.Count;
+
+                DataView DV = resultTable.DefaultView;
+                DV.Sort = "Order DESC, Distance ASC, Length ASC";
+                resultTable = DV.ToTable();
+
+
+                outputList.Clear();
+
+                for (int tableIndex = 0; tableIndex < tableRange; tableIndex++)
+                {
+
+                    for (int listIndex = 0; listIndex < listRange; listIndex++)
+                    {
+                        if (resultTable.Rows[tableIndex].Field<string>(0) == inputList[listIndex].Name)
+                        {
+                            outputList.Add(inputList[listIndex]);
+                            break;
+                        }
+                    }
+                }
+            }
+            return outputList;
+        }
+
+        public DataTable SearchOneWord(string word, DataTable inputTable)
+        {
+            DataTable resultTable = new DataTable();
+            resultTable.Columns.Add("Name", typeof(string));
+            resultTable.Columns.Add("Order", typeof(int));
+            resultTable.Columns.Add("Distance", typeof(int));
+            resultTable.Columns.Add("Length", typeof(int));
+
+            int tableRange = inputTable.Rows.Count;
+            for (int tableIndex = 0; tableIndex < tableRange; tableIndex++)
+            {
+                string recipeName = inputTable.Rows[tableIndex].Field<string>(0);
+
+                int order = 0;
+                int Distance = 0;
+                int prevWordIndex = 0;
+                int signedWordIndex = recipeName.IndexOf(word, StringComparison.OrdinalIgnoreCase);
+                int unsignedWordIndex = RemoveSign(recipeName).IndexOf(RemoveSign(word), StringComparison.OrdinalIgnoreCase);
+
+
+                if (signedWordIndex >= 0 && IsSeparateWord(word, recipeName, signedWordIndex) == true)
+                {
+                    order += word.Length + 1;
+                    if (signedWordIndex >= prevWordIndex)
+                    {
+                        Distance += signedWordIndex - prevWordIndex;
+                    }
+                    else
+                    {
+                        Distance += recipeName.Length;
+                    }
+                    prevWordIndex = signedWordIndex;
+                }
+                else if (unsignedWordIndex >= 0 && IsSeparateWord(word, recipeName, unsignedWordIndex) == true)
+                {
+                    order += word.Length;
+                    if (unsignedWordIndex >= prevWordIndex)
+                    {
+                        Distance += unsignedWordIndex - prevWordIndex;
+                    }
+                    else
+                    {
+                        Distance += recipeName.Length;
+                    }
+                    prevWordIndex = unsignedWordIndex;
+                }
+
+                if (order > 0)
+                {
+                    resultTable.Rows.Add(recipeName, order, Distance, recipeName.Length);
+                }
+
+            }
+            return resultTable;
+        }
+        public static string RemoveSign(string inputString)
+        {
+            string[] VietNamChar = new string[]
+            {
+                "aAeEoOuUiIdDyY",
+                "áàạảãâấầậẩẫăắằặẳẵ",
+                "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
+                "éèẹẻẽêếềệểễ",
+                "ÉÈẸẺẼÊẾỀỆỂỄ",
+                "óòọỏõôốồộổỗơớờợởỡ",
+                "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
+                "úùụủũưứừựửữ",
+                "ÚÙỤỦŨƯỨỪỰỬỮ",
+                "íìịỉĩ",
+                "ÍÌỊỈĨ",
+                "đ",
+                "Đ",
+                "ýỳỵỷỹ",
+                "ÝỲỴỶỸ"
+            };
+
+            for (int i = 1; i < VietNamChar.Length; i++)
+            {
+                for (int j = 0; j < VietNamChar[i].Length; j++)
+                    inputString = inputString.Replace(VietNamChar[i][j], VietNamChar[0][i - 1]);
+            }
+            return inputString;
+        }
+
+        private static bool IsSeparateWord(string word, string sentence, int index)
+        {
+            bool result = true;
+            if (index > 0 && sentence[index - 1] != ' ')
+            {
+                result = false;
+            }
+            if (index + word.Length < sentence.Length && sentence[index + word.Length] != ' ')
+            {
+                result = false;
+            }
+            return result;
         }
     }
 

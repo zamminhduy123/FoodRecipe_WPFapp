@@ -371,10 +371,16 @@
             <Grid>
                 <StackPanel Margin="5 0 0 0">
                     <TextBox      x:Name="searchTextBox" Width="340"
-                                  Text="{Binding Search}"
                                   materialDesign:HintAssist.Hint="Search for recipe"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                  VerticalAlignment="Top" Height="auto" />
+                                  VerticalAlignment="Top" Height="auto"
+                                  Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding FilterRecipesCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
                 </StackPanel>
             </Grid>
             <Button x:Name="newRecipeBtn" Command="{Binding NewRecipeCommand}"
