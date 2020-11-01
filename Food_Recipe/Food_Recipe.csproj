@@ -340,7 +340,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\7cb18679659f791b1191bea97b74dfc0.jpg" />
-    <Content Include="Images\Animated Background Video.mp4" />
+    <Resource Include="Images\baseline_navigate_before_black_48dp.png" />
     <Content Include="Model\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>

@@ -10,10 +10,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using YoutubePlayerLib.Cef;
 using Image = Food_Recipe.Model.Image;
 
@@ -33,8 +36,8 @@ namespace Food_Recipe.ViewModels
         private Visibility _isVideoShown = Visibility.Hidden;
         private Visibility _isAvaShown = Visibility.Visible;
         private Visibility _isVideoButtonShown = Visibility.Visible;
+        private Visibility _isStepImageShow = Visibility.Visible;
         private int _widthItem;
-        private int _height;
         private bool _isLoaded = true;
         private Uri _videoSource = new Uri("https://www.google.com");
         private String _videoID;
@@ -149,17 +152,37 @@ namespace Food_Recipe.ViewModels
         public Visibility VideoVisibility { get => _isVideoShown; set { _isVideoShown = value; OnPropertyChanged(); } }
         public Visibility AvatarVisibility {  get => _isAvaShown; set { _isAvaShown = value; OnPropertyChanged(); }  }
         public Visibility VideoButtonVisibility { get => _isVideoButtonShown; set { _isVideoButtonShown = value; OnPropertyChanged(); } }
+        public Visibility StepImageVisibility { get => _isStepImageShow; set { _isStepImageShow = value; OnPropertyChanged(); } }
 
         public int WidthItem {  get => _widthItem; set { _widthItem = value; OnPropertyChanged(); }  }
-        public int Height { get => _height; set { _height = value; OnPropertyChanged(); } }
-
 
         public String VideoId { get => _videoID; set { _videoID = value; OnPropertyChanged(); } }
 
         public Global themeColor = Global.GetInstance();
 
+        DoubleAnimation fadeIn = new DoubleAnimation
+        {
+            Duration = new Duration(TimeSpan.FromMilliseconds(250)),
+            AutoReverse = false,
+            RepeatBehavior = new RepeatBehavior(1),
+            From = 0.0,
+            To = 1.0
+        };
+
+        DoubleAnimation fadeOut = new DoubleAnimation
+        {
+            Duration = new Duration(TimeSpan.FromMilliseconds(250)),
+            AutoReverse = false,
+            RepeatBehavior = new RepeatBehavior(1),
+            From = 1.0,
+            To = 0.0
+        };
+
+
+
         public MainViewModel()
         {
+            
             if (_isLoaded)
             {
                 _isLoaded = true;
@@ -245,8 +268,16 @@ namespace Food_Recipe.ViewModels
                 }
             });
 
-            NextImgStepCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
+            NextImgStepCommand = new RelayCommand<Border>((prop) => { return true; }, async (stepImgHolder) =>
             {
+                //fade in animation
+                Storyboard storyboard = new Storyboard();
+                storyboard.Children.Add(fadeOut);
+                Storyboard.SetTarget(fadeOut, stepImgHolder);
+                Storyboard.SetTargetProperty(fadeOut, new PropertyPath("Opacity"));
+                storyboard.Begin(stepImgHolder);
+                await storyboard.BeginAsync();
+               
                 //handle next step's image button
                 if (NowStep.Images.Count > 1)
                 {
@@ -266,10 +297,26 @@ namespace Food_Recipe.ViewModels
                         }
                     }
                 }
-                
+
+                //fade out
+                storyboard = new Storyboard();
+                storyboard.Children.Add(fadeIn);
+                Storyboard.SetTarget(fadeIn, stepImgHolder);
+                Storyboard.SetTargetProperty(fadeIn, new PropertyPath("Opacity"));
+                storyboard.Begin(stepImgHolder);
+                await storyboard.BeginAsync();
+
             });
-            PrevImgStepCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
+            PrevImgStepCommand = new RelayCommand<Border>((prop) => { return true; }, async (stepImgHolder) =>
             {
+                //fade in animation
+                Storyboard storyboard = new Storyboard();
+                storyboard.Children.Add(fadeOut);
+                Storyboard.SetTarget(fadeOut, stepImgHolder);
+                Storyboard.SetTargetProperty(fadeOut, new PropertyPath("Opacity"));
+                storyboard.Begin(stepImgHolder);
+                await storyboard.BeginAsync();
+
                 //handle previous step's image button
                 if (NowStep.Images.Count > 1)
                 {
@@ -289,9 +336,18 @@ namespace Food_Recipe.ViewModels
                         }
                     }
                 }
+
+                //fade out
+                storyboard = new Storyboard();
+                storyboard.Children.Add(fadeIn);
+                Storyboard.SetTarget(fadeIn, stepImgHolder);
+                Storyboard.SetTargetProperty(fadeIn, new PropertyPath("Opacity"));
+                storyboard.Begin(stepImgHolder);
+                await storyboard.BeginAsync();
             });
             NextStepCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
             {
+                
                 //handle next step button
                 if (StepPage == ShowRecipe.Steps.Count)
                 {
@@ -408,13 +464,11 @@ namespace Food_Recipe.ViewModels
             {
                 _maxRecipesPerPage = _smallItem;
                 WidthItem = smallWidth;
-                Height = 150;
             }
             else
             {
                 _maxRecipesPerPage = _largeItem;
                 WidthItem = largeWidth;
-                Height = 160;
             }
 
             if (isFavorite == true)
@@ -488,6 +542,27 @@ namespace Food_Recipe.ViewModels
                 return true;
             }
             else return false;
+        }
+    }
+
+    public static class StoryboardExtensions
+    {
+        public static Task BeginAsync(this Storyboard storyboard)
+        {
+            System.Threading.Tasks.TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+            if (storyboard == null)
+                tcs.SetException(new ArgumentNullException());
+            else
+            {
+                EventHandler onComplete = null;
+                onComplete = (s, e) => {
+                    storyboard.Completed -= onComplete;
+                    tcs.SetResult(true);
+                };
+                storyboard.Completed += onComplete;
+                storyboard.Begin();
+            }
+            return tcs.Task;
         }
     }
 }

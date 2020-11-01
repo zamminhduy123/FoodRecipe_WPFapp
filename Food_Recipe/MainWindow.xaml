@@ -145,7 +145,6 @@
                 </EventTrigger>
             </Style.Triggers>
         </Style>
-
         <Storyboard x:Key="CloseMenu">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00" Storyboard.TargetName="settingGrid">
                 <SplineThicknessKeyFrame KeyTime="00:00:00" Value="0, 0,0,0" />
@@ -272,31 +271,32 @@
         </Border>
 
         <Border CornerRadius="20" Width="auto" VerticalAlignment="Bottom" Height="275" Margin="10,0,10,10" BorderThickness="2" BorderBrush="Black">
-            <UniformGrid Columns="2">
+            <WrapPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" Command="{Binding PrevImgStepCommand}" >
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" Command="{Binding PrevImgStepCommand}" CommandParameter="{Binding ElementName=StepImageHolder}">
                         <Border Style="{StaticResource HolderButton}">
-                            <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
+                            <materialDesign:PackIcon Kind="ChevronLeft" Width="35" Height="35" Foreground="Black" />
                         </Border>
                     </Button>
-                    <Border Grid.Column="0"
-                            Margin="0 10 5 10" Width="275" CornerRadius="30">
+                    <Border Grid.Column="0" Name="StepImageHolder"
+                            Margin="0 10 3 10" Width="270" CornerRadius="30">
                         <Border.Effect>
                             <DropShadowEffect ShadowDepth="5"/>
                         </Border.Effect>
                         <Border.Background>
-                            <ImageBrush x:Name="stepImage"
+                            <ImageBrush x:Name="stepImage" 
                                    Stretch="UniformToFill"
-                                   ImageSource="{Binding NowImageStep.ImageSource , Converter={StaticResource converter}}"/>
+                                   ImageSource="{Binding NowImageStep.ImageSource , Converter={StaticResource converter}}">
+                            </ImageBrush>
                         </Border.Background>
                     </Border>
-                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImgStepCommand}">
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImgStepCommand}"  CommandParameter="{Binding ElementName=StepImageHolder}">
                         <Border Style="{StaticResource HolderButton}">
-                            <Image Source="/Images/baseline_arrow_forward_ios_black_48dp.png" />
+                            <materialDesign:PackIcon Kind="ChevronRight" Width="35" Height="35" Foreground="Black" />
                         </Border>
                     </Button>
                 </StackPanel>
-                <StackPanel Margin="10">
+                <StackPanel Margin="15 10 10 10" Orientation="Vertical" >
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock  FontSize="25" Text="Step "
                                FontWeight="Bold"
@@ -310,9 +310,9 @@
                                    FontWeight="DemiBold"
                                    Text="{Binding NowStep.Content}"></TextBlock>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevStepCommand}">
+                        <Button Margin="0 0 5 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevStepCommand}">
                             <Border Style="{StaticResource HolderButton}">
-                                <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
+                                <materialDesign:PackIcon Kind="ChevronLeft" Foreground="Black" Width="30" Height="30" />
                             </Border>
                         </Button>
                         <Border CornerRadius="10" Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Width="100">
@@ -323,12 +323,12 @@
                         </Border>
                         <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextStepCommand}">
                             <Border Style="{StaticResource HolderButton}">
-                                <Image Source="/Images/baseline_arrow_forward_ios_black_48dp.png" />
+                                <materialDesign:PackIcon Kind="ChevronRight" Width="30" Height="30" Foreground="Black" />
                             </Border>
                         </Button>
                     </StackPanel>
                 </StackPanel>
-            </UniformGrid>
+            </WrapPanel>
         </Border>
 
 
@@ -387,7 +387,7 @@
             </Button>
         </StackPanel>
 
-        <Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}"/>
+        <!--<Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}"/>-->
 
 
         <Grid x:Name="settingGrid" Width="250" Grid.Column="1" Margin="750 0 0 0" HorizontalAlignment="Right"  Background="white" RenderTransformOrigin="0.5,0.5" Grid.ZIndex ="9999">
@@ -426,7 +426,7 @@
                     <Button Background="{x:Null}" BorderBrush="{x:Null}" Name="holderButton" Padding="5" Margin="5 3 5 0" Width="{Binding Path=DataContext.WidthItem, RelativeSource={RelativeSource Mode=FindAncestor,
                                                                AncestorType={x:Type ItemsControl}}}"
                             Height="160" Command="{Binding ElementName=recipesListView,Path=DataContext.ClickItemCommand}" CommandParameter="{Binding}">
-                        
+
                         <Border  Width="auto" Height="auto" CornerRadius="5">
                             <Border.Style>
                                 <Style TargetType="Border">
@@ -485,7 +485,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" VerticalAlignment="Bottom" Margin="0 0 0 10">
             <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevListCommand}">
                 <Border Style="{StaticResource HolderButton}">
-                    <Image Source="/Images/baseline_arrow_back_ios_black_48dp.png" />
+                    <materialDesign:PackIcon Kind="ChevronLeft" Margin="0 0 5 0" Width="30" Height="30" Foreground="Black" />
                 </Border>
             </Button>
             <Border CornerRadius="10"  Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Width="200">
@@ -496,7 +496,7 @@
             </Border>
             <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextListCommand}" >
                 <Border Style="{StaticResource HolderButton}">
-                    <Image Source="/Images/baseline_arrow_forward_ios_black_48dp.png" />
+                    <materialDesign:PackIcon Kind="ChevronRight" Width="30" Height="30" Foreground="Black" />
                 </Border>
             </Button>
         </StackPanel>
