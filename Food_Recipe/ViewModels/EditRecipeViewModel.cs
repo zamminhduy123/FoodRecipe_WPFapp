@@ -407,6 +407,9 @@ namespace Food_Recipe.ViewModels
                 ShowNewSteps.Add(new Step { OrderNumber = step.OrderNumber, Content = step.Content, Images = stepImages });
                 
             }
+
+            ShowNewStepImages = new AsyncObservableCollection<Image>();
+            NewStep = new Step { OrderNumber = ShowNewSteps.Count + 1 };
         }
 
         private bool DeleteMessage()
