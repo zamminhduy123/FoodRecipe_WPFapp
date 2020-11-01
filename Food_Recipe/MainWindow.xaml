@@ -1,0 +1,510 @@
+﻿<Window x:Class="Food_Recipe.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:yt="clr-namespace:Food_Recipe.Utility"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        
+        xmlns:YTPL="clr-namespace:YoutubePlayerLib;assembly=YoutubePlayerLib" 
+        xmlns:Cef="clr-namespace:YoutubePlayerLib.Cef;assembly=YoutubePlayerLib"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        xmlns:local="clr-namespace:Food_Recipe"
+        xmlns:model="clr-namespace:Food_Recipe.Model"
+        mc:Ignorable="d"
+        DataContext="{StaticResource MainVM}"
+        Title="Food Recipe" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ObjectDataProvider x:Key="themeColor"
+                      ObjectType="{x:Type local:Global}"
+                      MethodName="GetInstance" />
+        <model:AbsoluteConverter x:Key="converter"  />
+
+        <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid x:Name="Grid">
+                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" 
+                                           Height="Auto" Fill="Transparent"/>
+                            <Border x:Name="Rectangle1" CornerRadius="5" HorizontalAlignment="Stretch" 
+                                        VerticalAlignment="Stretch" Width="Auto" Height="Auto" 
+                                        Background ="{Binding Source={StaticResource themeColor},Path=ThemeColor}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="Horizontal">
+                                <Setter TargetName="Rectangle1" Property="Width" Value="Auto"/>
+                                <Setter TargetName="Rectangle1" Property="Height" Value="7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--SCROLLBARS-->
+        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Foreground" Value="#AAA8341A"/>
+            <Setter Property="Background" Value="DarkGray"/>
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot" Width="12" Background="{x:Null}">
+                            <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="False">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" 
+                                               Style="{DynamicResource ScrollThumbs}"/>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/>
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                                <Setter Value="{DynamicResource ButtonSelectBrush}" 
+                                            TargetName="Thumb" Property="Background"/>
+                            </Trigger>
+                            <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                                <Setter Value="{DynamicResource DarkBrush}" TargetName="Thumb" Property="Background"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Width" Value="Auto"/>
+                                <Setter Property="Height" Value="12"/>
+                                <Setter TargetName="Thumb" Property="Tag" Value="Horizontal"/>
+                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand"/>
+                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ImageShadow" TargetType="Image">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black"  Opacity="0.5" BlurRadius="8"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonTemplate" TargetType="Button">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(Image.Width)" From="40"
+                                To="50" Duration="0:0:0.100" />
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(Image.Height)" From="40"
+                                To="50" Duration="0:0:0.100" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(Image.Width)"  From="50"
+                                To="40" Duration="0:0:0.100" />
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(Image.Height)"  From="50"
+                                To="40" Duration="0:0:0.100" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+        <Storyboard x:Key="CloseMenu">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00" Storyboard.TargetName="settingGrid">
+                <SplineThicknessKeyFrame KeyTime="00:00:00" Value="0, 0,0,0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:00.25" Value="750,0,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="OpenMenu">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00" Storyboard.TargetName="settingGrid">
+                <SplineThicknessKeyFrame KeyTime="00:00:00" Value="750,0,0,0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:00.25" Value="0,0,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Style x:Key="HolderButton" TargetType="Border">
+            <Setter Property="Width" Value="auto"></Setter>
+            <Setter Property="Height" Value="auto"></Setter>
+            <Setter Property="CornerRadius" Value="50"></Setter>
+            <Setter Property="Background" Value="WhiteSmoke"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{Binding Source={StaticResource themeColor},Path=ThemeColor}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnCloseSetting">
+            <BeginStoryboard x:Name="CloseMenu_BeginStoryboard" Storyboard="{StaticResource CloseMenu}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnOpenSetting">
+            <BeginStoryboard Storyboard="{StaticResource OpenMenu}"/>
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="700">
+            </ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+        <TextBlock
+                   FontStretch="UltraExpanded"
+                   FontStyle="Italic"
+                   TextWrapping="Wrap" 
+                   TextAlignment="Left"
+                   Text="Food Recipe"
+                   Margin="10,10,10,13"
+                   FontFamily="Segoe UI"/>
+        <Border
+            Margin="10 40 10 0"
+            Grid.Row="0"
+            Grid.Column="0"
+            CornerRadius="20"
+            BorderThickness="2"
+            BorderBrush="Black"
+            Height="334"
+            VerticalAlignment="Top">
+            <DockPanel>
+                <Grid>
+                    <Border Name="Mask" Visibility="{Binding AvatarVisibility}"
+                        Width="400" Margin="10" CornerRadius="30">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="5"/>
+                        </Border.Effect>
+
+                        <Border.Background>
+                            <ImageBrush 
+                                   Stretch="UniformToFill"
+                                   ImageSource="{Binding ShowRecipe.AvatarSource, Converter={StaticResource converter}}"/>
+                        </Border.Background>
+                    </Border>
+                    <Border Width="400" Margin="10" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Visibility="{Binding VideoVisibility}">
+                        <Cef:CefYoutubeController x:Name="Player" VideoId="{Binding ShowRecipe.YoutubeSource}" AutoPlay="False" />
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="5"/>
+                        </Border.Effect>
+                    </Border>
+                </Grid>
+                <StackPanel DockPanel.Dock="Right"
+                            Margin="0 10 5 10">
+                    <TextBlock x:Name="recipeNameTextBlock"
+                               Text="{Binding ShowRecipe.Name}"
+                               TextAlignment="Center"
+                               FontStyle="Italic"
+                               FontSize="19"
+                               FontWeight="Bold"
+                               ></TextBlock>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="240" Width="280">
+                        <ListView  ItemsSource="{Binding ShowRecipe.Ingredients}" Height="235" Width="260" HorizontalAlignment="Left">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="225">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Ellipse Width="5"
+                                                 Height="5"
+                                                 StrokeThickness="1"
+                                                 VerticalAlignment="Center"
+                                                 Fill="Black"
+                                                 Margin="5 0"></Ellipse>
+                                            <TextBlock HorizontalAlignment="Left"
+                                                   Text="{Binding Name}"
+                                                   FontSize="15"
+                                                   FontWeight="Medium"></TextBlock>
+                                        </StackPanel>
+                                        <TextBlock 
+                                               HorizontalAlignment="Right"
+                                               Text="{Binding Quantity}"
+                                               FontSize="10"
+                                               VerticalAlignment="Center"
+                                               FontWeight="Light"></TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" BorderBrush="{x:Null}" Margin="5 0" Content="Watch Video" Width="120"  Command="{Binding WatchVideoCommand}" Visibility="{Binding VideoButtonVisibility}"></Button>
+                        <Button Background="DarkRed" BorderBrush="{x:Null}" Margin="0 0" Content="Edit Recipe" Width="120" Command="{Binding EditRecipeCommand}"></Button>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Border CornerRadius="20" Width="auto" VerticalAlignment="Bottom" Height="275" Margin="10,0,10,10" BorderThickness="2" BorderBrush="Black">
+            <WrapPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" Command="{Binding PrevImgStepCommand}" CommandParameter="{Binding ElementName=StepImageHolder}">
+                        <Border Style="{StaticResource HolderButton}">
+                            <materialDesign:PackIcon Kind="ChevronLeft" Width="35" Height="35" Foreground="Black" />
+                        </Border>
+                    </Button>
+                    <Border Grid.Column="0" Name="StepImageHolder"
+                            Margin="0 10 3 10" Width="270" CornerRadius="30">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="5"/>
+                        </Border.Effect>
+                        <Border.Background>
+                            <ImageBrush x:Name="stepImage" 
+                                   Stretch="UniformToFill"
+                                   ImageSource="{Binding NowImageStep.ImageSource , Converter={StaticResource converter}}">
+                            </ImageBrush>
+                        </Border.Background>
+                    </Border>
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImgStepCommand}"  CommandParameter="{Binding ElementName=StepImageHolder}">
+                        <Border Style="{StaticResource HolderButton}">
+                            <materialDesign:PackIcon Kind="ChevronRight" Width="35" Height="35" Foreground="Black" />
+                        </Border>
+                    </Button>
+                </StackPanel>
+                <StackPanel Margin="15 10 10 10" Orientation="Vertical" >
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock  FontSize="25" Text="Step "
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock  FontSize="25" Text="{Binding NowStep.OrderNumber}"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                    <TextBlock Margin="0 2 0 0" x:Name="stepContent" TextWrapping="Wrap" Height="188 " Width="260"
+                                   FontSize="17"
+                                   FontWeight="DemiBold"
+                                   Text="{Binding NowStep.Content}"></TextBlock>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Margin="0 0 5 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevStepCommand}">
+                            <Border Style="{StaticResource HolderButton}">
+                                <materialDesign:PackIcon Kind="ChevronLeft" Foreground="Black" Width="30" Height="30" />
+                            </Border>
+                        </Button>
+                        <Border CornerRadius="10" Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Width="100">
+                            <TextBlock x:Name="stepOrder" FontWeight="Bold" FontSize="20"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="{Binding IndexStep}"
+                                   ></TextBlock>
+                        </Border>
+                        <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextStepCommand}">
+                            <Border Style="{StaticResource HolderButton}">
+                                <materialDesign:PackIcon Kind="ChevronRight" Width="30" Height="30" Foreground="Black" />
+                            </Border>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </WrapPanel>
+        </Border>
+
+
+
+        <Grid HorizontalAlignment="Right"
+              Width="1"
+              Background="Black"></Grid>
+
+        <Grid Grid.Column="1" VerticalAlignment="Top">
+            <StackPanel Margin="20 20 0 0"
+                        Orientation="Horizontal">
+                <RadioButton
+                    BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
+                    Command="{Binding AllRecipeCommand}"
+                    Style="{StaticResource MaterialDesignTabRadioButton}"
+                    Margin="4"
+                    IsChecked="True"
+                    Content="ALL RECIPE" />
+                <RadioButton
+                    BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
+                    Command="{Binding FavoriteCommand}"
+                    Style="{StaticResource MaterialDesignTabRadioButton}"
+                    Margin="4"
+                    IsChecked="False"
+                    Content="FAVORITE" />
+
+            </StackPanel>
+            <Button x:Name="btnOpenSetting" Background="{x:Null}" Width="40" Height="40" Margin="0,0,23,0" HorizontalAlignment="Right"
+                        BorderBrush="{x:Null}" Foreground="Black" FontSize="15" 
+                        FontWeight="Bold" VerticalAlignment="Bottom" Padding="0" Command="{Binding SettingCommand}">
+                <materialDesign:PackIcon Kind="Menu" Height="30" Width="30"></materialDesign:PackIcon>
+            </Button>
+        </Grid>
+
+
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Top"
+                    Height="50"
+                    Grid.Column="1" Margin="20,62,0,0">
+            <Grid>
+                <StackPanel Margin="5 0 0 0">
+                    <TextBox      x:Name="searchTextBox" Width="340"
+                                  materialDesign:HintAssist.Hint="Search for recipe"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                  VerticalAlignment="Top" Height="auto"
+                                  Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding FilterRecipesCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+                </StackPanel>
+            </Grid>
+            <Button x:Name="newRecipeBtn" Command="{Binding NewRecipeCommand}"
+                    Margin="10 0 0 0" Height="50" Width="50" Padding="0" Background="Transparent" BorderThickness="0" Style="{StaticResource ButtonTemplate}">
+                <Image Width="40" Source="/Images/baseline_post_add_black_48dp.png" Stretch="Uniform"/>
+            </Button>
+            <Button x:Name="deleteRecipeBtn" Command="{Binding DeleteRecipeCommand}"
+                    Margin="0 0 0 0" Height="Auto" Width="50" Padding="0" Background="Transparent" BorderThickness="0" Style="{StaticResource ButtonTemplate}">
+                <Image Width="40" Source="/Images/baseline_delete_black_48dp.png" />
+            </Button>
+        </StackPanel>
+
+        <!--<Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}"/>-->
+
+
+        <Grid x:Name="settingGrid" Width="250" Grid.Column="1" Margin="750 0 0 0" HorizontalAlignment="Right"  Background="white" RenderTransformOrigin="0.5,0.5" Grid.ZIndex ="9999">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+            <StackPanel>
+                <Image Source="Images/hamburger.jpeg" Height="140"></Image>
+                <ListView Foreground="#FF313131" FontFamily="Champange &amp; Limousines" FontSize="18">
+                    <ListViewItem Height="45" Padding="0">
+                        <Button Width="250" Height="45" Background="Transparent" BorderBrush="{x:Null}" Command="{Binding SettingWindowOpenCommand}">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Settings" Width="20" Height="20" Foreground="CornflowerBlue" VerticalAlignment="Center" Margin="0 5 0 0"></materialDesign:PackIcon>
+                                    <TextBlock Text="Settings" Margin="5 5 0 0" FontSize="20" Foreground="DarkBlue"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+                    </ListViewItem>
+                </ListView>
+            </StackPanel>
+            <Button x:Name="btnCloseSetting" Command="{Binding ButtonCloseSettingCommand}"
+                    VerticalAlignment="Top" Padding="0" Background="#8F000000" BorderBrush="{x:Null}" Width="30" Height="30" HorizontalAlignment="Left" Margin="10">
+                <materialDesign:PackIcon Kind="Close"/>
+            </Button>
+        </Grid>
+
+        <ItemsControl x:Name="recipesListView" ItemsSource="{Binding RecipesPerPage}" Grid.ZIndex ="1" VerticalAlignment="Bottom" Grid.Column="1" Height="490" Margin="10 0 10 50">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Name="holderButton" Padding="5" Margin="5 3 5 0" Width="{Binding Path=DataContext.WidthItem, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                               AncestorType={x:Type ItemsControl}}}"
+                            Height="160" Command="{Binding ElementName=recipesListView,Path=DataContext.ClickItemCommand}" CommandParameter="{Binding}">
+
+                        <Border  Width="auto" Height="auto" CornerRadius="5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="WhiteSmoke"></Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{Binding Source={StaticResource themeColor},Path=ThemeColor}"></Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="2"></DropShadowEffect>
+                            </Border.Effect>
+                            <Grid>
+                                <StackPanel VerticalAlignment="Top">
+                                    <Border Width="{Binding ActualWidth, ElementName=holderButton}" Height="120" CornerRadius="5" Margin="5" >
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="1"/>
+                                        </Border.Effect>
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding AvatarSource, Converter={StaticResource converter}}"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock Margin="5 0" Text="{Binding Name}" FontSize="15" FontWeight="Medium" Foreground="Black"/>
+                                </StackPanel>
+                                <ToggleButton
+                                          
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}"
+                                                ToolTip="MaterialDesignFlatPrimaryToggleButton"
+                                                IsChecked="{Binding IsFavorite}"
+                                                Width="30"
+                                                Height="30"
+                                                Margin="2"
+                                            Background="#79b700" Command="{Binding ElementName=recipesListView,Path=DataContext.FavoriteChanged}">
+                                    <materialDesign:PackIcon
+                                                    Kind="Heart"
+                                                    Height="21"
+                                                    Width="21" 
+                                                    Foreground ="{Binding Source={StaticResource themeColor},Path=ThemeColor}"/>
+                                </ToggleButton>
+                            </Grid>
+                        </Border>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" VerticalAlignment="Bottom" Margin="0 0 0 10">
+            <Button  Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevListCommand}">
+                <Border Style="{StaticResource HolderButton}">
+                    <materialDesign:PackIcon Kind="ChevronLeft" Margin="0 0 5 0" Width="30" Height="30" Foreground="Black" />
+                </Border>
+            </Button>
+            <Border CornerRadius="10"  Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Width="200">
+                <TextBlock x:Name="itemPage" FontWeight="Bold" FontSize="20"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Text="{Binding IndexRecipes}"
+                                   ></TextBlock>
+            </Border>
+            <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextListCommand}" >
+                <Border Style="{StaticResource HolderButton}">
+                    <materialDesign:PackIcon Kind="ChevronRight" Width="30" Height="30" Foreground="Black" />
+                </Border>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

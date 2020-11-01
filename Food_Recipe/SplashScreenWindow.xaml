@@ -1,0 +1,80 @@
+﻿<Window x:Class="Food_Recipe.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        
+          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        xmlns:local="clr-namespace:Food_Recipe"
+        mc:Ignorable="d"
+        
+        DataContext="{StaticResource SSVM}"
+        Title="SplashScreen" Height="600" Width="900" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" WindowStyle="None" 
+        Name="SplashScreenWindow">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="themeColor"
+                      ObjectType="{x:Type local:Global}"
+                      MethodName="GetInstance" />
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedWindowCommand}" CommandParameter="{Binding ElementName=SplashScreenWindow}"></i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Image Source="/Images/7cb18679659f791b1191bea97b74dfc0.jpg" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
+
+        <StackPanel Grid.ColumnSpan="2" Orientation="Vertical">
+            <Image Source="/Images/recipe.png" Width="100" Height="100" VerticalAlignment="Top" Margin="0 20 0 0"/>
+            <TextBlock FontWeight="Bold" Text="FOOD RECIPE" HorizontalAlignment="Center" Margin="0 20" VerticalAlignment="Top"  Foreground="White" FontSize="50"/>
+            <TextBlock FontWeight="Medium" Text="TIPS" HorizontalAlignment="Center" Margin="0 20 0 0" Foreground="White" FontSize="30" Height="50" Width="100" TextAlignment="Center"/>
+            <TextBlock  FontWeight="Medium" Text="{Binding Tip}" HorizontalAlignment="Center" Margin="0 5 0 0" Foreground="White" FontSize="25" TextWrapping="WrapWithOverflow" Width="350" TextAlignment="Center"/>
+
+            <StackPanel Height="70" Margin="0 10 0 10">
+                <Border Background="#1c1c1c" Opacity="1" Height="50" CornerRadius="25"  Width="275" HorizontalAlignment="Center" Margin="0 0 0 5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="15" FontWeight="Medium" Foreground="White" Text="Không hiện cửa sổ này lần sau" Margin="12,18,5,16"/>
+                        <ToggleButton
+                    Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
+                    BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
+                    Name="IsCloseSplashScreen"
+                    IsChecked="False"
+                    Command="{Binding ClosePermanent}"
+                  Style="{StaticResource MaterialDesignActionToggleButton}"
+                  ToolTip="Click to change the option">
+                            <materialDesign:ToggleButtonAssist.OnContent>
+                                <materialDesign:PackIcon 
+                                                   Kind="Check" />
+                            </materialDesign:ToggleButtonAssist.OnContent>
+                            <materialDesign:PackIcon 
+                                                         Kind="WindowClose" />
+                        </ToggleButton>
+
+                    </StackPanel>
+                </Border>
+                <ProgressBar x:Name ="timeProgessBar" Height="10" VerticalAlignment="Bottom" Width="300" Margin="0,0,0,130" Value="{Binding ProgressBarValue}" Maximum="3000" Minimum="0" Background="White" BorderBrush="Black" Foreground="{Binding Source={StaticResource themeColor},Path=ThemeColor}" >
+                    <ProgressBar.Effect>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="5"></DropShadowEffect>
+                    </ProgressBar.Effect>
+                </ProgressBar>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+
+</Window>

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Image">
+    <Key>
+      <PropertyRef Name="RecipeId" />
+      <PropertyRef Name="StepOrderNumber" />
+      <PropertyRef Name="ImageSource" />
+    </Key>
+    <Property Name="RecipeId" Type="Int32" Nullable="false" />
+    <Property Name="StepOrderNumber" Type="Int32" Nullable="false" />
+    <Property Name="ImageSource" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Step" Relationship="Self.fk_images_step" FromRole="Images" ToRole="Step" />
+  </EntityType>
+  <EntityType Name="Ingredient">
+    <Key>
+      <PropertyRef Name="RecipeId" />
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="RecipeId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Quantity" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Recipe" Relationship="Self.fk_ingredient_recipe" FromRole="Ingredient" ToRole="Recipe" />
+  </EntityType>
+  <EntityType Name="Recipe">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="YoutubeSource" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IsFavorite" Type="Int32" />
+    <Property Name="AvatarSource" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Ingredients" Relationship="Self.fk_ingredient_recipe" FromRole="Recipe" ToRole="Ingredient" />
+    <NavigationProperty Name="Steps" Relationship="Self.fk_step_recipe" FromRole="Recipe" ToRole="Step" />
+  </EntityType>
+  <EntityType Name="Step">
+    <Key>
+      <PropertyRef Name="RecipeId" />
+      <PropertyRef Name="OrderNumber" />
+    </Key>
+    <Property Name="RecipeId" Type="Int32" Nullable="false" />
+    <Property Name="OrderNumber" Type="Int32" Nullable="false" />
+    <Property Name="Content" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Images" Relationship="Self.fk_images_step" FromRole="Step" ToRole="Images" />
+    <NavigationProperty Name="Recipe" Relationship="Self.fk_step_recipe" FromRole="Step" ToRole="Recipe" />
+  </EntityType>
+  <EntityType Name="Tip">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Content" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="fk_images_step">
+    <End Role="Step" Type="Self.Step" Multiplicity="1" />
+    <End Role="Images" Type="Self.Image" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Step">
+        <PropertyRef Name="RecipeId" />
+        <PropertyRef Name="OrderNumber" />
+      </Principal>
+      <Dependent Role="Images">
+        <PropertyRef Name="RecipeId" />
+        <PropertyRef Name="StepOrderNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ingredient_recipe">
+    <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+    <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Recipe">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ingredient">
+        <PropertyRef Name="RecipeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_step_recipe">
+    <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+    <End Role="Step" Type="Self.Step" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Recipe">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Step">
+        <PropertyRef Name="RecipeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FoodRecipeDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Images" EntityType="Self.Image" />
+    <EntitySet Name="Ingredients" EntityType="Self.Ingredient" />
+    <EntitySet Name="Recipes" EntityType="Self.Recipe" />
+    <EntitySet Name="Steps" EntityType="Self.Step" />
+    <EntitySet Name="Tips" EntityType="Self.Tip" />
+    <AssociationSet Name="fk_images_step" Association="Self.fk_images_step">
+      <End Role="Step" EntitySet="Steps" />
+      <End Role="Images" EntitySet="Images" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ingredient_recipe" Association="Self.fk_ingredient_recipe">
+      <End Role="Recipe" EntitySet="Recipes" />
+      <End Role="Ingredient" EntitySet="Ingredients" />
+    </AssociationSet>
+    <AssociationSet Name="fk_step_recipe" Association="Self.fk_step_recipe">
+      <End Role="Recipe" EntitySet="Recipes" />
+      <End Role="Step" EntitySet="Steps" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
