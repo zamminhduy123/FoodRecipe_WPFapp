@@ -10,7 +10,8 @@ namespace Food_Recipe.ViewModels
 {
     class ThemeViewModel : BaseViewModel
     {
-        private  Brush[] _color = { Brushes.Red, Brushes.Blue, Brushes.Wheat, Brushes.Green, Brushes.Yellow, Brushes.Black,Brushes.Pink,Brushes.Brown,Brushes.Purple,Brushes.Orange,Brushes.Gray,Brushes.DarkOrange,Brushes.Cyan};
+        private Brush[] _color = { Brushes.Red, Brushes.Blue, Brushes.DarkSalmon, Brushes.Green, Brushes.DarkOrange, Brushes.DarkMagenta, Brushes.HotPink, Brushes.Brown, Brushes.Chocolate, Brushes.Orange, Brushes.YellowGreen, Brushes.DarkOrange, Brushes.DarkCyan };
+
         public Brush[]  Colors { get => _color; set { _color = value; OnPropertyChanged(); } }
 
         public ICommand ThemeButtonCommand { get; set; }

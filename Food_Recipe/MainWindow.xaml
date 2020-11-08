@@ -22,7 +22,7 @@
         xmlns:model="clr-namespace:Food_Recipe.Model"
         mc:Ignorable="d"
         DataContext="{StaticResource MainVM}"
-        Title="Food Recipe" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Food Recipe" Height="700" Width="1200" MinWidth="1200" MinHeight="700" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ObjectDataProvider x:Key="themeColor"
@@ -195,150 +195,154 @@
                    Text="Food Recipe"
                    Margin="10,10,10,13"
                    FontFamily="Segoe UI"/>
-        <Border
-            Margin="10 40 10 0"
-            Grid.Row="0"
-            Grid.Column="0"
-            CornerRadius="20"
-            BorderThickness="2"
-            BorderBrush="Black"
-            Height="334"
-            VerticalAlignment="Top">
-            <DockPanel>
-                <Grid>
-                    <Border Name="Mask" Visibility="{Binding AvatarVisibility}"
+        <StackPanel MinHeight="200">
+            <Border
+                VerticalAlignment="Stretch"
+                Margin="10 40 10 0"
+                Grid.Row="0"
+                Grid.Column="0"
+                CornerRadius="20"
+                BorderThickness="2"
+                BorderBrush="Black"
+                Height="auto"
+                MinHeight="200">
+                <DockPanel>
+                    <Grid>
+                        <Border Name="Mask" Visibility="{Binding AvatarVisibility}"
                         Width="400" Margin="10" CornerRadius="30">
-                        <Border.Effect>
-                            <DropShadowEffect ShadowDepth="5"/>
-                        </Border.Effect>
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="5"/>
+                            </Border.Effect>
 
-                        <Border.Background>
-                            <ImageBrush 
+                            <Border.Background>
+                                <ImageBrush 
                                    Stretch="UniformToFill"
                                    ImageSource="{Binding ShowRecipe.AvatarSource, Converter={StaticResource converter}}"/>
-                        </Border.Background>
-                    </Border>
-                    <Border Width="400" Margin="10" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Visibility="{Binding VideoVisibility}">
-                        <Cef:CefYoutubeController x:Name="Player" VideoId="{Binding ShowRecipe.YoutubeSource}" AutoPlay="False" />
-                        <Border.Effect>
-                            <DropShadowEffect ShadowDepth="5"/>
-                        </Border.Effect>
-                    </Border>
-                </Grid>
-                <StackPanel DockPanel.Dock="Right"
+                            </Border.Background>
+                        </Border>
+                        <Border Width="400" Margin="10" BorderThickness="2" BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Visibility="{Binding VideoVisibility}">
+                            <Cef:CefYoutubeController x:Name="Player" VideoId="{Binding ShowRecipe.YoutubeSource}" AutoPlay="False" />
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="5"/>
+                            </Border.Effect>
+                        </Border>
+                    </Grid>
+                    <StackPanel DockPanel.Dock="Right"
                             Margin="0 10 5 10">
-                    <TextBlock x:Name="recipeNameTextBlock"
+                        <TextBlock x:Name="recipeNameTextBlock"
                                Text="{Binding ShowRecipe.Name}"
                                TextAlignment="Center"
                                FontStyle="Italic"
                                FontSize="19"
                                FontWeight="Bold"
                                ></TextBlock>
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="240" Width="280">
-                        <ListView  ItemsSource="{Binding ShowRecipe.Ingredients}" Height="235" Width="260" HorizontalAlignment="Left">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Width="225">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                            <Ellipse Width="5"
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="240" Width="280">
+                            <ListView  ItemsSource="{Binding ShowRecipe.Ingredients}" Height="235" Width="260" HorizontalAlignment="Left">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Width="225">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                <Ellipse Width="5"
                                                  Height="5"
                                                  StrokeThickness="1"
                                                  VerticalAlignment="Center"
                                                  Fill="Black"
                                                  Margin="5 0"></Ellipse>
-                                            <TextBlock HorizontalAlignment="Left"
+                                                <TextBlock HorizontalAlignment="Left"
                                                    Text="{Binding Name}"
                                                    FontSize="15"
                                                    FontWeight="Medium"></TextBlock>
-                                        </StackPanel>
-                                        <TextBlock 
+                                            </StackPanel>
+                                            <TextBlock 
                                                HorizontalAlignment="Right"
                                                Text="{Binding Quantity}"
                                                FontSize="10"
                                                VerticalAlignment="Center"
                                                FontWeight="Light"></TextBlock>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </ScrollViewer>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" BorderBrush="{x:Null}" Margin="5 0" Content="Watch Video" Width="120"  Command="{Binding WatchVideoCommand}" Visibility="{Binding VideoButtonVisibility}"></Button>
-                        <Button Background="DarkRed" BorderBrush="{x:Null}" Margin="0 0" Content="Edit Recipe" Width="120" Command="{Binding EditRecipeCommand}"></Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </ScrollViewer>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" BorderBrush="{x:Null}" Margin="5 0" Content="Watch Video" Width="120"  Command="{Binding WatchVideoCommand}" Visibility="{Binding VideoButtonVisibility}"></Button>
+                            <Button Background="DarkRed" BorderBrush="{x:Null}" Margin="0 0" Content="Edit Recipe" Width="120" Command="{Binding EditRecipeCommand}"></Button>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </DockPanel>
-        </Border>
+                </DockPanel>
+            </Border >
 
-        <Border CornerRadius="20" Width="auto" VerticalAlignment="Bottom" Height="275" Margin="10,0,10,10" BorderThickness="2" BorderBrush="Black">
-            <WrapPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" Command="{Binding PrevImgStepCommand}" CommandParameter="{Binding ElementName=StepImageHolder}">
-                        <Border Style="{StaticResource HolderButton}">
-                            <materialDesign:PackIcon Kind="ChevronLeft" Width="35" Height="35" Foreground="Black" />
-                        </Border>
-                    </Button>
-                    <Border Grid.Column="0" Name="StepImageHolder"
+            <Border CornerRadius="20" Width="auto" VerticalAlignment="Bottom" MinHeight="275" Margin="10,10,10,10" BorderThickness="2" BorderBrush="Black">
+                <WrapPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" Command="{Binding PrevImgStepCommand}" CommandParameter="{Binding ElementName=StepImageHolder}">
+                            <Border Style="{StaticResource HolderButton}">
+                                <materialDesign:PackIcon Kind="ChevronLeft" Width="35" Height="35" Foreground="Black" />
+                            </Border>
+                        </Button>
+                        <Border Grid.Column="0" Name="StepImageHolder"
                             Margin="0 10 3 10" Width="270" CornerRadius="30">
-                        <Border.Effect>
-                            <DropShadowEffect ShadowDepth="5"/>
-                        </Border.Effect>
-                        <Border.Background>
-                            <ImageBrush x:Name="stepImage" 
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="5"/>
+                            </Border.Effect>
+                            <Border.Background>
+                                <ImageBrush x:Name="stepImage" 
                                    Stretch="UniformToFill"
                                    ImageSource="{Binding NowImageStep.ImageSource , Converter={StaticResource converter}}">
-                            </ImageBrush>
-                        </Border.Background>
-                    </Border>
-                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImgStepCommand}"  CommandParameter="{Binding ElementName=StepImageHolder}">
-                        <Border Style="{StaticResource HolderButton}">
-                            <materialDesign:PackIcon Kind="ChevronRight" Width="35" Height="35" Foreground="Black" />
+                                </ImageBrush>
+                            </Border.Background>
                         </Border>
-                    </Button>
-                </StackPanel>
-                <StackPanel Margin="15 10 10 10" Orientation="Vertical" >
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock  FontSize="25" Text="Step "
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"></TextBlock>
-                        <TextBlock  FontSize="25" Text="{Binding NowStep.OrderNumber}"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"></TextBlock>
+                        <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImgStepCommand}"  CommandParameter="{Binding ElementName=StepImageHolder}">
+                            <Border Style="{StaticResource HolderButton}">
+                                <materialDesign:PackIcon Kind="ChevronRight" Width="35" Height="35" Foreground="Black" />
+                            </Border>
+                        </Button>
                     </StackPanel>
-                    <TextBlock Margin="0 2 0 0" x:Name="stepContent" TextWrapping="Wrap" Height="188 " Width="260"
+                    <StackPanel Margin="15 10 10 10" Orientation="Vertical" >
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock  FontSize="25" Text="Step "
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock  FontSize="25" Text="{Binding NowStep.OrderNumber}"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                        <TextBlock Margin="0 2 0 0" x:Name="stepContent" TextWrapping="Wrap" Height="188 " Width="260"
                                    FontSize="17"
                                    FontWeight="DemiBold"
                                    Text="{Binding NowStep.Content}"></TextBlock>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Margin="0 0 5 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevStepCommand}">
-                            <Border Style="{StaticResource HolderButton}">
-                                <materialDesign:PackIcon Kind="ChevronLeft" Foreground="Black" Width="30" Height="30" />
-                            </Border>
-                        </Button>
-                        <Border CornerRadius="10" Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Width="100">
-                            <TextBlock x:Name="stepOrder" FontWeight="Bold" FontSize="20"
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Margin="0 0 5 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding PrevStepCommand}">
+                                <Border Style="{StaticResource HolderButton}">
+                                    <materialDesign:PackIcon Kind="ChevronLeft" Foreground="Black" Width="30" Height="30" />
+                                </Border>
+                            </Button>
+                            <Border CornerRadius="10" Background="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Width="100">
+                                <TextBlock x:Name="stepOrder" FontWeight="Bold" FontSize="20"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Text="{Binding IndexStep}"
                                    ></TextBlock>
-                        </Border>
-                        <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextStepCommand}">
-                            <Border Style="{StaticResource HolderButton}">
-                                <materialDesign:PackIcon Kind="ChevronRight" Width="30" Height="30" Foreground="Black" />
                             </Border>
-                        </Button>
+                            <Button Margin="5 0 0 0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextStepCommand}">
+                                <Border Style="{StaticResource HolderButton}">
+                                    <materialDesign:PackIcon Kind="ChevronRight" Width="30" Height="30" Foreground="Black" />
+                                </Border>
+                            </Button>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </WrapPanel>
-        </Border>
-
+                </WrapPanel>
+            </Border>
+        </StackPanel>
 
 
         <Grid HorizontalAlignment="Right"
               Width="1"
               Background="Black"></Grid>
 
-        <Grid Grid.Column="1" VerticalAlignment="Top">
-            <StackPanel Margin="20 20 0 0"
+
+
+        <DockPanel Grid.Column="1" VerticalAlignment="Top">
+            <StackPanel DockPanel.Dock="Left" Margin="20 20 0 0"
                         Orientation="Horizontal">
                 <RadioButton
                     BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
@@ -354,43 +358,76 @@
                     Margin="4"
                     IsChecked="False"
                     Content="FAVORITE" />
-
             </StackPanel>
-            <Button x:Name="btnOpenSetting" Background="{x:Null}" Width="40" Height="40" Margin="0,0,23,0" HorizontalAlignment="Right"
+            <StackPanel Orientation="Horizontal"  DockPanel.Dock="Left" Margin="20 20 0 0"
+                        >
+                <Button x:Name="newRecipeBtn" Command="{Binding NewRecipeCommand}"
+                    Margin="10 0 0 0" Height="50" Width="50" Padding="0" Background="Transparent" BorderThickness="0" Style="{StaticResource ButtonTemplate}">
+                    <Image Width="40" Source="/Images/baseline_post_add_black_48dp.png" Stretch="Uniform"/>
+                </Button>
+                <Button x:Name="deleteRecipeBtn" Command="{Binding DeleteRecipeCommand}"
+                    Margin="0 0 0 0" Height="Auto" Width="50" Padding="0" Background="Transparent" BorderThickness="0" Style="{StaticResource ButtonTemplate}">
+                    <Image Width="40" Source="/Images/baseline_delete_black_48dp.png" />
+                </Button>
+            </StackPanel>
+            <Button x:Name="btnOpenSetting" DockPanel.Dock="Right" Background="{x:Null}" Width="40" Height="40" Margin="0,0,23,0" HorizontalAlignment="Right"
                         BorderBrush="{x:Null}" Foreground="Black" FontSize="15" 
                         FontWeight="Bold" VerticalAlignment="Bottom" Padding="0" Command="{Binding SettingCommand}">
                 <materialDesign:PackIcon Kind="Menu" Height="30" Width="30"></materialDesign:PackIcon>
             </Button>
-        </Grid>
+        </DockPanel>
 
 
         <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Top"
                     Height="50"
-                    Grid.Column="1" Margin="20,62,0,0">
+                    Grid.Column="1" Margin="20,70,0,0">
             <Grid>
-                <StackPanel Margin="5 0 0 0">
-                    <TextBox      x:Name="searchTextBox" Width="340"
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="5 0 0 0">
+                        <TextBox      x:Name="searchTextBox" Width="250" HorizontalAlignment="Stretch" MinWidth="200"
                                   materialDesign:HintAssist.Hint="Search for recipe"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   VerticalAlignment="Top" Height="auto"
                                   Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="TextChanged">
-                                <i:InvokeCommandAction Command="{Binding FilterRecipesCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TextBox>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding FilterRecipesCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5 10 0 0">
+                        <ComboBox materialDesign:HintAssist.Hint="Type"  BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Foreground="Black" Width="130" MinWidth="100" VerticalAlignment="Center" Padding="5">
+                            <ComboBoxItem>
+                                <TextBlock>None</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>Fry</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>Stir-fry</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>Cook</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>Boil</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>Poached</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>Grilled</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>Else...</TextBlock>
+                            </ComboBoxItem>
+                        </ComboBox>
+                        <materialDesign:PackIcon Width="25" Height="25" VerticalAlignment="Center" Kind="Filter"/>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
-            <Button x:Name="newRecipeBtn" Command="{Binding NewRecipeCommand}"
-                    Margin="10 0 0 0" Height="50" Width="50" Padding="0" Background="Transparent" BorderThickness="0" Style="{StaticResource ButtonTemplate}">
-                <Image Width="40" Source="/Images/baseline_post_add_black_48dp.png" Stretch="Uniform"/>
-            </Button>
-            <Button x:Name="deleteRecipeBtn" Command="{Binding DeleteRecipeCommand}"
-                    Margin="0 0 0 0" Height="Auto" Width="50" Padding="0" Background="Transparent" BorderThickness="0" Style="{StaticResource ButtonTemplate}">
-                <Image Width="40" Source="/Images/baseline_delete_black_48dp.png" />
-            </Button>
         </StackPanel>
 
         <!--<Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}"/>-->
@@ -426,7 +463,7 @@
             </Button>
         </Grid>
 
-        <ItemsControl x:Name="recipesListView" ItemsSource="{Binding RecipesPerPage}" Grid.ZIndex ="1" VerticalAlignment="Bottom" Grid.Column="1" Height="490" Margin="10 0 10 50">
+        <ItemsControl x:Name="recipesListView" ItemsSource="{Binding RecipesPerPage}" Grid.ZIndex ="1" VerticalAlignment="Center" Grid.Column="1" Height="490" Margin="10 50 10 0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Background="{x:Null}" BorderBrush="{x:Null}" Name="holderButton" Padding="5" Margin="5 3 5 0" Width="{Binding Path=DataContext.WidthItem, RelativeSource={RelativeSource Mode=FindAncestor,
