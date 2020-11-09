@@ -398,31 +398,15 @@
                         </TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5 10 0 0">
-                        <ComboBox materialDesign:HintAssist.Hint="Type"  BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Foreground="Black" Width="130" MinWidth="100" VerticalAlignment="Center" Padding="5">
-                            <ComboBoxItem>
-                                <TextBlock>None</TextBlock>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock>Fry</TextBlock>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock>Stir-fry</TextBlock>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock>Cook</TextBlock>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock>Boil</TextBlock>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock>Poached</TextBlock>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock>Grilled</TextBlock>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock>Else...</TextBlock>
-                            </ComboBoxItem>
+                        <ComboBox materialDesign:HintAssist.Hint="Type"  BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Foreground="Black" Width="130" MinWidth="100" VerticalAlignment="Center" Padding="5" 
+                                  ItemsSource="{Binding CategoryList}" SelectedItem="{Binding SelectedCategory}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Type}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
                         </ComboBox>
                         <materialDesign:PackIcon Width="25" Height="25" VerticalAlignment="Center" Kind="Filter"/>
                     </StackPanel>

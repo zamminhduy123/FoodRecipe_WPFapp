@@ -26,8 +26,10 @@ namespace Food_Recipe.Model
         public string YoutubeSource { get; set; }
         public Nullable<int> IsFavorite { get; set; }
         public string AvatarSource { get; set; }
+        public Nullable<int> Category { get; set; }
         public Nullable<System.DateTime> CreatedTime { get; set; }
     
+        public virtual Category Category1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ingredient> Ingredients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
