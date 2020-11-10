@@ -341,7 +341,7 @@
 
 
 
-        <DockPanel Grid.Column="1" VerticalAlignment="Top">
+        <DockPanel Grid.Column="1" VerticalAlignment="Top" MinHeight="70">
             <StackPanel DockPanel.Dock="Left" Margin="20 20 0 0"
                         Orientation="Horizontal">
                 <RadioButton

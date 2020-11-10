@@ -45,6 +45,22 @@ namespace Food_Recipe.ViewModels
         public Ingredient SelectedIngredient { get => _selectedIngredient; set { _selectedIngredient = value; OnPropertyChanged(); if (SelectedIngredient != null) {  NewIngredient = SelectedIngredient; } } }
 
         private Step _selectedStep;
+
+        private ObservableCollection<Category> _categoryList = new ObservableCollection<Category>(DataProvider.Ins.DB.Categories);
+        public ObservableCollection<Category> CategoryList { get => _categoryList; }
+
+        private Category _selectedCategory;
+        public Category SelectedCategory
+        {
+            get => _selectedCategory;
+            set
+            {
+                //_selectedCategory = value;
+                //OnPropertyChanged();
+                //LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id);
+                //RecipesPage = 1;
+            }
+        }
         public Step SelectedStep { get => _selectedStep; 
             set { 
                 _selectedStep = value; 

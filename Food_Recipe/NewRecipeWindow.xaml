@@ -127,17 +127,23 @@
                   Margin="10,30,10,0"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                   VerticalAlignment="Top" Text="{Binding NewRecipe.Name}" />
-            <!--<StackPanel Orientation="Horizontal" Margin="10,95,10,0" Height="50" VerticalAlignment="Top">
-                <TextBlock Text="Making time" FontSize="20" Margin="0 13 5 0" FontWeight="Medium"/>
+            <StackPanel Orientation="Horizontal" Margin="10,95,10,0" Height="50" VerticalAlignment="Top">
+                <TextBlock Text="Type" FontSize="20" Margin="0 13 5 0" FontWeight="Medium"/>
 
-                <TextBox Width="44"
-                          VerticalAlignment="Center"
-                          materialDesign:HintAssist.Hint="minute" Margin="0,12"
-                           />
+                <ComboBox materialDesign:HintAssist.Hint="Type"  BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}" Foreground="Black" Width="150" MinWidth="100" VerticalAlignment="Center" Padding="5" 
+                                  ItemsSource="{Binding CategoryList}" SelectedItem="{Binding SelectedCategory}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Type}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
-            </StackPanel>-->
+            </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="10,90,10,0" Height="50" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" Margin="10,150,10,0" Height="50" VerticalAlignment="Top">
                 <materialDesign:PackIcon Kind="Video" Width="20" Height="20" VerticalAlignment="Center" Margin="10 0"/>
 
                 <TextBox Width="202"
