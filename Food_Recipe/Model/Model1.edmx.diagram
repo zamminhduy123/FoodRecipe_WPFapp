@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7ce071f5093d40d2ad4803f334661c51" Name="Diagram1">
+      <Diagram DiagramId="b486d74ba9ed47f4a20108be7bd32c1b" Name="Diagram1">
         <EntityTypeShape EntityType="Model.Category" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Image" Width="1.5" PointX="7.5" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Ingredient" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Recipe" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Step" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.sysdiagram" Width="1.5" PointX="1.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.sysdiagram" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.Tip" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
         <AssociationConnector Association="Model.fk_recipe_category" ManuallyRouted="false" />
         <AssociationConnector Association="Model.fk_images_step" ManuallyRouted="false" />

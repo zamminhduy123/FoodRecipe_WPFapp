@@ -44,8 +44,6 @@ namespace Food_Recipe.ViewModels
         private Ingredient _selectedIngredient;
         public Ingredient SelectedIngredient { get => _selectedIngredient; set { _selectedIngredient = value; OnPropertyChanged(); if (SelectedIngredient != null) {  NewIngredient = SelectedIngredient; } } }
 
-        private Step _selectedStep;
-
         private ObservableCollection<Category> _categoryList = new ObservableCollection<Category>(DataProvider.Ins.DB.Categories);
         public ObservableCollection<Category> CategoryList { get => _categoryList; }
 
@@ -55,12 +53,16 @@ namespace Food_Recipe.ViewModels
             get => _selectedCategory;
             set
             {
-                //_selectedCategory = value;
-                //OnPropertyChanged();
-                //LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id);
-                //RecipesPage = 1;
+                _selectedCategory = value;
+                OnPropertyChanged();
+                if (SelectedCategory != null)
+                {
+                    NewRecipe.Category = SelectedCategory.Id;
+                }
             }
         }
+
+        private Step _selectedStep;
         public Step SelectedStep { get => _selectedStep; 
             set { 
                 _selectedStep = value; 
@@ -96,7 +98,7 @@ namespace Food_Recipe.ViewModels
             ShowNewSteps = new AsyncObservableCollection<Step>();
             ShowNewStepImages = new AsyncObservableCollection<Image>();
             NewStep = new Step { OrderNumber = ShowNewSteps.Count + 1 };
-
+            SelectedCategory = DataProvider.Ins.DB.Categories.ToList()[0];
 
             //set the command
 

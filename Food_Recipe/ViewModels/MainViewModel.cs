@@ -59,12 +59,12 @@ namespace Food_Recipe.ViewModels
             set { 
                 _selectedCategory = value; 
                 OnPropertyChanged();
-                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id);
+                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search);
                 RecipesPage = 1;
             } }
 
         private bool _isFavoriteRecipes;
-        public bool IsFavoriteRecipes { get => _isFavoriteRecipes; set { _isFavoriteRecipes = value; OnPropertyChanged(); LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id); } }
+        public bool IsFavoriteRecipes { get => _isFavoriteRecipes; set { _isFavoriteRecipes = value; OnPropertyChanged(); LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search); } }
 
         private ObservableCollection<Recipe> _recipes;
         public ObservableCollection<Recipe> Recipes { get => _recipes; set { _recipes = value; OnPropertyChanged(); } }
@@ -236,14 +236,14 @@ namespace Food_Recipe.ViewModels
             AllRecipeCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
             {
                 IsFavoriteRecipes = false;
-                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id);
+                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search);
                 RecipesPage = 1;
             });
 
             FavoriteCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
             {
                 IsFavoriteRecipes = true;
-                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id);
+                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search);
                 RecipesPage = 1;
             });
 
@@ -263,7 +263,7 @@ namespace Food_Recipe.ViewModels
             {
                 UserPreferenceWindow userPreferenWindow = new UserPreferenceWindow();
                 userPreferenWindow.ShowDialog();
-                LoadRecipes(IsFavoriteRecipes);
+                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search);
                 RecipesPage = 1;
             });
 
@@ -271,7 +271,7 @@ namespace Food_Recipe.ViewModels
             {
                 NewRecipeWindow newRecipeWindow = new NewRecipeWindow();
                 newRecipeWindow.ShowDialog();
-                LoadRecipes(IsFavoriteRecipes);
+                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search);
                 RecipesPage = RecipesPage;
             });
             DeleteRecipeCommand = new RelayCommand<object>((prop) => { return true; }, (prop) =>
@@ -287,7 +287,7 @@ namespace Food_Recipe.ViewModels
                     }
                     DataProvider.Ins.DB.Recipes.Remove(ShowRecipe);
                     DataProvider.Ins.DB.SaveChanges();
-                    LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id);
+                    LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search);
                     RecipesPage = RecipesPage;
                     ShowRecipe = Recipes[MyRandom.Ins.Next(Recipes.Count)];
                 }
@@ -422,7 +422,7 @@ namespace Food_Recipe.ViewModels
             {
                 NewRecipeWindow newRecipeWindow = new NewRecipeWindow(ShowRecipe);
                 newRecipeWindow.ShowDialog();
-                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id);
+                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search);
                 RecipesPage = RecipesPage;
                 ShowRecipe = Recipes[MyRandom.Ins.Next(Recipes.Count)];
 
@@ -437,14 +437,13 @@ namespace Food_Recipe.ViewModels
             FavoriteChanged = new RelayCommand<Recipe>((prop) => { return true; }, (prop) =>
             {
                 DataProvider.Ins.DB.SaveChanges();
-                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id);
+                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search);
                 RecipesPage = RecipesPage;
             });
 
             FilterRecipesCommand = new RelayCommand<Window>((prop) => { return true; }, (prop) =>
             {
-                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id);
-                Recipes = SearchRecipe(Search, Recipes);
+                LoadRecipes(IsFavoriteRecipes, SelectedCategory.Id, Search);
                 RecipesPage = 1;
                 
             });
@@ -483,7 +482,7 @@ namespace Food_Recipe.ViewModels
             }
         }
 
-        private void LoadRecipes(bool isFavorite, int CategoryId = 0)
+        private void LoadRecipes(bool isFavorite, int CategoryId = 0, string search = null)
         {
             var value1 = ConfigurationManager.AppSettings["IsSmallItem"];
             bool IsSmallItem = bool.Parse(value1);
@@ -540,6 +539,11 @@ namespace Food_Recipe.ViewModels
             if (CategoryId != 0)
             {
                 Recipes = new ObservableCollection<Recipe>(Recipes.Where(x => x.Category == CategoryId));
+            }
+
+            if (search != null)
+            {
+                Recipes = SearchRecipe(search, Recipes);
             }
         }
 

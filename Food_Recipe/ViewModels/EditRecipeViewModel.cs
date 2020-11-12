@@ -44,6 +44,26 @@ namespace Food_Recipe.ViewModels
         private Ingredient _selectedIngredient;
         public Ingredient SelectedIngredient { get => _selectedIngredient; set { _selectedIngredient = value; OnPropertyChanged(); if (SelectedIngredient != null) { NewIngredient = SelectedIngredient; } } }
 
+
+        private ObservableCollection<Category> _categoryList = new ObservableCollection<Category>(DataProvider.Ins.DB.Categories);
+        public ObservableCollection<Category> CategoryList { get => _categoryList; }
+
+        private Category _selectedCategory;
+        public Category SelectedCategory
+        {
+            get => _selectedCategory;
+            set
+            {
+                _selectedCategory = value;
+                OnPropertyChanged();
+                if (SelectedCategory != null)
+                {
+                    NewRecipe.Category = SelectedCategory.Id;
+                }
+            }
+        }
+
+
         private Step _selectedStep;
         public Step SelectedStep
         {
@@ -238,10 +258,31 @@ namespace Food_Recipe.ViewModels
                     }
                     DataProvider.Ins.DB.Recipes.Remove(EditRecipe);
                     DataProvider.Ins.DB.SaveChanges();
-
+                    
                     // Add new data
                     DataProvider.Ins.DB.Recipes.Add(NewRecipe);
-                    DataProvider.Ins.DB.SaveChanges();
+                    try
+                    {
+                        DataProvider.Ins.DB.SaveChanges();
+
+                    }
+                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                    {
+                        Exception raise = dbEx;
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                string message = string.Format("{0}:{1}",
+                                    validationErrors.Entry.Entity.ToString(),
+                                    validationError.ErrorMessage);
+                                // raise a new exception nesting  
+                                // the current instance as InnerException  
+                                raise = new InvalidOperationException(message, raise);
+                            }
+                        }
+                        throw raise;
+                    }
                     // Add recipe
                     foreach (var item in ShowNewSteps)
                     {
@@ -388,6 +429,7 @@ namespace Food_Recipe.ViewModels
             NewRecipe.AvatarSource = Convert(editRecipe.AvatarSource);
             NewRecipe.IsFavorite = editRecipe.IsFavorite;
             NewRecipe.CreatedTime = editRecipe.CreatedTime;
+            SelectedCategory = DataProvider.Ins.DB.Categories.Where(x => x.Id == editRecipe.Category).ToList()[0];
             foreach (var item in editRecipe.Ingredients)
             {
                 Ingredient newIngredient = new Ingredient { Name = item.Name, Quantity = item.Quantity };

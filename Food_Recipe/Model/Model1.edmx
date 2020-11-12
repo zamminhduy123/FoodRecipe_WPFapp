@@ -20,7 +20,7 @@
           </Key>
           <Property Name="RecipeId" Type="int" Nullable="false" />
           <Property Name="StepOrderNumber" Type="int" Nullable="false" />
-          <Property Name="ImageSource" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ImageSource" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="Ingredient">
           <Key>
@@ -39,7 +39,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="YoutubeSource" Type="nvarchar" MaxLength="80" />
           <Property Name="IsFavorite" Type="int" />
-          <Property Name="AvatarSource" Type="nvarchar" MaxLength="40" />
+          <Property Name="AvatarSource" Type="nvarchar" MaxLength="500" />
           <Property Name="Category" Type="int" />
           <Property Name="CreatedTime" Type="datetime" />
         </EntityType>
@@ -165,7 +165,7 @@
           </Key>
           <Property Name="RecipeId" Type="Int32" Nullable="false" />
           <Property Name="StepOrderNumber" Type="Int32" Nullable="false" />
-          <Property Name="ImageSource" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ImageSource" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Step" Relationship="Self.fk_images_step" FromRole="Images" ToRole="Step" />
         </EntityType>
         <EntityType Name="Ingredient">
@@ -186,7 +186,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="YoutubeSource" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="IsFavorite" Type="Int32" />
-          <Property Name="AvatarSource" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="AvatarSource" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Category" Type="Int32" />
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Category1" Relationship="Self.fk_recipe_category" FromRole="Recipe" ToRole="Category" />
