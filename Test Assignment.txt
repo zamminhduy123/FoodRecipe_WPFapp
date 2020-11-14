@@ -1,0 +1,317 @@
+------------------------------------------------------------------
+-- Module Name: Splash Screen
+-- Test Title: Hiển thị Tip nấu ăn
+-- Description: Mỗi lần mở ứng dụng sẽ hiển thị Splash Screen cùng với Tip nấu ăn ngẫu nhiên
+-- Step:
+- 1:
++ Test Steps: Mở ứng dụng nhiều lần, kiểm tra tính ngẫu nhiên của các Tip hiển thị ra 
++ Test Data: 
++ Expected Result: Các Tip hiển thị ngẫu nhiên, không trùng lặp 3 lần liên tục 
++ Actual Result: Các Tip hiển thị ngẫu nhiên không có quy tắc
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: Splash Screen
+-- Test Title: Không hiển thị lần sau
+-- Description: Nếu bấm vào nút không hiển thị lần sau thì sau này Splash Screen sẽ không hiển thị nữa
+-- Step:
+- 1:
++ Test Steps: Tại Splash Screen, bấm vào nút không hiển thị lần sau
++ Test Data: 
++ Expected Result: Splash Screen tự động đóng lại bình thường, không báo lỗi
++ Actual Result: Hệ thống hoạt động bình thường
++ Status (Pass/Fail): Pass
+- 2:
++ Test Steps: Đóng và mở lại ứng dụng 
++ Test Data: 
++ Expected Result: Vào thẳng màn hình chính mà không hiển thị Splash Screen
++ Actual Result: Hiển thị màn hình chính, không hiển thị Splash Screen
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: MainWindow
+-- Test Title:  Gợi ý món ăn ngẫu nhiên
+-- Description: Mỗi khi vào màn hình chính sẽ hiển thị ngẫu nhiên 1 món ăn trong danh sách
+-- Step:
+- 1:
++ Test Steps: Mở ứng dụng nhiều lần
++ Test Data: 
++ Expected Result: Màn hình chính nên hiển thị ngẫu nhiên 1 món ăn khác nhau mỗi lần mở ứng dụng
++ Actual Result: Hiển thị món ăn ngẫu nhiên không trùng lặp
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: MainWindow
+-- Test Title: Danh sách món ăn
+-- Description: Bố cục và các tác động đến danh sách món ăn
+-- Step:
+- 1:
++ Test Steps: Hiển thị danh sách món
++ Test Data: 
++ Expected Result: 
+	. Hiển thị dạng lưới (6 hoặc 9 ô), mỗi ô gồm ảnh món ăn, tên món, nút yêu thích
++ Actual Result: hiển thị 6 món, tên món, yêu thích, một số tên món bị khuất
++ Status (Pass/Fail): Pass
+- 2:
++ Test Steps: Qua lại các trang món ăn
++ Test Data: 
++ Expected Result: 
+	. Hiển thị đúng danh sách món kế tiếp hoặc trước đó khi chuyển trang
+	. Hiển thị đúng số trang hiện tại
++ Actual Result:
+	. Chỉ số trang thay đổi chính xác
+	. Danh sách món hiển thị không trùng lặp, hiển thị đúng khi quay về lại trang đó
++ Status (Pass/Fail): Pass
+- 3:
++ Test Steps: Nút Favorite và All Recipe
++ Test Data: 
++ Expected Result:
+	. Hiển thị tất cả món ăn khi nhấn nút All Recipe
+	. Hiển thị các món được đánh dấu yêu thích khi nhấn Favorite 
++ Actual Result: 
+	. All Recipe: hiển thị tất cả món theo Filter đã chọn
+	. Favorite: hiển thị các món yêu thích theo Filter đã chọn
++ Status (Pass/Fail): Pass
+- 4:
++ Test Steps: Chọn các loại món ăn trong chức năng Filter
++ Test Data: 
++ Expected Result: hiển thị tất cả món khi chọn "Tất cả", hiển thị đúng loại món đã chọn 
++ Actual Result: chỉ hiển thị các món đúng loại món đã chọn
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: MainWindow
+-- Test Title: Chọn món
+-- Description: Hiển thị chi tiết món khi nhấn vào món đó
+-- Step:
+- 1:
++ Test Steps: nhấn vào 1 món bất kì trong danh sách món 
++ Test Data: 
++ Expected Result: Hiển thị chi tiết món ăn 
++ Actual Result: Hiển thị chi tiết món ăn(hình ảnh sản phẩm, nguyên liệu chuẩn bị, các bước thực hiện)
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: MainWindow
+-- Test Title: Chức năng tìm kiếm
+-- Description: Kiểm tra độ chính xác chức năng tìm
+-- Step:
+- 1:
++ Test Steps: Nhập vào chữ có dấu
++ Test Data: "cá"
++ Expected Result: Các món ăn có chữ "cá"
++ Actual Result: Hiển thị 2 món "Cá cơm kho tiêu" và "Lẩu cá kèo" (2 món có chữ "cá" trong Database test)
++ Status (Pass/Fail): Pass
+- 2:
++ Test Steps: Nhập vào chữ không dấu
++ Test Data: "ca"
++ Expected Result: Các món ăn có chữ "cá" (hoặc "cà" "ca" "cạ" "cả" "cã")
++ Actual Result: Hiển thị 2 món "Cá cơm kho tiêu" và "Lẩu cá kèo"
++ Status (Pass/Fail): Pass
+- 3:
++ Test Steps: kết hợp chữ
++ Test Data: "(ca or thit) and kho"
++ Expected Result: Các món ăn có tên có 2 chữ (ca, kho) hoặc (thit,kho)
++ Actual Result: Hiển thị 2 món "Cá cơm kho tiêu" và "Thịt kho trứng chiên ngũ vị"
++ Status (Pass/Fail): Pass
+- 4:
++ Test Steps: kết hợp chức năng lọc món theo loại và yêu thích
+	Nhập chữ tìm kiếm, nhấn yêu thích món "Cá cơm kho tiêu", lần lượt lọc theo yêu thích và các loại món ăn
++ Test Data: "(ca or thit) and kho"
++ Expected Result: Các món ăn có tên có 2 chữ (ca, kho) hoặc (thit,kho) và nằm trong loại món ăn đã chọn
++ Actual Result: 
+	. Lọc tất cả: Hiển thị 2 món "Cá cơm kho tiêu" và "Thịt kho trứng chiên ngũ vị"
+	. Lọc yêu thích: Hiển thị 1 món "Cá cơm kho tiêu"
+	. Lọc Món Chiên/Xào/Nấu/Luộc/Nướng/Hấp/Khác: Không hiển thị món nào
+	. Lọc Món Kho: Hiển thị 2 món "Cá cơm kho tiêu" và "Thịt kho trứng chiên ngũ vị"
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: MainWindow
+-- Test Title: Xem video
+-- Description: Chức năng xem video hướng dẫn nấu món ăn online
+-- Step:
+- 1:
++ Test Steps: Chọn món ăn
++ Test Data: 
++ Expected Result: Hiển thị nút xem video và cho phép người dùng nhấn vào để xem nếu món ăn có video 
++ Actual Result: Hiển thị nút xem video với các món ăn có video mà ẩn nút xem video với các món không có video
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: MainWindow
+-- Test Title: Xóa món ăn
+-- Description: Nút xóa món ăn dùng để xóa 1 món khỏi database
+-- Step:
+- 1:
++ Test Steps: Chọn món ăn
++ Test Data: 
++ Expected Result: Hiển thị chi tiết món ăn
++ Actual Result:  Hiển thị chi tiết món ăn
++ Status (Pass/Fail): Pass
+- 1:
++ Test Steps: nhấn nút xóa món ăn (biểu tượng thùng rác)
++ Test Data: 
++ Expected Result: Hiển thị cảnh báo
++ Actual Result:  Hiển thị bảng thông báo "Are you sure to delete this ? the data will be delete permanently !" cùng lựa chọn OK/Cancel
++ Status (Pass/Fail): Pass
+- 3:
++ Test Steps: nhấn nút OK
++ Test Data: 
++ Expected Result: Xóa món ăn khỏi danh sách
++ Actual Result:  Danh sách cập nhật lại và không còn món đã xóa
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: MainWindow
+-- Test Title: Chỉnh sửa món ăn
+-- Description: Nút Edit Recipe dùng để thay đổi nội dung 1 món ăn
+-- Step:
+- 1:
++ Test Steps: Chọn món ăn
++ Test Data: 
++ Expected Result: Hiển thị chi tiết món ăn
++ Actual Result:  Hiển thị chi tiết món ăn cùng nút Edit Recipe
++ Status (Pass/Fail): Pass
+- 1:
++ Test Steps: nhấn nút Edit Recipe
++ Test Data: 
++ Expected Result: Hiển thị môi trường sửa đổi
++ Actual Result:  Hiển thị cửa sổ mới chứa nội dung món ăn và cho phép người dùng sửa đổi
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: MainWindow
+-- Test Title: Setting
+-- Description: Tùy chỉnh ứng dụng với các chức năng được cung cấp trong bảng Setting
+-- Step:
+- 1:
++ Test Steps: Thay đổi hiển thị danh sách món ăn
++ Test Data: 
++ Expected Result:
+	. Trang món ăn sẽ có 9 món với cỡ nhỏ hoặc 6 món với cỡ lớn
+	. Sắp xếp theo bảng chữ cái/ngày thêm vào, theo chiều tăng/giảm tùy lựa chọn người dùng
++ Actual Result: 
+	. Trang món ăn có 9 món với cỡ nhỏ hoặc 6 món với cỡ lớn
+	. Danh sách hiển thị món ăn thay đổi khi nhấn finish (thứ tự sắp xếp phù hợp với mong muốn)
++ Status (Pass/Fail): Pass
+- 2:
++ Test Steps: Thay đổi màu nền ứng dụng
++ Test Data: 
++ Expected Result: Màu nền của ứng dụng thay đổi, hệ thống hoạt động bình thường, màu nền không trùng với màu chữ
++ Actual Result: Màu nền của ứng dụng thay đổi, nội dung hiển thị rõ ràng với tất cả các màu
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: New Recipe Window
+-- Test Title: Thêm món ăn
+-- Description:
+-- Step:
+- 1:
++ Test Steps: Thêm tên món ăn
++ Test Data: Gà Nướng Tỏi Mật Ong
++ Expected Result: Hiển thị tên chính xác
++ Actual Result: Hệ thống hoạt động bình thường, tên hiển thị đúng, không bị lỗi gõ kí tự
++ Status (Pass/Fail): Pass
+- 2:
++ Test Steps: Thêm link youtube
++ Test Data: https://www.youtube.com/watch?v=t2q-UjlDlNc
++ Expected Result: Hệ thống hoạt động bình thường
++ Actual Result: Hệ thống hoạt động bình thường
++ Status (Pass/Fail): Pass
+- 3:
++ Test Steps: Chọn loại món ăn
++ Test Data: Món Nướng
++ Expected Result: Có 9 kiểu chọn: Tất cả/Chiên/Xào/Nướng/Kho/Hấp/Nấu/Luộc/Khác
++ Actual Result: Chọn bình thường, hệ thống hoạt động ổn định
++ Status (Pass/Fail): Pass
+- 4:
++ Test Steps: Thêm ảnh thành phẩm
++ Test Data: Ảnh
++ Expected Result: Hiển thị cửa sổ chọn ảnh, chọn được ảnh, hiển thị ảnh
++ Actual Result: Hiển thị cửa sổ chọn ảnh, hiển thị ảnh sau khi chọn
++ Status (Pass/Fail): Pass
+- 5:
++ Test Steps: Thêm Nguyên Liệu
++ Test Data: Tỏi - 100gram
++ Expected Result: Hiển thị tên, lượng nguyên liệu ở danh sách nguyên liệu sau khi nhấn nút thêm
++ Actual Result: Thêm nguyên liệu thành công, hiển thị nguyên liệu vừa thêm ở danh sách nguyên liệu
++ Status (Pass/Fail): Pass
+- 6:
++ Test Steps: Thêm bước thực hiện
++ Test Data:
+	. Sơ chê gà + ảnh
+	. Phi tỏi + ảnh
+	. Nướng gà + ảnh
++ Expected Result: 
+	. Hiển thị ảnh trong danh sách ảnh của bước thực hiện
+	. Số thứ tự các bước chính xác
+	. Hiển thị các bước trong danh sách bước sau khhi thêm vào
++ Actual Result: 
+	. Các ảnh trong danh sách ảnh hiển thị chính xác
+	. Số thứ tự các bước chính xác
+	. Các bước hiển thị đầy đủ (số thứ tự, nội dung, ảnh) trong danh sách bước sau khi thêm vào
++ Status (Pass/Fail): Pass
+- 7:
++ Test Steps: Bấm nút Finish để lưu công thức món ăn
++ Test Data: 
++ Expected Result: Công thức món ăn được lưu trong database
++ Actual Result: Danh sách món ăn được cập nhật lại có công thức món vừa thêm, đóng ứng dụng và mở lại vẫn còn
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name: Edit Recipe Window
+-- Test Title: Sửa đổi nội dung món ăn
+-- Description:
+-- Step:
+- 1:
++ Test Steps: Tại Chi tiết món ăn mở Edit Recipe
++ Test Data: 
++ Expected Result: Hiển thị cửa sổ môi trường thay đổi nội dung
++ Actual Result: Hiển thị cửa sổ mới chứa nội dung chi tiết món ăn cùng chức năng thêm/xóa/sửa
++ Status (Pass/Fail): Pass
+- 2:
++ Test Steps: Thay đổi tên món ăn 
++ Test Data: Tên món + "sửa đổi thử nghiệm"
++ Expected Result: Hệ thống hoạt động bình thường
++ Actual Result: Sửa đổi thành công
++ Status (Pass/Fail): Pass
+- 3:
++ Test Steps: Thay đổi loại món ăn
++ Test Data: 
++ Expected Result: Thay đổi thành công
++ Actual Result: Thay đổi thành công 
++ Status (Pass/Fail): Pass
+- 4:
++ Test Steps: Thay đổi ảnh món ăn
++ Test Data: 
++ Expected Result:  Thay đổi thành công
++ Actual Result: Hiển thị ảnh món ăn mới
++ Status (Pass/Fail): Pass
+- 5:
++ Test Steps: Thay đổi nguyên liệu (Thêm/Xóa/Sửa)
++ Test Data: 
++ Expected Result: Thay đổi thành công
++ Actual Result: Thay đổi thành công 
++ Status (Pass/Fail): Pass
+- 6:
++ Test Steps: Thay đổi bước thực hiện (Thêm/Xóa/Sửa)
++ Test Data: 
++ Expected Result:
+	. Số thứ tự các bước cập nhật chính xác
+	. Hiển thị nội dung mới cập nhật
+	. Hiển thị hình ảnh mới cập nhật
++ Actual Result:
+	. Số thứ tự các bước cập nhật chính xác
+	. Các bước hiển thị dúng dữ liệu đã thay đổi
++ Status (Pass/Fail): Pass
+- 7:
++ Test Steps: Nhấn Finish để lưu thay đổi
++ Test Data: 
++ Expected Result:
+	. Dữ liệu được cập nhật lại theo đúng nội dung thay đổi
+	. Xóa dữ liệu không cần thiết (dữ liệu văn bản + hình ảnh cũ đã bị sửa đổi hoặc xóa)
++ Actual Result: 
+	. Món ăn hiển thị dữ liệu mới
+	. Dữ liệu cũ bị xóa hoàn toàn khỏi nguồn
++ Status (Pass/Fail): Pass
+------------------------------------------------------------------
+-- Module Name:
+-- Test Title:
+-- Description:
+-- Step:
+- :
++ Test Steps: 
++ Test Data: 
++ Expected Result: 
++ Actual Result: 
++ Status (Pass/Fail): 
