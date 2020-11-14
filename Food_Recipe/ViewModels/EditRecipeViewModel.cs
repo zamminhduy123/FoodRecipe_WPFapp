@@ -303,6 +303,9 @@ namespace Food_Recipe.ViewModels
                         NewRecipe.AvatarSource = dirFile;
                     }
 
+                    // Add EditTime
+                    NewRecipe.CreatedTime = DateTime.Now;
+
                     // Change YoutubeSource
                     if (NewRecipe.YoutubeSource != null && NewRecipe.YoutubeSource.Length != 0)
                     {
@@ -428,7 +431,6 @@ namespace Food_Recipe.ViewModels
             NewRecipe.YoutubeSource = "https://www.youtube.com/watch?v=" + editRecipe.YoutubeSource;
             NewRecipe.AvatarSource = Convert(editRecipe.AvatarSource);
             NewRecipe.IsFavorite = editRecipe.IsFavorite;
-            NewRecipe.CreatedTime = editRecipe.CreatedTime;
             SelectedCategory = DataProvider.Ins.DB.Categories.Where(x => x.Id == editRecipe.Category).ToList()[0];
             foreach (var item in editRecipe.Ingredients)
             {

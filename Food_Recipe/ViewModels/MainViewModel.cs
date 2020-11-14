@@ -577,7 +577,7 @@ namespace Food_Recipe.ViewModels
 
         private bool DeleteMessage()
         {
-            MessageBoxResult result = MessageBox.Show("Are yeo sure to delete this ? the data will be delete permanently !", "WARNING", MessageBoxButton.OKCancel);
+            MessageBoxResult result = MessageBox.Show("Are you sure to delete this ? the data will be delete permanently !", "WARNING", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 return true;
