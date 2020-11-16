@@ -39,7 +39,7 @@ namespace Food_Recipe.ViewModels
 
         public Global globalTheme = Global.GetInstance();
 
-        public ICommand ClosePermanent { get; set; }
+        public ICommand ChangeShow { get; set; }
         public ICommand LoadedWindowCommand { get; set; }
         public int ProgressBarValue { get => _progressBarValue; set { _progressBarValue = value; OnPropertyChanged(); } }
         #endregion
@@ -48,11 +48,13 @@ namespace Food_Recipe.ViewModels
             globalTheme.ThemeColor = "#FFa500";
             Tip = DataProvider.Ins.DB.Tips.ToList()[MyRandom.Ins.Next(DataProvider.Ins.DB.Tips.Count())].Content;
 
-            ClosePermanent = new RelayCommand<object>((prop) => { return true; }, (prop) =>
+            ChangeShow = new RelayCommand<object>((prop) => { return true; }, (prop) =>
             {
+                var value = ConfigurationManager.AppSettings["ShowSplashScreen"];
+                bool showSplash = bool.Parse(value);
                 var config = ConfigurationManager.OpenExeConfiguration(
                 ConfigurationUserLevel.None);
-                config.AppSettings.Settings["ShowSplashScreen"].Value = "false";
+                config.AppSettings.Settings["ShowSplashScreen"].Value = (!showSplash).ToString();
                 config.Save(ConfigurationSaveMode.Minimal);
 
                 ConfigurationManager.RefreshSection("appSettings");

@@ -9,10 +9,11 @@
 
 namespace Food_Recipe.Model
 {
+    using Food_Recipe.ViewModels;
     using System;
     using System.Collections.Generic;
     
-    public partial class Category
+    public partial class Category : BaseViewModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
@@ -20,9 +21,12 @@ namespace Food_Recipe.Model
             this.Recipes = new HashSet<Recipe>();
         }
     
-        public int Id { get; set; }
-        public string Type { get; set; }
-    
+        private int _id;
+        public int Id { get => _id; set { _id = value; OnPropertyChanged(); } }
+
+        private string _type;
+        public string Type { get => _type; set { _type = value; OnPropertyChanged(); } }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recipe> Recipes { get; set; }
     }

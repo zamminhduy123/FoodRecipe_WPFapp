@@ -59,7 +59,7 @@
                     BorderBrush="{Binding Source={StaticResource themeColor},Path=ThemeColor}"
                     Name="IsCloseSplashScreen"
                     IsChecked="False"
-                    Command="{Binding ClosePermanent}"
+                    Command="{Binding ChangeShow}"
                   Style="{StaticResource MaterialDesignActionToggleButton}"
                   ToolTip="Click to change the option">
                                 <materialDesign:ToggleButtonAssist.OnContent>

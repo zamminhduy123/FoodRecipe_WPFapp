@@ -9,10 +9,11 @@
 
 namespace Food_Recipe.Model
 {
+    using Food_Recipe.ViewModels;
     using System;
     using System.Collections.Generic;
     
-    public partial class Recipe
+    public partial class Recipe : BaseViewModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Recipe()
@@ -20,15 +21,28 @@ namespace Food_Recipe.Model
             this.Ingredients = new HashSet<Ingredient>();
             this.Steps = new HashSet<Step>();
         }
-    
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string YoutubeSource { get; set; }
-        public Nullable<int> IsFavorite { get; set; }
-        public string AvatarSource { get; set; }
-        public Nullable<int> Category { get; set; }
-        public Nullable<System.DateTime> CreatedTime { get; set; }
-    
+
+        private int _id;
+        public int Id { get => _id; set { _id = value; OnPropertyChanged(); } }
+
+        private string _name;
+        public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
+
+        private string _youtubeSource;
+        public string YoutubeSource { get => _youtubeSource; set { _youtubeSource = value; OnPropertyChanged(); } }
+
+        private Nullable<int> _isFavorite;
+        public Nullable<int> IsFavorite { get => _isFavorite; set { _isFavorite = value; OnPropertyChanged(); } }
+
+        private string _avatarSource;
+        public string AvatarSource { get => _avatarSource; set { _avatarSource = value; OnPropertyChanged(); } }
+
+        private Nullable<int> _category;
+        public Nullable<int> Category { get => _category; set { _category = value; OnPropertyChanged(); } }
+
+        private Nullable<System.DateTime> _createdTime;
+        public Nullable<System.DateTime> CreatedTime { get => _createdTime; set { _createdTime = value; OnPropertyChanged(); } }
+
         public virtual Category Category1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ingredient> Ingredients { get; set; }

@@ -9,12 +9,17 @@
 
 namespace Food_Recipe.Model
 {
+    using Food_Recipe.ViewModels;
     using System;
     using System.Collections.Generic;
     
-    public partial class Tip
+    public partial class Tip : BaseViewModel
     {
-        public int Id { get; set; }
-        public string Content { get; set; }
+        private int _id;
+        public int Id { get => _id; set { _id = value; OnPropertyChanged(); } }
+
+        private string _content;
+        public string Content { get => _content; set { _content = value; OnPropertyChanged(); } }
+
     }
 }
