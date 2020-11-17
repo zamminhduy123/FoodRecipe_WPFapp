@@ -1,4 +1,4 @@
-﻿using Food_Recipe.Model;
+using Food_Recipe.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -794,16 +794,28 @@ namespace Food_Recipe.ViewModels
             {
                 string recipeName = inputTable.Rows[tableIndex].Field<string>(0);
 
-                int order = 0;
+                int order = -1;
                 int Distance = 0;
                 int prevWordIndex = 0;
                 int signedWordIndex = recipeName.IndexOf(word, StringComparison.OrdinalIgnoreCase);
                 int unsignedWordIndex = RemoveSign(recipeName).IndexOf(RemoveSign(word), StringComparison.OrdinalIgnoreCase);
 
 
-                if (signedWordIndex >= 0 && IsSeparateWord(word, recipeName, signedWordIndex) == true)
+                if (signedWordIndex >= 0)
                 {
-                    order += word.Length + 1;
+                    if (IsSeparateWord(word, recipeName, signedWordIndex) == true)
+                    {
+                        order = word.Length + 2;
+                    }
+                    else if (IsBeginOfWord(word, recipeName, signedWordIndex) == true)
+                    {
+                        order = word.Length - 1;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
                     if (signedWordIndex >= prevWordIndex)
                     {
                         Distance += signedWordIndex - prevWordIndex;
@@ -814,9 +826,20 @@ namespace Food_Recipe.ViewModels
                     }
                     prevWordIndex = signedWordIndex;
                 }
-                else if (unsignedWordIndex >= 0 && IsSeparateWord(word, recipeName, unsignedWordIndex) == true)
+                else if (unsignedWordIndex >= 0)
                 {
-                    order += word.Length;
+                    if (IsSeparateWord(word, recipeName, unsignedWordIndex) == true)
+                    {
+                        order = word.Length + 1;
+                    }
+                    else if (IsBeginOfWord(word, recipeName, unsignedWordIndex) == true)
+                    {
+                        order = word.Length - 2;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                     if (unsignedWordIndex >= prevWordIndex)
                     {
                         Distance += unsignedWordIndex - prevWordIndex;
@@ -828,7 +851,7 @@ namespace Food_Recipe.ViewModels
                     prevWordIndex = unsignedWordIndex;
                 }
 
-                if (order > 0)
+                if (order > -1)
                 {
                     resultTable.Rows.Add(recipeName, order, Distance, recipeName.Length);
                 }
@@ -873,6 +896,16 @@ namespace Food_Recipe.ViewModels
                 result = false;
             }
             if (index + word.Length < sentence.Length && sentence[index + word.Length] != ' ')
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        public static bool IsBeginOfWord(string word, string sentence, int index)
+        {
+            bool result = true;
+            if (index > 0 && sentence[index - 1] != ' ')
             {
                 result = false;
             }
