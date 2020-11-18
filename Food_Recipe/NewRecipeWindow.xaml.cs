@@ -31,11 +31,13 @@ namespace Food_Recipe
             {
                 nrvm = new NewRecipeViewModel();
                 this.DataContext = nrvm;
+                this.Title = "NewRecipeWindow";
             }
             else
             {
                 ervm = new EditRecipeViewModel(recipe);
                 this.DataContext = ervm;
+                this.Title = "EditRecipeWindow";
             }
         }
     }

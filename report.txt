@@ -2,8 +2,8 @@ I. Thông tin nhóm:
 -------------------------------------------------------------------------------------------------------------------------
 -      MSSV     - 	        Họ và tên		-           	          Email cá nhân
 -   18120161   - 	Nguyễn Công Danh		- 	congdanh1392@gmail.com
--   18120165   - 	Nguyễn Ngọc Đức		- 	ducnghu@gmail.com
--   18120172   - 	Nguyễn Thanh Minh Duy	- 	ntminhduy123@gmail.com
+-   18120165   - 	Nguyễn Ngọc Đức			- 	ducnghu@gmail.com
+-   18120172   - 	Nguyễn Thanh Minh Duy		- 	ntminhduy123@gmail.com
 -------------------------------------------------------------------------------------------------------------------------
 II. Danh sách chức năng đã hoàn thành:
 
@@ -54,20 +54,40 @@ Tìm kiếm món ăn theo tên. Đã hoàn thành các cảnh giới sau:
 -------------------------------------------------------------------------------------------------------------------------
 III. Các chức năng đã làm thêm:
 - Cho phép người dùng chỉnh sửa công thức nấu ăn đã có.
+- Cho phép người dùng xóa công thức nấu ăn đã có.
 - Nhúng video youtube vào phần chi tiết của món ăn.
 - Lọc món ăn theo phân loại món (Chiên - Xào - Nấu - Kho - Luộc - Nướng - Hấp - Khác - Tất cả).
+- Animation fade in/ fade out.
+- Xử lí thay đổi kích thước cửa sổ ứng dụng.
 - Đổi màu ứng dụng (Settings/Theme Color).
 -------------------------------------------------------------------------------------------------------------------------
 IV. Các chức năng chưa hoàn thành:
 - Không có.
 -------------------------------------------------------------------------------------------------------------------------
-V. Điểm đề nghị:
+V. Mô hình thiết kế:
+- Sản phẩm được thiết kế theo kiến trúc mô hình MVVM (Model - View - ViewModel).
+-------------------------------------------------------------------------------------------------------------------------
+VI. Các thư viện và package hỗ trợ:
+- MaterialDesign.
+- CefSharp (vì sử dụng thư viện này nên phải build ở chế độ x86).
+- EntityFramework.
+- SqlExpress.
+-------------------------------------------------------------------------------------------------------------------------
+VII. Các con đường bất hạnh đã xử lí:
+- Ở phần thêm công thức khi không có đầy đủ các thành phần:
+	+ Không có link youtube: không hiển thị nút xem video.
+	+ Không có hình ảnh: hiển thị no image.
+	+ Khi người dùng nhập thiếu thông tin như: không nhập tên món ăn hoặc không thêm bước nào thì hiển thị cảnh báo.
+-------------------------------------------------------------------------------------------------------------------------
+VIII. Điểm đề nghị:
     10/10 điểm.
 -------------------------------------------------------------------------------------------------------------------------
-VI. Link video demo:
+IX. Link video demo:
 
 -------------------------------------------------------------------------------------------------------------------------
-VII. Link source code github:
+X. Link source code github:
 https://github.com/zamminhduy123/FoodRecipe_WPFapp/
 -------------------------------------------------------------------------------------------------------------------------
-
++ Public: video Demo, file release sản phẩm
++ Private: source code
+-------------------------------------------------------------------------------------------------------------------------

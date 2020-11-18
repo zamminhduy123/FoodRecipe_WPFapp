@@ -414,7 +414,7 @@
             </Grid>
         </StackPanel>
 
-        <!--<Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}"/>-->
+        <Rectangle x:Name="settingBackground"  Fill="#55313131" Grid.Column="0" Grid.ColumnSpan="2" Grid.ZIndex="998" Visibility="{Binding SettingBackground}"/>
 
 
         <Grid x:Name="settingGrid" Width="250" Grid.Column="1" Margin="750 0 0 0" HorizontalAlignment="Right"  Background="white" RenderTransformOrigin="0.5,0.5" Grid.ZIndex ="9999">
@@ -485,7 +485,6 @@
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Bottom"
                                                 Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}"
-                                                ToolTip="MaterialDesignFlatPrimaryToggleButton"
                                                 IsChecked="{Binding IsFavorite}"
                                                 Width="30"
                                                 Height="30"

@@ -17,7 +17,7 @@
         xmlns:local="clr-namespace:Food_Recipe"
         mc:Ignorable="d"
        Name="Window"
-        Title="NewRecipeWindow" Height="450" Width="800" ResizeMode="NoResize">
+        Title="{Binding title}" Height="450" Width="800" ResizeMode="NoResize">
     <Window.Resources>
         <ObjectDataProvider x:Key="themeColor"
                       ObjectType="{x:Type local:Global}"

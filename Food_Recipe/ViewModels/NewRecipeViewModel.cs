@@ -20,7 +20,6 @@ namespace Food_Recipe.ViewModels
     class NewRecipeViewModel : BaseViewModel
     {
         #region Properties
-
         // Binding show
         private Recipe _newRecipe;
         public Recipe NewRecipe { get => _newRecipe; set { _newRecipe = value; OnPropertyChanged(); } }
